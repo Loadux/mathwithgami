@@ -6,4 +6,4 @@ Explore topics, find connections, and navigate learning paths through the world 
 It has much more features in it that me and gami don't want to spoil. We would like you to experience, and have your own opinion.
 We will keep working on this project and keep updating it constantly.
 
-Live site: https://mathwithgami.netlify.app/
+Live site: https://mathwithgami.com/
