@@ -14393,7 +14393,7 @@ svg.append("defs").html(
 );
 
 // journey path lines (orange, temporary)
-const jlinkG = g.insert("g", "#nodes-group").attr("class","jlinkG").style("display","none");
+const jlinkG = g.insert("g", "#top-layer").attr("class","jlinkG").style("display","none");
 let jlinkSel = jlinkG.selectAll("line");
 function positionJlink(sel){
   sel.each(function(d){
