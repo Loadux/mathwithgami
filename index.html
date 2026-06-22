@@ -60,17 +60,21 @@
   text.lab{font-family:inherit;fill:#111;pointer-events:none;
     paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;}
 
-  .dim { opacity: .12 !important; }
-  text.lab.dim { stroke: none !important; paint-order: normal !important; }
-  line.link.dim { stroke-dasharray: none !important; }
+  /* Hardware Acceleration Fix for Android Chrome: Remove alpha-blending from 4000 SVG elements */
+  #svg .dim { opacity: 1 !important; }
+  circle.node.dim { fill: #e8e8e8 !important; stroke: #d4d4d4 !important; }
+  line.link.dim { stroke: #e8e8e8 !important; stroke-dasharray: none !important; }
+  text.lab.dim { display: none !important; }
+  circle.ring.dim { display: none !important; }
+  .dim { opacity: .12 !important; } /* Fallback for HTML elements */
 
   /* info panel, LEFT SIDE */
   #panel{position:fixed;left:0;top:0;bottom:0;width:310px;background:#f2f2f2;border-right:2px solid #111;
     padding:60px 18px 20px 18px;z-index:100;box-shadow:6px 0 22px rgba(0,0,0,.10);
-    transform:translateX(-115%);transition:transform .22s ease;overflow-y:auto;overflow-x:hidden;}
-  #panel.show{transform:translateX(0);}
+    transform:translate3d(-115%,0,0);transition:transform .22s ease;overflow-y:auto;overflow-x:hidden;}
+  #panel.show{transform:translate3d(0,0,0);}
   #left-panel-toggle {
-    position: fixed; top: 50%; left: 346px; transform: translateY(-50%);
+    position: fixed; top: 50%; left: 346px; transform: translate3d(0,-50%,0); will-change: transform;
     width: 22px; height: 56px;
     background: #f2f2f2; border: 1px solid #c8c8c8; border-left: none;
     border-radius: 0 8px 8px 0; box-shadow: 2px 0 5px rgba(0,0,0,0.1);
@@ -82,7 +86,7 @@
   body.panel-is-open #left-panel-toggle { display: flex; }
   body:not(.panel-is-open) #left-panel-toggle { display: none; }
   body.panel-collapsed #left-panel-toggle { 
-    top: 50%; left: 0; width: 22px; height: 56px; transform: translateY(-50%);
+    top: 50%; left: 0; width: 22px; height: 56px; transform: translate3d(0,-50%,0);
     border: 1px solid #c8c8c8; border-left: none; border-radius: 0 8px 8px 0;
     background: #f2f2f2; box-shadow: 2px 0 5px rgba(0,0,0,0.1); font-weight: bold;
     font-size: 13px; color: #333;
@@ -536,13 +540,18 @@
   @media (max-width: 460px) { #gami-modal { transform: scale(0.42); } }
   @media (max-width: 390px) { #gami-modal { transform: scale(0.37); } }
   @media (max-width: 350px) { #gami-modal { transform: scale(0.32); } }
+  @media (max-width: 768px) {
+    #panel, #left-panel-toggle, #legend { box-shadow: none !important; }
+    #legend.shifted { display: none !important; }
+    svg { transform: translateZ(0); }
+  }
 </style>
 </head>
 <body>
 <div id="app">
   <div class="topbar">
     <div class="topbar-left">
-      <a href="https://github.com/sponsors/Loadux" target="_blank" rel="noopener noreferrer" class="supporter-btn">Gami Supporters</a>
+      <a href="https://github.com/sponsors/Loadux" target="_blank" rel="noopener noreferrer" class="supporter-btn">Support Gami</a>
       <input id="msearch" class="msearch" type="text" placeholder="Search names, ideas, formulas…" autocomplete="off">
     </div>
     <div class="topbar-center">
@@ -13846,6 +13855,7 @@ function openPractice(){
 })();
 
 function selectNode(id, fromJourney){
+  sim.stop(); sim.alphaTarget(0); // Instantly halt the D3 physics engine to stop the 5-second mobile DOM thrashing
   selId=id;
   const d=byId[id];
   if(!fromJourney){
@@ -13976,9 +13986,11 @@ AREA_NAMES.forEach((nm,i)=>{
   leg.appendChild(r);
 });
 
+let _lastW = window.innerWidth;
 window.addEventListener("resize",()=>{
   W=window.innerWidth;H=window.innerHeight;svg.attr("viewBox",[0,0,W,H]);
-  sim.force("center",d3.forceCenter(W/2,H/2));sim.alpha(.3).restart();
+  sim.force("center",d3.forceCenter(W/2,H/2));
+  if (W !== _lastW) { sim.alpha(.3).restart(); _lastW = W; }
 });
 
 /* =========================================================
