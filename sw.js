@@ -1,7 +1,7 @@
 const CACHE_NAME = "gami-math-v1";
 const ASSETS_TO_CACHE = [
   "./index.html",
-  "./gami.png",
+  "./pwa-icon-512.png",
   "./manifest.json",
   "https://d3js.org/d3.v7.min.js",
   "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
