@@ -568,7 +568,6 @@
     <div class="topbar-left">
       <button id="mode-toggle" class="ctl-btn" style="width: 115px; text-align: center; box-sizing: border-box; flex-shrink: 0;">Directory Mode</button>
       <a href="https://github.com/sponsors/Loadux" target="_blank" rel="noopener noreferrer" class="supporter-btn">Support Gami</a>
-      <button id="install-btn" style="display:none; font-weight:bold; font-size:12px; font-family:inherit; border:1px solid #ccc; background:#fff; color:#222; padding:6px 12px; border-radius:5px; cursor:pointer;">Install App</button>
       <input id="msearch" class="msearch" type="text" placeholder="Search names, ideas, formulas…" autocomplete="off">
     </div>
     <div class="topbar-center">
@@ -590,7 +589,10 @@
 <div id="ud-overlay">
   <div id="ud-modal" role="dialog" aria-modal="true">
     <div class="ud-head">
-      <h2>🔥 Your Progress</h2>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <h2>🔥 Your Progress</h2>
+        <button id="ud-install-btn" style="display:none; background:#2c8a4e; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer;">Install App</button>
+      </div>
       <button id="ud-close" title="Close">×</button>
     </div>
     <div class="ud-body">
@@ -10857,6 +10859,15 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
 </script>
 
 
+
+<div id="install-popup" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#fff; padding:12px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.25); z-index:9999; align-items:center; gap:16px; border:1px solid #eee; width:max-content; max-width:90vw;">
+  <div style="display:flex; align-items:center; gap:10px;">
+    <img src="pwa-icon-512.png" style="width:32px; height:32px; border-radius:6px; object-fit:cover;">
+    <span style="font-size:14px; font-weight:600; color:#111;">Install Math with Gami?</span>
+  </div>
+  <button id="install-popup-btn" style="background:#2c8a4e; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer;">Install</button>
+  <button id="install-popup-close" style="background:transparent; border:none; color:#999; font-size:20px; cursor:pointer; padding:0 4px; line-height:1;">&times;</button>
+</div>
 <script>
 // PWA Service Worker Registration & Install Prompt
 if ('serviceWorker' in navigator) {
@@ -10873,16 +10884,38 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  const installBtn = document.getElementById('install-btn');
-  if (installBtn) {
-    installBtn.style.display = 'inline-flex';
-    installBtn.onclick = () => {
-      installBtn.style.display = 'none';
+  
+  const udInstallBtn = document.getElementById('ud-install-btn');
+  if (udInstallBtn) {
+    udInstallBtn.style.display = 'block';
+    udInstallBtn.onclick = () => {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
+      deferredPrompt.userChoice.then(() => {
         deferredPrompt = null;
+        udInstallBtn.style.display = 'none';
+        const popup = document.getElementById('install-popup');
+        if (popup) popup.style.display = 'none';
       });
     };
+  }
+
+  if (!localStorage.getItem('dismissedInstall')) {
+    const popup = document.getElementById('install-popup');
+    if (popup) {
+      popup.style.display = 'flex';
+      document.getElementById('install-popup-btn').onclick = () => {
+        popup.style.display = 'none';
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          deferredPrompt = null;
+          if (udInstallBtn) udInstallBtn.style.display = 'none';
+        });
+      };
+      document.getElementById('install-popup-close').onclick = () => {
+        popup.style.display = 'none';
+        localStorage.setItem('dismissedInstall', 'true');
+      };
+    }
   }
 });
 </script>
