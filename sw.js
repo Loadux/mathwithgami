@@ -9,6 +9,12 @@ const ASSETS_TO_CACHE = [
   "./assets/ok.webp",
   "./assets/wave.webp",
   "./assets/point.webp",
+  "./assets/dance.webp",
+  "./assets/levitate.webp",
+  "./assets/nice.webp",
+  "./assets/sit.webp",
+  "./assets/stretch.webp",
+  "./assets/tear.webp",
   "https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js",
   "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css",
   "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js",
@@ -37,32 +43,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  // The page itself: network-first, so content updates always reach users;
-  // fall back to cache only when offline.
-  if (event.request.mode === "navigate" || event.request.destination === "document") {
-    event.respondWith(
-      fetch(event.request).then((response) => {
+  // CACHE-FIRST STRATEGY
+  // We manually control updates from the UI via HEAD requests.
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(event.request).then((response) => {
         if (response && response.status === 200) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         }
         return response;
-      }).catch(() => caches.match(event.request).then((c) => c || caches.match("./")))
-    );
-    return;
-  }
-
-  // Static assets (scripts, styles, fonts, images): cache-first with
-  // runtime caching (KaTeX pulls fonts at render time; this catches them).
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
-      return fetch(event.request).then((response) => {
-        if (response && response.status === 200 && (response.type === "basic" || response.type === "cors")) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+      }).catch(() => {
+        if (event.request.mode === "navigate" || event.request.destination === "document") {
+          return caches.match("./");
         }
-        return response;
+        return Response.error();
       });
     })
   );
