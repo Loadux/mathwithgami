@@ -1,7 +1,8 @@
-const CACHE_NAME = "gami-math-v3";
+const CACHE_NAME = "gami-math-v4";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
+  "./Math_with_Gami.html",
   "./manifest.json",
   "./pwa-icon-512.png",
   "./assets/jump.webp",
@@ -43,25 +44,39 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  // CACHE-FIRST STRATEGY
-  // We manually control updates from the UI via HEAD requests.
+  // NETWORK-FIRST STRATEGY
+  // Always try the network first to get the latest update.
+  // If offline, fall back to the cached version.
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((response) => {
+    fetch(event.request)
+      .then((response) => {
+        // Network succeeded: update the cache with the fresh response
         if (response && response.status === 200) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         }
         return response;
-      }).catch(() => {
-        if (event.request.mode === "navigate" || event.request.destination === "document") {
-          return caches.match("./");
-        }
-        return Response.error();
-      });
-    })
+      })
+      .catch(() => {
+        // Network failed (offline): try to serve from cache
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          // If the exact request isn't in cache and it's a page load, try the root files
+          if (event.request.mode === "navigate" || event.request.destination === "document") {
+            return caches.match("./").then(res1 => {
+              if (res1) return res1;
+              return caches.match("./index.html").then(res2 => {
+                if (res2) return res2;
+                return caches.match("./Math_with_Gami.html").then(res3 => {
+                  return res3 || Response.error();
+                });
+              });
+            });
+          }
+          return Response.error();
+        });
+      })
   );
 });
