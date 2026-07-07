@@ -739,10 +739,6 @@
       <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
         <h2>🔥 Your Progress</h2>
         <button id="ud-install-btn" style="display:none; background:#2c8a4e; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer;">Install App</button>
-        <button id="ud-update-btn" style="display:none; background:#0f3460; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer;">Update App</button>
-        <label id="ud-autoupdate-lbl" style="display:none; font-size:12px; color:#555; align-items:center; gap:4px; cursor:pointer;">
-          <input type="checkbox" id="ud-autoupdate-chk"> Always update automatically
-        </label>
       </div>
       <button id="ud-close" title="Close">×</button>
     </div>
@@ -20068,16 +20064,6 @@ math: {qs:[
   <button id="install-popup-btn" style="background:#2c8a4e; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer;">Install</button>
   <button id="install-popup-close" style="background:transparent; border:none; color:#999; font-size:20px; cursor:pointer; padding:0 4px; line-height:1;">&times;</button>
 </div>
-
-<div id="update-popup" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#fff; padding:12px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.25); z-index:9999; align-items:center; gap:16px; border:1px solid #eee; width:max-content; max-width:90vw;">
-  <div style="display:flex; align-items:center; gap:10px;">
-    <img src="pwa-icon-512.png" style="width:32px; height:32px; border-radius:6px; object-fit:cover;">
-    <span style="font-size:14px; font-weight:600; color:#111;">Update Math with Gami?</span>
-  </div>
-  <button id="update-popup-btn" style="background:#0f3460; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer;">Update</button>
-  <button id="update-popup-close" style="background:transparent; border:none; color:#999; font-size:20px; cursor:pointer; padding:0 4px; line-height:1;">&times;</button>
-</div>
-<script>
 // PWA Service Worker Registration & Install Prompt
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -20086,64 +20072,6 @@ if ('serviceWorker' in navigator) {
     }).catch((error) => {
       console.log('ServiceWorker registration failed: ', error);
     });
-
-    // PWA Update Check Logic
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    if (isStandalone) {
-      const udUpdateBtn = document.getElementById('ud-update-btn');
-      const udAutoUpdateLbl = document.getElementById('ud-autoupdate-lbl');
-      const udAutoUpdateChk = document.getElementById('ud-autoupdate-chk');
-      const updatePopup = document.getElementById('update-popup');
-      
-      if (udUpdateBtn) udUpdateBtn.style.display = 'block';
-      if (udAutoUpdateLbl) udAutoUpdateLbl.style.display = 'flex';
-      if (udAutoUpdateChk) {
-        udAutoUpdateChk.checked = localStorage.getItem('autoUpdateApp') === 'true';
-        udAutoUpdateChk.onchange = (e) => {
-          localStorage.setItem('autoUpdateApp', e.target.checked);
-        };
-      }
-
-      function doHardUpdate() {
-        if(udUpdateBtn) udUpdateBtn.textContent = "Updating...";
-        if(document.getElementById('update-popup-btn')) document.getElementById('update-popup-btn').textContent = "Updating...";
-        caches.delete("gami-math-v3").then(() => {
-          navigator.serviceWorker.getRegistrations().then(regs => {
-            for(let reg of regs) reg.unregister();
-            window.location.reload(true);
-          });
-        });
-      }
-
-      if (udUpdateBtn) udUpdateBtn.onclick = doHardUpdate;
-      if (document.getElementById('update-popup-btn')) document.getElementById('update-popup-btn').onclick = doHardUpdate;
-      
-      if (document.getElementById('update-popup-close')) {
-        document.getElementById('update-popup-close').onclick = () => {
-          if (updatePopup) updatePopup.style.display = 'none';
-          localStorage.setItem('dismissedUpdateDate', localStorage.getItem('serverLastModified'));
-        };
-      }
-
-      // Perform HEAD request to check for updates
-      fetch(window.location.href, { method: 'HEAD', cache: 'no-store' }).then(res => {
-        const serverLastModified = res.headers.get('Last-Modified');
-        if (serverLastModified) {
-          const localLastModified = localStorage.getItem('serverLastModified');
-          if (localLastModified && serverLastModified !== localLastModified) {
-            // We have a new version!
-            localStorage.setItem('serverLastModified', serverLastModified);
-            if (localStorage.getItem('autoUpdateApp') === 'true') {
-              doHardUpdate();
-            } else if (localStorage.getItem('dismissedUpdateDate') !== serverLastModified) {
-              if (updatePopup) updatePopup.style.display = 'flex';
-            }
-          } else if (!localLastModified) {
-            localStorage.setItem('serverLastModified', serverLastModified);
-          }
-        }
-      }).catch(e => console.log('Offline, skipping update check.'));
-    }
   });
 }
 
