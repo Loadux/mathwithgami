@@ -173,7 +173,7 @@
   .math-body .xref{color:#2f6fb0;font-weight:600;cursor:pointer;border-bottom:1px dotted #2f6fb0;}
   .math-body .xref:hover{color:#1c4a7a;border-bottom-style:solid;}
   /* ---- math modal ---- */
-  .math-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+  .math-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);
     display:flex;align-items:center;justify-content:center;padding:20px;}
   .math-inner{background:#fff;border-radius:16px;width:min(860px,98vw);max-height:90vh;
     display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.4);overflow:hidden;}
@@ -183,7 +183,7 @@
   #math-close,#prac-close{border:none;background:#e8e8e8;border-radius:50%;width:34px;height:34px;
     font-size:18px;cursor:pointer;color:#333;line-height:1;transition:background .15s;}
   #math-close:hover,#prac-close:hover{background:#d0d0d0;}
-  .math-body{overflow-y:auto;padding:24px 28px 32px;flex:1;}
+  .math-body{overflow-y:auto;padding:24px 28px 32px;flex:1; transform:translateZ(0); will-change:transform; overscroll-behavior:contain;}
   .math-body .msec{margin-bottom:28px;}
   .math-body .msec:last-child{margin-bottom:0;}
   .math-body .msec h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
@@ -288,14 +288,15 @@
 
   /* ── User Data modal ── */
   #ud-overlay{
-    position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.5);
-    backdrop-filter:blur(4px);display:none;align-items:center;
+    position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);
+    display:none;align-items:center;
     justify-content:center;padding:20px;
   }
   #ud-overlay.open{display:flex;}
   #ud-modal{
     background:#f5f5f5;color:#111;border-radius:14px;
     width:min(820px,96vw);max-height:90vh;overflow-y:auto;
+    transform:translateZ(0); will-change:transform; overscroll-behavior:contain;
     box-shadow:0 20px 60px rgba(0,0,0,.3);
     font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
     border:1px solid #e0e0e0;
@@ -406,13 +407,14 @@
      SUPPORTERS PANEL
   ══════════════════════════════════════════ */
   #supporters-overlay{
-    position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);
+    position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.85);
     display:none;align-items:center;justify-content:center;padding:20px;
   }
   #supporters-overlay.open{display:flex;}
   #supporters-modal{
     width:min(600px,96vw);max-height:85vh;background:#fff;border-radius:12px;
-    overflow-y:auto;box-shadow:0 15px 40px rgba(0,0,0,.25);position:relative;
+    overflow-y:auto; transform:translateZ(0); will-change:transform; overscroll-behavior:contain;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);position:relative;
     font-family:inherit;padding:30px;color:#333;
   }
   #supporters-close{
@@ -447,7 +449,7 @@
   #gami-btn:hover{background:#f2f2f2;border-color:#999;}
 
   #gami-overlay{
-    position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);
+    position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.85);
     display:none;align-items:center;justify-content:center;padding:20px;
   }
   #gami-overlay.open{display:flex;}
@@ -607,8 +609,8 @@
 
   #notes-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); display: none; z-index: 10000;
-    align-items: center; justify-content: center; backdrop-filter: blur(2px);
+    background: rgba(0,0,0,0.8); display: none; z-index: 10000;
+    align-items: center; justify-content: center;
   }
   #notes-overlay.open { display: flex; }
   #notes-modal {
@@ -629,7 +631,7 @@
   .notes-close:hover { background: #e0e0e0; color: #111; }
   .notes-body {
     padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px;
-    background: #fafafa;
+    background: #fafafa; transform:translateZ(0); will-change:transform; overscroll-behavior:contain;
   }
   .note-item {
     background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px;
@@ -1391,16 +1393,34 @@ sim.on("tick",()=>{
 });
 sim.on("end", savePos);
 
-setTimeout(fitView,1700);
+if (!savedPos || Object.keys(savedPos).length < 5) {
+  sim.stop();
+  for (let i = 0; i < 150; i++) sim.tick();
+  sim.restart();
+}
+fitView(true);
 
-function fitView(){
-  const pad=70;
+function fitView(instant = false){
+  // Use negative padding on mobile to zoom in closer and let edge nodes bleed off screen
+  const pad = W < 768 ? -40 : 70; 
   const xs=nodes.map(n=>n.x), ys=nodes.map(n=>n.y);
   const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
   const dx=maxX-minX||1, dy=maxY-minY||1;
-  const scale=Math.min((W-pad*2)/dx,(H-pad*2)/dy,1.4);
-  const tx=W/2-scale*(minX+maxX)/2, ty=H/2-scale*(minY+maxY)/2;
-  svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(tx,ty).scale(scale));
+  const isMobile = W < 768;
+  // On desktop, we also calculate the scale to perfectly fit the vertical height (H - 80) 
+  // so that it starts zoomed-in symmetrically just like the screenshot.
+  const scale = isMobile ? Math.min((H-140)/dy, 1.4) : Math.min((W-60)/dx, (H-80)/dy, 1.4);
+  const uiOffset = isMobile ? 90 : 40; // Shift down so the top UI doesn't cover the nodes
+  
+  // Center symmetrically on the Mathematics root node instead of the unbalanced bounding box
+  const rootNode = nodes.find(n => n.id === "math" || n.id === "Mathematics") || {x: (minX+maxX)/2, y: (minY+maxY)/2};
+  const tx = W/2 - scale * rootNode.x;
+  const ty = H/2 + uiOffset - scale * rootNode.y;
+  if (instant === true) {
+    svg.call(zoom.transform, d3.zoomIdentity.translate(tx,ty).scale(scale));
+  } else {
+    svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(tx,ty).scale(scale));
+  }
 }
 
 
