@@ -22,7 +22,8 @@
 <link rel="preload" as="image" href="./assets/tear.webp">
 <style>
   html,:root{--txt-scale:1;--site-font:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;}
-  body{margin:0;padding:0;height:100%;background:#f2f2f2;color:#111;
+  html{overflow-x:hidden;}
+  body{margin:0;padding:0;height:100%;overflow-x:hidden;max-width:100vw;background:#f2f2f2;color:#111;
     font-family:var(--site-font);
     cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='20' viewBox='0 0 16 20'%3E%3Cpath d='M0 0 L0 16 L4 12 L7 19 L9 18 L6 11 L11 11 Z' fill='black' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 0 0, default;}
   #app{position:fixed;inset:0;overflow:hidden;background:#f2f2f2;
@@ -502,7 +503,7 @@
   /* ══════════════════════════════════════════
      GAMI HOME PANEL
   ══════════════════════════════════════════ */
-  #theme-btn{width:32px;height:32px;flex:0 0 auto;padding:0;border-radius:50%;border:1px solid #ccc;
+  #theme-btn{width:32px;height:32px;flex:0 0 auto;order:1;padding:0;border-radius:50%;border:1px solid #ccc;
     background:#fff;font-size:15px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;}
   #theme-btn:hover{background:#f2f2f2;border-color:#999;}
   .dark #theme-btn{background:#23262c;border-color:#3a3d44;}
@@ -762,10 +763,13 @@
     background:radial-gradient(ellipse,rgba(255,150,40,.45) 0%,transparent 70%);animation:gflk3 1.6s ease-in-out infinite;}
 
   /* ── Talk to Gami: dialogue buttons (above the room) + speech box (below) ── */
-  #gami-talk{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
-    padding:12px 56px 12px 16px;background:#f5f5f5;border-bottom:1px solid #e2e2e2;min-height:34px;}
+  #gami-talk{display:block;
+    padding:12px 16px 12px 16px;background:#f5f5f5;border-bottom:1px solid #e2e2e2;min-height:34px;}
+  #gami-talk::before{content:"";float:right;width:92px;height:42px;}
+  #gami-talk::after{content:"";display:block;clear:both;}
   .gtalk-btn{font-family:inherit;font-size:12.5px;font-weight:600;color:#222;background:#fff;
     border:1px solid #ccc;border-radius:16px;padding:7px 14px;cursor:pointer;
+    display:inline-block;vertical-align:top;margin:0 8px 8px 0;
     transition:background .13s,border-color .13s;}
   .gtalk-btn:hover{background:#eef5ef;border-color:#2c8a4e;}
   .gtalk-btn.bye{color:#7a4a52;border-color:#d9c2c6;}
@@ -787,7 +791,7 @@
       transform: none !important;
       height: auto !important;
     }
-    #gami-talk { padding: 10px 50px 10px 10px; gap: 6px; }
+    #gami-talk { padding: 10px; }
     .gtalk-btn { font-size: 13px; padding: 7px 12px; line-height: 1.2; }
     #gami-speech { padding: 13px 14px 16px; min-height: 56px; }
     .gsp-who { font-size: 11.5px; }
