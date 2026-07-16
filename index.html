@@ -60,7 +60,7 @@
     #gami-btn { order: 5; }
     #ud-btn { order: 6; }
     #notes-btn { order: 7; }
-    #journey-select { order: 8; flex: 1 1 100%; max-width: 80%; margin: 4px auto 0 auto; box-sizing: border-box; height: 26px; font-size: 11.5px; padding: 2px 8px; }
+    #journey-select { order: 8; flex: 1 1 100%; max-width: 80%; margin: 4px auto 0 auto; box-sizing: border-box; height: 32px; font-size: 12px; padding: 4px 8px !important; }
   }
   .t-w-slash { display: none; }
   @media (max-width: 380px) { .t-with { display: none; } .t-w-slash { display: inline; } }
@@ -69,9 +69,10 @@
 
 
   /* edges */
-  line.link{stroke:#c9c9c9;stroke-width:1px;}
-  line.link.cross{stroke:#c9c9c9;stroke-dasharray:3 3;}
-  line.link.hot{stroke:#000;stroke-width:1.8px;}
+  line.link{stroke:#c9c9c9;stroke-width:1px;transition:opacity 0.2s ease;}
+  line.link.cross{stroke:#c9c9c9;stroke-dasharray:3 3;opacity:0;}
+  #svg line.link.cross.dim{opacity:0 !important;}
+  line.link.hot{stroke:#000;stroke-width:1.8px;opacity:1 !important;}
   circle.node[data-group="-1"]{stroke:#d8a552;stroke-width:2.5px;animation:doorPulse 3.4s ease-in-out infinite;cursor:pointer;}
   @keyframes doorPulse{0%,100%{stroke-opacity:.35;}50%{stroke-opacity:.95;}}
 
@@ -197,7 +198,7 @@
   .math-body .xref{color:#2f6fb0;font-weight:600;cursor:pointer;border-bottom:1px dotted #2f6fb0;}
   .math-body .xref:hover{color:#1c4a7a;border-bottom-style:solid;}
   /* ---- math modal ---- */
-  .math-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);
+  .math-modal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.85);
     display:flex;align-items:center;justify-content:center;padding:20px;}
   .math-inner{background:#fff;border-radius:16px;width:min(860px,98vw);max-height:90vh;
     display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.4);overflow:hidden;}
@@ -310,19 +311,26 @@
   .pnotebtn:hover{background:linear-gradient(135deg,#a87d14,#e0b83a);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.35);}
   .pnotebtn.has-note::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;
     background:#e4622a;border:2px solid #fff;}
-  .note-modal{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;}
+  .note-modal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;}
   .note-inner{width:min(480px,94vw);background:#fffdf0;border:1.5px solid #d8bc5a;border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.35);overflow:hidden;}
   .note-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f7edc8;border-bottom:1px solid #e0cd8a;font-weight:700;font-size:14px;color:#6a5510;}
   #note-close{width:28px;height:28px;border-radius:50%;border:none;background:#e8dcae;color:#6a5510;font-size:15px;cursor:pointer;}
   #note-close:hover{background:#d8c88e;}
   .note-inner .node-note{width:100%;min-height:190px;border:none;border-radius:0;margin:0;padding:12px 14px;box-sizing:border-box;resize:vertical;font-size:calc(14px * var(--txt-scale));}
-  #gami-bubble{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:9997;display:flex;gap:10px;align-items:flex-start;
+  #gami-bubble, #lost-popup {position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:9997;display:flex;gap:10px;align-items:flex-start;
     max-width:min(500px,92vw);background:#fffdf5;border:1.5px solid #c8a84a;border-radius:12px;
     box-shadow:0 10px 30px rgba(0,0,0,.28);padding:12px 34px 12px 12px;animation:gbIn .35s ease;}
   @keyframes gbIn{0%{opacity:0;transform:translateX(-50%) translateY(14px);}100%{opacity:1;transform:translateX(-50%) translateY(0);}}
   .gb-face{width:34px;height:34px;border-radius:50%;flex:0 0 auto;}
   .gb-text{font-size:13px;line-height:1.5;color:#3a3222;}
-  .gb-btns{display:flex;gap:8px;margin-top:9px;}
+  .gb-content{display:flex;flex-direction:column;}
+  .gb-btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;}
+  @media (max-width: 600px) {
+    #gami-bubble, #lost-popup { width: 96vw; max-width: 96vw; padding: 14px 12px; }
+    .gb-content { flex-direction: row; gap: 12px; align-items: flex-start; }
+    .gb-text { flex: 1; }
+    .gb-btns { flex-direction: column; flex-wrap: nowrap; margin-top: 0; align-items: stretch; flex: 0 0 auto; width: max-content; }
+  }
   .gb-btn{font-family:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;border:1px solid #c8a84a;background:#fdf3d8;color:#6a4a10;cursor:pointer;}
   .gb-btn:hover{background:#f8e8bc;}
   .gb-close{position:absolute;top:6px;right:8px;border:none;background:none;color:#9a8a5a;font-size:15px;cursor:pointer;}
@@ -353,7 +361,7 @@
 
   /* ── User Data modal ── */
   #ud-overlay{
-    position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);
+    position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.85);
     display:none;align-items:center;
     justify-content:center;padding:20px;
   }
@@ -530,10 +538,23 @@
   .dark #gami-btn .gami-dot{border-color:#14161a;}
 
   #gami-overlay{
-    position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.85);
+    position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.85);
     display:none;align-items:center;justify-content:center;padding:20px;
   }
   #gami-overlay.open{display:flex;}
+  #gami-swipe-hint{
+    position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+    background:rgba(0,0,0,0.6);color:#fff;padding:12px 24px;border-radius:30px;
+    font-size:20px;pointer-events:none;opacity:0;transition:opacity 0.4s;z-index:100;
+    display:flex;gap:8px;align-items:center;white-space:nowrap;font-weight:600;
+  }
+  #gami-swipe-hint.show{
+    opacity:1;animation:swipe-nudge 2s infinite ease-in-out;
+  }
+  @keyframes swipe-nudge {
+    0%, 100% { transform:translateX(-50%); }
+    50% { transform:translateX(calc(-50% - 10px)); }
+  }
   #gami-modal{
     width:min(940px,96vw);background:#f5f5f5;border:1px solid #e0e0e0;border-radius:14px;
     overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;font-family:inherit;
@@ -568,13 +589,30 @@
   }
 
   /* clock + calendar on the wall */
-  #gami-wall-time{position:absolute;top:26px;left:28%;right:30%;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:4;}
-  #gami-clock-frame{background:#1a1a1a;border:4px solid #333;border-radius:6px;padding:8px 18px;box-shadow:4px 4px 6px rgba(0,0,0,.4), inset 0 3px 8px rgba(0,0,0,.8);}
-  #gami-clock{font-size:32px;font-weight:900;color:#fff;letter-spacing:.08em;font-variant-numeric:tabular-nums;font-family:'Courier New',monospace;line-height:1;}
-  #gami-cal-frame{background:#fcfcfc;border:1px solid #ccc;border-top:16px solid #3a6b9c;border-radius:4px;padding:8px 20px 10px;text-align:center;box-shadow:2px 5px 8px rgba(0,0,0,.3);position:relative;margin-top:5px;}
-  #gami-cal-frame::before{content:'';position:absolute;top:-22px;left:25%;right:25%;height:10px;border-left:4px solid #eee;border-right:4px solid #eee;filter:drop-shadow(0 2px 1px rgba(0,0,0,.5));}
-  #gami-weekday{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#3a6b9c;margin-bottom:2px;line-height:1;}
-  #gami-date{font-size:20px;font-weight:800;color:#222;letter-spacing:.02em;line-height:1;}
+  #gami-wall-time.alien-astrolabe {
+    width: 250px; height: 135px;
+    background: 
+      radial-gradient(ellipse 4% 30% at 50% 50%, #ffff88 0%, #ffcc00 98%, transparent 100%),
+      radial-gradient(ellipse 12% 45% at 50% 50%, rgba(255, 255, 0, 0.4) 0%, transparent 100%),
+      radial-gradient(circle, rgba(235,235,235,0.9) 0%, rgba(215,215,215,0.95) 100%);
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(255, 255, 0, 0.3);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.2), inset 0 0 30px rgba(255, 255, 0, 0.1);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: absolute; top: 26px; left: 50%; transform: translateX(-50%); z-index: 4;
+    overflow: hidden; font-family: 'Courier New', monospace;
+  }
+  .astro-ring { position: absolute; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px dashed rgba(255, 255, 0, 0.4); pointer-events: none; }
+  .astro-ring-1 { width: 185px; height: 185px; animation: spin-astro 40s linear infinite; border-top: 1px solid rgba(255, 255, 0, 0.8); }
+  .astro-ring-2 { width: 145px; height: 145px; animation: spin-astro 25s linear infinite reverse; border-bottom: 2px dotted rgba(255, 255, 0, 0.6); }
+  .astro-ring-3 { width: 105px; height: 105px; animation: spin-astro 15s linear infinite; border-left: 1px solid rgba(255, 255, 0, 0.9); }
+  @keyframes spin-astro { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+  #gami-clock-math { font-size: 15px; font-weight: 800; color: #000; -webkit-text-stroke: 0.5px #000; text-shadow: 0 0 1px #000; z-index: 2; margin-bottom: 8px; display: flex; gap: 4px; align-items: center; }
+  #gami-clock-math span { min-width: 24px; text-align: center; }
+  #gami-cal-math { z-index: 2; text-align: center; color: #000; font-size: 11px; font-weight: 700; -webkit-text-stroke: 0.3px #000; text-shadow: 0 0 1px #000; }
+  #gami-wd-math { margin-bottom: 2px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; }
+  #gami-dmy-math { display: flex; gap: 6px; align-items: center; justify-content: center; }
 
   /* crest: big full shield (no frame, no text) */
   #gami-crest{position:absolute;top:12px;bottom:88px;left:2%;width:26%;display:flex;align-items:center;justify-content:center;z-index:3;}
@@ -961,8 +999,8 @@ html.dark{background:#14161a;}
 .dark #ud-btn:hover{background:#2c3037;}
 .dark #svg{background:#14161a;}
 .dark .link{stroke:#484d56;}
-.dark line.link.cross{stroke:#484d56;}
-.dark line.link.hot{stroke:#d8d4cc;}
+.dark line.link.cross{stroke:#484d56;opacity:0;}
+.dark line.link.hot{stroke:#d8d4cc;opacity:1 !important;}
 .dark text.lab{fill:#e2dfd8;stroke:#14161a;}
 .dark text.lab.dim{fill:#4a4d54 !important;}
 .dark line.link.dim{stroke:#22252a !important;}
@@ -994,12 +1032,12 @@ html.dark{background:#14161a;}
 .dark .note-header{background:#2e2817;border-bottom-color:#4a4030;color:#d4b45a;}
 .dark #note-close{background:#3a3222;color:#d4b45a;}
 .dark .pnotebtn.has-note::after{border-color:#181b1f;}
-.dark #gami-bubble{background:#221f15;border-color:#8a6a2a;}
+.dark #gami-bubble, .dark #lost-popup {background:#221f15;border-color:#8a6a2a;}
 .dark .gb-text{color:#e0d5b8;}
 .dark .gb-btn{background:#3a3222;color:#e8d8b0;border-color:#7c6a48;}
 .dark .gb-btn:hover{background:#4a4030;}
 .dark .gb-close{color:#c8b788;}
-#lvl-overlay{position:fixed;inset:0;z-index:9996;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px;}
+#lvl-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px;}
 .lvl-card{width:min(560px,94vw);background:#fffdf5;border:1.5px solid #c8a84a;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.4);padding:16px 18px;position:relative;}
 .lvl-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .lvl-title{font-weight:800;font-size:15px;color:#6a4a10;flex:1;}
@@ -1131,12 +1169,15 @@ html.dark{color-scheme:dark;}
 .dark body.panel-collapsed #left-panel-toggle:hover{background:#2c3037;color:#fff;}
 .dark #journey-select{background:#23262c !important;color:#d8d4cc !important;border-color:#3a3d44 !important;}
 .dark .ud-bar-stack div:last-child{background:#2c3037 !important;}
-.dark #lost-popup{background:#1e2126 !important;border-color:#3a3d44 !important;}
+
 .dark #lost-text{color:#e6e3dc !important;}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fira+Sans:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <script>/* theme init: stored pref, else system — before first paint */
 (function(){try{var th=localStorage.getItem('mathmap_theme');var dark=th?th==='dark':(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);if(dark)document.documentElement.classList.add('dark');}catch(e){}})();
-window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif','verdana':'Verdana,Geneva,Tahoma,sans-serif','georgia':'Georgia,"Times New Roman",serif','trebuchet':'"Trebuchet MS","Segoe UI",Tahoma,sans-serif','easyread':'"Comic Sans MS","Trebuchet MS","Segoe UI",sans-serif'};
+window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif','verdana':'"Noto Sans",Verdana,Geneva,Tahoma,sans-serif','georgia':'Lora,Georgia,"Times New Roman",serif','trebuchet':'"Fira Sans","Trebuchet MS","Segoe UI",Tahoma,sans-serif','easyread':'"Comic Neue","Comic Sans MS","Trebuchet MS","Segoe UI",sans-serif'};
 (function(){try{var d=JSON.parse(localStorage.getItem('mathmap_display')||'{}')||{};var sz=Math.max(85,Math.min(150,d.size||100));document.documentElement.style.setProperty('--txt-scale',sz/100);if(d.font&&window.__FONTS[d.font])document.documentElement.style.setProperty('--site-font',window.__FONTS[d.font]);}catch(e){}})();
 </script>
             <link rel="manifest" href="manifest.json">
@@ -1169,12 +1210,14 @@ window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Hel
 </div>
 
 <!-- ── Lost Map Overlay ── -->
-<div id="lost-popup" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#fff; padding:12px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.25); z-index:9998; align-items:center; gap:16px; border:1px solid #eee; width:max-content; max-width:90vw;">
-  <img src="./assets/face_icon.png" alt="Gami" style="width:28px;height:28px;border-radius:50%;flex:0 0 auto;">
-  <span id="lost-text" style="font-size:14px; font-weight:600; color:#111; margin-right:8px;">Are you lost? want to come back home?</span>
-  <div style="display:flex; align-items:center; gap:8px;">
-    <button id="lost-btn-yes" style="background:#2c8a4e; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer;">Yes</button>
-    <button id="lost-btn-no" style="background:#b23a3a; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer;">No</button>
+<div id="lost-popup" style="display:none;">
+  <img class="gb-face" src="./assets/face_icon.png" alt="Gami">
+  <div class="gb-content" style="flex:1;">
+    <div class="gb-text" id="lost-text" style="font-weight:600;">Are you lost? want to come back home?</div>
+    <div class="gb-btns">
+      <button id="lost-btn-yes" style="background:#2c8a4e; color:#fff; border:none; padding:5px 16px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; font-family:inherit;">Yes</button>
+      <button id="lost-btn-no" style="background:#b23a3a; color:#fff; border:none; padding:5px 16px; border-radius:6px; font-weight:bold; font-size:12px; cursor:pointer; font-family:inherit;">No</button>
+    </div>
   </div>
 </div>
 
@@ -1256,10 +1299,10 @@ window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Hel
       </div>
       <div class="ud-disp-fonts" id="ud-fonts">
         <button class="ud-font-btn" data-font="default">Default</button>
-        <button class="ud-font-btn" data-font="verdana">Verdana</button>
-        <button class="ud-font-btn" data-font="georgia">Georgia</button>
-        <button class="ud-font-btn" data-font="trebuchet">Trebuchet</button>
-        <button class="ud-font-btn" data-font="easyread">Easy-read</button>
+        <button class="ud-font-btn" data-font="verdana">Noto Sans</button>
+        <button class="ud-font-btn" data-font="georgia">Lora</button>
+        <button class="ud-font-btn" data-font="trebuchet">Fira Sans</button>
+        <button class="ud-font-btn" data-font="easyread">Easy to Read</button>
       </div>
     </div>
     </div>
@@ -1307,11 +1350,16 @@ window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Hel
       <div id="gami-floor"></div>
 
       <!-- clock + calendar, on the wall -->
-      <div id="gami-wall-time">
-        <div id="gami-clock-frame"><div id="gami-clock">00:00:00</div></div>
-        <div id="gami-cal-frame">
-          <div id="gami-weekday">Monday</div>
-          <div id="gami-date">1 Jan 2026</div>
+      <div id="gami-wall-time" class="alien-astrolabe">
+        <div class="astro-ring astro-ring-1"></div>
+        <div class="astro-ring astro-ring-2"></div>
+        <div class="astro-ring astro-ring-3"></div>
+        <div id="gami-clock-math">
+          <span id="gami-h-math">0</span> : <span id="gami-m-math">0</span> : <span id="gami-s-math">0</span>
+        </div>
+        <div id="gami-cal-math">
+          <div id="gami-wd-math">Mon</div>
+          <div id="gami-dmy-math"><span id="gami-d-math">1</span> <span id="gami-mo-math">Jan</span> <span id="gami-y-math">2026</span></div>
         </div>
       </div>
 
@@ -1390,6 +1438,7 @@ window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Hel
       </div>
 
       <div id="gami-ember-glow"></div>
+      <div id="gami-swipe-hint"><span>↔</span> Swipe to explore</div>
 
     </div><!-- /gami-scene -->
     </div><!-- /gami-scene-wrap -->
@@ -1809,7 +1858,7 @@ function checkBounds(transform) {
                 };
                 popup.style.display = 'flex';
                 lostTimer = null;
-            }, 10000);
+            }, 6000);
         }
     } else {
         if (lostTimer) {
@@ -1831,7 +1880,7 @@ const link = g.append("g").attr("id", "links-group").selectAll("line").data(link
   .attr("class",d=>"link "+(d.kind==="cross"?"cross":""));
 
 let savedPos = {};
-try { savedPos = JSON.parse(localStorage.getItem("mathmap_pos")||"{}"); }catch(e){}
+try { savedPos = JSON.parse(localStorage.getItem("mathmap_pos_v7")||"{}"); }catch(e){}
 nodes.forEach(d => {
   if(savedPos[d.id]) {
     d.x = savedPos[d.id].x; d.y = savedPos[d.id].y;
@@ -1841,10 +1890,16 @@ nodes.forEach(d => {
       if(savedPos[d.id].fy !== undefined) d.fy = savedPos[d.id].fy;
     }
   } else {
-    // initialize new nodes in a ring so they don't get trapped in the center
-    const a = Math.random() * Math.PI * 2;
-    d.x = W/2 + Math.cos(a) * 150;
-    d.y = H/2 + Math.sin(a) * 150;
+    // initialize new nodes deterministically so new users get a consistent map
+    const group = d.group < 0 ? 0 : d.group;
+    let hash = 0;
+    for (let i = 0; i < d.id.length; i++) hash = Math.imul(31, hash) + d.id.charCodeAt(i) | 0;
+    const offset = (Math.abs(hash) % 100) / 100;
+    const groupAngle = (group / 11) * Math.PI * 2;
+    const localAngle = groupAngle + (offset - 0.5); 
+    const radius = group === 9 ? 150 + (offset * 60) : 400 + (offset * 100);
+    d.x = W/2 + Math.cos(localAngle) * radius;
+    d.y = H/2 + Math.sin(localAngle) * radius;
   }
 });
 function savePos() {
@@ -1857,7 +1912,7 @@ function savePos() {
       if(d.fy !== null && d.fy !== undefined) out[d.id].fy = Math.round(d.fy);
     }
   });
-  try { localStorage.setItem("mathmap_pos", JSON.stringify(out)); }catch(e){}
+  try { localStorage.setItem("mathmap_pos_v7", JSON.stringify(out)); }catch(e){}
 }
 
 const node = g.append("g").attr("id","nodes-group").selectAll("circle").data(nodes).join("circle")
@@ -1885,15 +1940,87 @@ const label = g.append("g").attr("id", "labels-group").selectAll("text").data(no
 
 const topLayer = g.append("g").attr("id", "top-layer");
 
+// rectCollide added back to fix title overlaps globally
+function rectCollide() {
+  let nodes;
+  function force(alpha) {
+    const quad = d3.quadtree().x(d=>d.x).y(d=>d.y).addAll(nodes);
+    for (const d of nodes) {
+      if (!d.label) continue;
+      // Text is anchored to the right of the circle at d.x + R(d) + 3
+      const width = d.label.length * 6; // approximate text width
+      const halfWidth = R(d) + width/2 + 6; // added padding
+      const centerX = d.x + width/2 + 2; 
+      const halfHeight = R(d) + 12; 
+      
+      quad.visit((q, x1, y1, x2, y2) => {
+        if (!q.length) {
+          do {
+            if (q.data !== d && q.data.label) {
+              const d2 = q.data;
+              const width2 = d2.label.length * 6;
+              const halfWidth2 = R(d2) + width2/2 + 6;
+              const centerX2 = d2.x + width2/2 + 2;
+              const halfHeight2 = R(d2) + 12;
+              
+              const dx = centerX - centerX2, dy = d.y - d2.y;
+              const w = halfWidth + halfWidth2, h = halfHeight + halfHeight2;
+              const absX = Math.abs(dx), absY = Math.abs(dy);
+              
+              if (absX < w && absY < h) {
+                const lx = (w - absX) / w, ly = (h - absY) / h;
+                if (lx < ly) {
+                  const mx = lx * w * alpha * 0.5;
+                  d.x += dx > 0 ? mx : -mx;
+                  d2.x -= dx > 0 ? mx : -mx;
+                } else {
+                  const my = ly * h * alpha * 0.5;
+                  d.y += dy > 0 ? my : -my;
+                  d2.y -= dy > 0 ? my : -my;
+                }
+              }
+            }
+          } while (q = q.next);
+        }
+        // Expand search radius heavily to account for long text boxes in other quads
+        return x1 > d.x + 250 || x2 < d.x - 250 || y1 > d.y + 100 || y2 < d.y - 100;
+      });
+    }
+  }
+  force.initialize = _ => nodes = _;
+  return force;
+}
+
 const sim = d3.forceSimulation(nodes)
   .force("link",d3.forceLink(links).id(d=>d.id)
-    .distance(d=>d.kind==="cross"?170:((d.source.id==="math"||d.source==="math")?(d.target.group===9?125:300):Math.max(42,100-d.target.level*16)))
-    .strength(d=>d.kind==="cross"?.05:((d.source.id==="math"||d.source==="math")?(d.target.group===9?1.5:2.5):.7)))
-  .force("charge",d3.forceManyBody().strength(-300).distanceMax(520))
+    .distance(d => {
+      if (d.kind === "cross") return d.source.group === d.target.group ? 150 : 150;
+      if (d.source.id === "math" || d.source === "math") return (d.target.group === 9) ? 120 : 300;
+      let dist = 60 * Math.pow(0.75, Math.max(0, d.target.level - 2));
+      return d.source.group === d.target.group ? dist * 1.1 : dist;
+    })
+    .strength(d => {
+      if (d.kind === "cross") return 0;
+      if (d.source.id === "math" || d.source === "math") return 1.5;
+      let str = Math.max(0.1, 0.8 - d.target.level * 0.1);
+      return d.source.group === d.target.group ? Math.min(1.0, str * 1.5) : Math.min(1.0, str);
+    }))
+  .force("charge",d3.forceManyBody().strength(-200).distanceMax(500))
   .force("center",d3.forceCenter(W/2,H/2))
-  .force("x",d3.forceX(W/2).strength(.04))
-  .force("y",d3.forceY(H/2).strength(.05))
-  .force("collide",d3.forceCollide(d=>R(d)+11));
+  .force("x",d3.forceX((d, i) => {
+    if (d.group < 0) return W/2;
+    const a = d.group === 9 ? (i * 2.39996) : (d.group / 11) * Math.PI * 2;
+    const r = d.group === 9 ? 220 : 400;
+    return W/2 + Math.cos(a) * r;
+  }).strength(.05))
+  .force("y",d3.forceY((d, i) => {
+    if (d.group < 0) return H/2;
+    const a = d.group === 9 ? (i * 2.39996) : (d.group / 11) * Math.PI * 2;
+    const r = d.group === 9 ? 220 : 400;
+    return H/2 + Math.sin(a) * r;
+  }).strength(.05))
+  .force("collide",d3.forceCollide(d=>R(d) + (d.label ? Math.min(d.label.length*1.5, 20) : 12)).iterations(3))
+  .force("rectCollide", rectCollide());
 
 sim.on("tick",()=>{
   if (currentMode === 'directory') return;
@@ -14211,11 +14338,8 @@ document.getElementById("ppin").onclick=function(e){
 
 
 
-let _lastW = window.innerWidth;
 window.addEventListener("resize",()=>{
   W=window.innerWidth;H=window.innerHeight;svg.attr("viewBox",[0,0,W,H]);
-  sim.force("center",d3.forceCenter(W/2,H/2));
-  if (W !== _lastW) { sim.alpha(.3).restart(); _lastW = W; }
 });
 
 /* =========================================================
@@ -14581,12 +14705,16 @@ const JOURNEYS = [
  ]},
  {key:"branches",name:"The great branches",steps:[
    {id:"math",note:"The root of the entire tree of mathematics."},
+   {id:"coremath",note:"The foundation everyone climbs first: numbers, algebra, shape, and functions."},
    {id:"alg",note:"The study of structure and operations."},
    {id:"geo",note:"The study of shape and space."},
    {id:"anal",note:"The study of continuous change and limits."},
    {id:"topo",note:"The study of properties preserved under continuous deformation."},
    {id:"nt",note:"The study of the integers."},
-   {id:"comb",note:"The study of discrete, finite structures."}
+   {id:"comb",note:"The study of discrete, finite structures."},
+   {id:"found",note:"The foundational axioms and the nature of mathematical truth."},
+   {id:"prob",note:"Rigorous reasoning about uncertainty and randomness."},
+   {id:"applied",note:"Mathematics turned on the world, and on computation itself."}
  ]},
  {key:"optlearn",name:"The age of optimization and learning",steps:[
    {id:"linalg",note:"Vectors and matrices — the geometry of data."},
@@ -15114,7 +15242,7 @@ refreshJourneyOptions();
   }
 
   // ── Save / Load / Reset ──
-  var UD_KEYS=["mathmap_progress","mathmap_activity","mathmap_journeys","mathmap_pos","mathmap_prac","mathmap_notes_order","mathmap_global_scroll","mathmap_global_scroll_height","mathmap_gami","mathmap_theme","mathmap_display"];
+  var UD_KEYS=["mathmap_progress","mathmap_activity","mathmap_journeys","mathmap_pos_v7","mathmap_prac","mathmap_notes_order","mathmap_global_scroll","mathmap_global_scroll_height","mathmap_gami","mathmap_theme","mathmap_display"];
 
   document.getElementById("ud-save").onclick=function(){
     var bundle={};
@@ -15344,21 +15472,67 @@ window.syncPracticeStatus = function(id){
   const overlay  = document.getElementById('gami-overlay');
   const openBtn  = document.getElementById('gami-btn');
   const closeBtn = document.getElementById('gami-close');
-  const clockEl  = document.getElementById('gami-clock');
-  const weekdayEl= document.getElementById('gami-weekday');
-  const dateEl   = document.getElementById('gami-date');
+  const clockH = document.getElementById('gami-h-math');
+  const clockM = document.getElementById('gami-m-math');
+  const clockS = document.getElementById('gami-s-math');
+  const calWd = document.getElementById('gami-wd-math');
+  const calD = document.getElementById('gami-d-math');
+  const calMo = document.getElementById('gami-mo-math');
+  const calY = document.getElementById('gami-y-math');
+
+  function generateMath(val) {
+    if (val === 0) {
+      const opts = ['e^{iπ}+1', 'sin(π)', 'd(5)/dx', '0!', '1-1', 'cos(π/2)'];
+      return opts[Math.floor(Math.random()*opts.length)];
+    }
+    if (val === 1) {
+      const opts = ['ln(e)', 'cos(0)', 'e^0', '1!', '2-1', 'π/π', '√1'];
+      return opts[Math.floor(Math.random()*opts.length)];
+    }
+    const r = Math.random();
+    if (r < 0.2) return '0x' + val.toString(16).toUpperCase();
+    if (r < 0.4) return val.toString(2) + '₂';
+    if (r < 0.6) return '√' + (val * val);
+    if (r < 0.8) return '(' + (val * 2) + '/2)';
+    if (val % 2 === 0) return '(' + (val/2) + '×2)';
+    if (val % 3 === 0) return '(' + (val/3) + '×3)';
+    if (val % 5 === 0) return '(' + (val/5) + '×5)';
+    return '(' + (val+3) + '-3)';
+  }
+
+  let prevH = -1, prevM = -1, prevS = -1, prevD = -1, prevMo = -1, prevY = -1;
 
   /* ── Live clock ── */
   function updateClock() {
+    if (!clockS) return;
     const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    const s = String(now.getSeconds()).padStart(2,'0');
-    clockEl.textContent = h + ':' + m + ':' + s;
-    const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    weekdayEl.textContent = days[now.getDay()];
-    dateEl.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    
+    const s = now.getSeconds();
+    if (s !== prevS) { clockS.innerHTML = generateMath(s); prevS = s; }
+    
+    const m = now.getMinutes();
+    if (m !== prevM) { clockM.innerHTML = generateMath(m); prevM = m; }
+    
+    const h = now.getHours();
+    if (h !== prevH) { clockH.innerHTML = generateMath(h); prevH = h; }
+    
+    const d = now.getDate();
+    if (d !== prevD) {
+      calD.innerHTML = generateMath(d);
+      const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+      calWd.innerHTML = days[now.getDay()];
+      prevD = d;
+    }
+    
+    const mo = now.getMonth();
+    if (mo !== prevMo) {
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      calMo.innerHTML = months[mo];
+      prevMo = mo;
+    }
+    
+    const y = now.getFullYear();
+    if (y !== prevY) { calY.innerHTML = generateMath(y); prevY = y; }
   }
   updateClock();
   setInterval(updateClock, 1000);
@@ -15684,8 +15858,7 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     devourer:{out:['#5a5f66','#9aa0a8'], mid:['#84898f','#c8ccd2'], inn:['#f4f6f8','#ffffff'], ember:'#d8dce2', glow:['#c0c8d2','#40464e']}
   };
   function fireEraOf(c){
-    if(c<=0)  return {key:'asleep'};
-    if(c<=10) return {key:'amber',   lo:1,  hi:10, prev:'amber'};
+    if(c<=10) return {key:'amber',   lo:0,  hi:10, prev:'amber'};
     if(c<=25) return {key:'crimson', lo:11, hi:25, prev:'amber'};
     if(c<=45) return {key:'violet',  lo:26, hi:45, prev:'crimson'};
     if(c<=70) return {key:'green',   lo:46, hi:70, prev:'violet'};
@@ -15721,15 +15894,6 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     var night=isNightNow();
     var PAL=night?FIRE_COLD:FIRE_PAL;
     g.setAttribute('data-count', String(c));
-    /* ── asleep: a single bored ember ── */
-    if(era.key==='asleep'){
-      g.setAttribute('class','fire-era-asleep');
-      g.innerHTML='<ellipse cx="150" cy="384" rx="16" ry="5" fill="#1b1822"/>'
-        +'<circle class="asleep-ember" cx="150" cy="379" r="5" fill="'+(night?'#7aa8e8':'#ff9a44')+'"/>'
-        +'<circle class="asleep-ember" style="animation-delay:-1.3s" cx="138" cy="382" r="3" fill="'+(night?'#5a88c8':'#e06322')+'"/>';
-      setFireGlow(PAL.amber, 0.04);
-      return;
-    }
     /* ── THE DEVOURER (exactly 100): grey-white violence with a face ── */
     if(era.key==='devourer'){
       var dp=PAL.devourer;
@@ -15902,9 +16066,10 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     opts=opts||{};
     var old=document.getElementById('gami-bubble'); if(old) old.remove();
     var b=document.createElement('div'); b.id='gami-bubble';
+    var closeHTML = opts.noClose ? '' : '<button class="gb-close">×</button>';
     b.innerHTML='<img class="gb-face" src="./assets/face_icon.png" alt="Gami">'
-      +'<div class="gb-body"><div class="gb-text">'+text+'</div><div class="gb-btns"></div></div>'
-      +'<button class="gb-close">\u00d7</button>';
+      +'<div class="gb-content" style="flex:1;"><div class="gb-text">'+text+'</div><div class="gb-btns"></div></div>'
+      +closeHTML;
     document.body.appendChild(b);
     var btns=b.querySelector('.gb-btns');
     (opts.buttons||[]).forEach(function(o){
@@ -15913,20 +16078,23 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
       btns.appendChild(x);
     });
     if(!(opts.buttons&&opts.buttons.length)) btns.style.display='none';
-    b.querySelector('.gb-close').onclick=function(){ b.remove(); };
+    var closeBtn = b.querySelector('.gb-close');
+    if(closeBtn) closeBtn.onclick=function(){ b.remove(); };
     if(opts.ttl!==0) setTimeout(function(){ if(b.parentNode) b.remove(); }, opts.ttl||14000);
   };
   /* first-visit greeting (once, ever) */
   (function(){
     try{
-      var gs=JSON.parse(localStorage.getItem('mathmap_gami')||'{}')||{};
-      if(gs.greeted) return;
-      var isNew=!localStorage.getItem('mathmap_progress') && !localStorage.getItem('mathmap_prac');
-      gs.greeted=1; localStorage.setItem('mathmap_gami', JSON.stringify(gs));
+      var progStr = localStorage.getItem('mathmap_progress');
+      var pracStr = localStorage.getItem('mathmap_prac');
+      var hasProg = progStr && Object.keys(JSON.parse(progStr)).length > 0;
+      var hasPrac = pracStr && Object.keys(JSON.parse(pracStr)).length > 0;
+      var isNew = !hasProg && !hasPrac;
+      
       if(!isNew) return;
       setTimeout(function(){
-        window.gamiBubble('Oh \u2014 a new traveller! I am <b>Gami</b>; I keep this map. Every stone opens when you click it. The big stone in the middle is my home \u2014 come knock whenever you are lost.',
-          {ttl:0, buttons:[['Check my level first', function(){ if(window.startLevelCheck) window.startLevelCheck(); }], ['Take me to Gami', function(){ var gb=document.getElementById('gami-btn'); if(gb) gb.click(); }], ['I\u2019ll wander first']]});
+        window.gamiBubble('Oh — a new traveller! I am <b>Gami</b>; I keep this map. Every stone opens when you click it. The big stone in the middle is my home — come knock whenever you are lost.',
+          {ttl:0, noClose: true, buttons:[['Check my math level first', function(){ if(window.startLevelCheck) window.startLevelCheck(); }], ['Take me to Gami', function(){ var gb=document.getElementById('gami-btn'); if(gb) gb.click(); }], ['I’ll wander first']]});
       }, 1800);
     }catch(e){}
   })();
@@ -15997,13 +16165,13 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     var ob=document.getElementById('gami-bubble'); if(ob) ob.remove();
     var ov=document.createElement('div'); ov.id='lvl-overlay';
     ov.innerHTML='<div class="lvl-card">'
-      +'<div class="lvl-head"><img class="gb-face" src="./assets/face_icon.png" alt="Gami"><span class="lvl-title">Gami reads your level</span><button id="lvl-close">\u00d7</button></div>'
+      +'<div class="lvl-head"><img class="gb-face" src="./assets/face_icon.png" alt="Gami"><span class="lvl-title">Gami reads your level</span></div>'
       +'<div class="lvl-say" id="lvl-say"></div>'
       +'<div class="lvl-q" id="lvl-q"></div>'
       +'<div class="lvl-btns" id="lvl-btns"></div>'
       +'</div>';
     document.body.appendChild(ov);
-    document.getElementById('lvl-close').onclick=function(){ ov.remove(); };
+    // document.getElementById('lvl-close').onclick=function(){ ov.remove(); };
     var asked={}, misses=0, count=0, highest=-1, firstMiss=null;
     function say(html){ document.getElementById('lvl-say').innerHTML=html; }
     function setQ(html){ document.getElementById('lvl-q').innerHTML=html;
@@ -16040,7 +16208,7 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
       if(startId==='multivar') msg='You walked off the top of my school ladder without slowing down. I have left <b>'+lbl+'</b> tagged \u201cwant to learn\u201d as a starting point, but honestly \u2014 wander wherever curiosity points; the whole school country is already yours. Untag anything you like.';
       else if(highest<0) msg='Then we start at the very first stone: <b>'+lbl+'</b>. I have tagged it \u201cwant to learn\u201d for you \u2014 untag it any time if you would rather wander. No shame in starting at the first line; it is where I put the good handholds.';
       else msg='Done. I tagged <b>'+lbl+'</b> \u201cwant to learn\u201d as your starting stone \u2014 untag it whenever you like and wander instead. The faint green rings below it are stones you likely already carry; skim them, do not camp there.';
-      window.gamiBubble(msg, {ttl:0, buttons:[['Take me there', function(){ if(typeof selectNode==='function') selectNode(startId); }], ['I will find it']]});
+      window.gamiBubble(msg, {ttl:0, noClose: true, buttons:[['Take me there', function(){ if(typeof selectNode==='function') selectNode(startId); }], ['I will find it']]});
     };
     function ask(r){
       if(r<0||r>=LVL_LADDER.length||misses>=2||count>=7){ finish(); return; }
@@ -16178,26 +16346,67 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
 
   /* Scale the fixed-layout room to fit the current modal width. The talk
      buttons and speech box are normal elements and are never touched. */
-  function fitGamiScene(){
+  function fitGamiScene(isOpening){
     var wrap=document.getElementById('gami-scene-wrap');
     var scene=document.getElementById('gami-scene');
+    var hint=document.getElementById('gami-swipe-hint');
     if(!wrap||!scene) return;
     var avail=wrap.clientWidth;
-    if(!avail){ requestAnimationFrame(fitGamiScene); return; }
-    var s=Math.min(1, avail/940);
+    if(!avail){ requestAnimationFrame(function(){ fitGamiScene(isOpening); }); return; }
+    
+    var s = avail / 940;
+    var isScrollable = false;
+    if (window.innerWidth <= 820 && s < 0.65) {
+      s = 0.65;
+      wrap.style.overflowX = 'auto';
+      wrap.style.overflowY = 'hidden';
+      scene.style.marginRight = -(940 * (1 - s)) + 'px';
+      scene.style.marginBottom = -(480 * (1 - s)) + 'px';
+      isScrollable = true;
+    } else {
+      s = Math.min(1, s);
+      wrap.style.overflow = 'hidden';
+      scene.style.marginRight = '0px';
+      scene.style.marginBottom = '0px';
+    }
+    
     scene.style.transform = s<1 ? 'scale('+s+')' : 'none';
     wrap.style.height = (480*s)+'px';
+
+    if (isOpening && isScrollable) {
+      wrap.scrollLeft = (wrap.scrollWidth - wrap.clientWidth) / 2;
+    }
+    
+    if (hint) {
+      if (isScrollable && !hint.classList.contains('show')) {
+        if (isOpening || wrap.scrollLeft === 0) {
+          hint.classList.add('show');
+          if (hint._hideTimer) clearTimeout(hint._hideTimer);
+          hint._hideTimer = setTimeout(function(){
+            hint.classList.remove('show');
+          }, 5000);
+          setTimeout(function(){
+            wrap.addEventListener('scroll', function hideHint(){
+              hint.classList.remove('show');
+              wrap.removeEventListener('scroll', hideHint);
+            }, {once:true});
+          }, 300);
+        }
+      } else if (!isScrollable) {
+        hint.classList.remove('show');
+      }
+    }
   }
   /* Re-fit across a few frames so it settles after the modal reaches its
      final width (CSS min(940px,96vw) can lag a frame on open/resize). */
-  function fitGamiSceneSettled(){
-    fitGamiScene();
-    requestAnimationFrame(fitGamiScene);
-    setTimeout(fitGamiScene, 80);
-    setTimeout(fitGamiScene, 220);
+  function fitGamiSceneSettled(isOpening){
+    fitGamiScene(isOpening);
+    requestAnimationFrame(function(){ fitGamiScene(isOpening); });
+    setTimeout(function(){ fitGamiScene(isOpening); }, 80);
+    setTimeout(function(){ fitGamiScene(isOpening); }, 220);
   }
 
-  openBtn.addEventListener('click', function(){ overlay.classList.add('open'); syncScene(); fitGamiSceneSettled(); });
+  openBtn.addEventListener('click', function(){ overlay.classList.add('open'); syncScene(); fitGamiSceneSettled(true); });
   function closeRoom(){
     overlay.classList.remove('open');
     // the door writes #math when entered via the Mathematics stone — drop it so a refresh returns to the neutral map
@@ -16580,7 +16789,7 @@ ratio: {qs:[
  hint:`Divide to get "per one liter" first — then everything else is one multiplication.`,
  a:`<p><b>Step 1.</b> Unit rate: $288\\div24=12$ km per liter.</p><p><b>Step 2.</b> On $15$ liters: $12\\times15=180$ km.</p><p>The unit rate is the ratio tamed to "per one" — compute it once, reuse it forever.</p>`},
 {sec:`5 Proportions`,
- q:`Solve the proportion $\\dfrac{x}{12}=\\dfrac{7}{4}$.`,
+ q:`the proportion $\\dfrac{x}{12}=\\dfrac{7}{4}$.`,
  hint:`Cross-multiply.`,
  a:`<p><b>Step 1.</b> Cross-multiply: $4x=7\\times12=84$.</p><p><b>Step 2.</b> Divide: $x=21$.</p><p><b>Check:</b> $\\tfrac{21}{12}=\\tfrac74$ after dividing by $3$. ✓</p>`},
 {sec:`6 Scaling and similar figures`,
@@ -16619,11 +16828,11 @@ prealg: {qs:[
  hint:`Expand both brackets first — carefully with the minus — then combine like terms.`,
  a:`<p><b>Step 1.</b> $3(x+2)=3x+6$.</p><p><b>Step 2.</b> $-2(x-1)=-2x+2$.</p><p><b>Step 3.</b> Combine: $3x+6-2x+2=x+8$.</p><p><b>Check</b> at $x=1$: original $=3(3)-2(0)=9$; result $=1+8=9$. ✓ Checking with a number costs ten seconds and catches almost everything.</p>`},
 {sec:`4 Solving equations: keep the balance`,
- q:`Solve $5x-7=18$, and check your answer.`,
+ q:`$5x-7=18$.`,
  hint:`Undo the $-7$ first, then the $\\times5$ — reverse order.`,
  a:`<p><b>Step 1.</b> Add $7$ to both sides: $5x=25$.</p><p><b>Step 2.</b> Divide by $5$: $x=5$.</p><p><b>Check:</b> $5(5)-7=18$. ✓</p>`},
 {sec:`4 Solving equations: keep the balance`,
- q:`Solve $4(x-2)=x+7$.`,
+ q:`$4(x-2)=x+7$.`,
  hint:`Expand the bracket first, then herd the $x$&rsquo;s to one side.`,
  a:`<p><b>Step 1.</b> Expand: $4x-8=x+7$.</p><p><b>Step 2.</b> Subtract $x$: $3x-8=7$.</p><p><b>Step 3.</b> Add $8$, divide by $3$: $x=5$.</p><p><b>Check:</b> left $4(3)=12$, right $5+7=12$. ✓</p>`},
 {sec:`5 Exponents`,
@@ -16635,7 +16844,7 @@ prealg: {qs:[
  hint:`Hunt for a perfect-square factor inside the $50$.`,
  a:`<p><b>First:</b> $50=25\\times2$, so $\\sqrt{50}=\\sqrt{25}\\,\\sqrt2=5\\sqrt2$.</p><p><b>Second:</b> $16\\lt20\\lt25$, so $\\sqrt{20}$ lies between $4$ and $5$ (nearer $4.5$; in fact $\\approx4.47$).</p><p>Squeezing a root between neighboring perfect squares is instant estimation — no calculator required.</p>`},
 {sec:`7 Inequalities`,
- q:`Solve $-3x+4\\ge13$.`,
+ q:`$-3x+4\\ge13$.`,
  hint:`You will divide by a negative at the end — remember what that does to the sign.`,
  a:`<p><b>Step 1.</b> Subtract $4$: $-3x\\ge9$.</p><p><b>Step 2.</b> Divide by $-3$ <i>and flip</i>: $x\\le-3$.</p><p><b>Check</b> with $x=-4$: $-3(-4)+4=16\\ge13$. ✓ And $x=0$ fails: $4\\ge13$ is false. ✓ The flip is the one new rule inequalities bring.</p>`}
 ]},
@@ -16808,27 +17017,27 @@ percent: {qs:[
 
 lineq: {qs:[
 {sec:`2 Undo in reverse order`,
- q:`Solve $4x-9=19$, and check your answer.`,
+ q:`$4x-9=19$.`,
  hint:`The $-9$ came last, so it leaves first.`,
  a:`<p><b>Step 1.</b> Add $9$ to both sides: $4x=28$.</p><p><b>Step 2.</b> Divide by $4$: $x=7$.</p><p><b>Check:</b> $4(7)-9=19$. ✓ A checked solution is a fact; an unchecked one is a hope.</p>`},
 {sec:`2 Undo in reverse order`,
- q:`Solve $\\dfrac{x}{3}+5=11$.`,
+ q:`$\\dfrac{x}{3}+5=11$.`,
  hint:`Undo the $+5$, then the $\\div3$.`,
  a:`<p><b>Step 1.</b> Subtract $5$: $\\dfrac{x}{3}=6$.</p><p><b>Step 2.</b> Multiply by $3$: $x=18$.</p><p><b>Check:</b> $18\\div3+5=11$. ✓</p>`},
 {sec:`3 Unknowns on both sides`,
- q:`Solve $7x+4=3x+24$.`,
+ q:`$7x+4=3x+24$.`,
  hint:`Herd the $x$&rsquo;s to one side first.`,
  a:`<p><b>Step 1.</b> Subtract $3x$: $4x+4=24$.</p><p><b>Step 2.</b> Subtract $4$: $4x=20$, so $x=5$.</p><p><b>Check:</b> left $39$, right $39$. ✓</p>`},
 {sec:`3 Unknowns on both sides`,
- q:`Solve $9-2x=4x-15$.`,
+ q:`$9-2x=4x-15$.`,
  hint:`Collect the $x$&rsquo;s on the side where they come out positive — it saves a sign headache.`,
  a:`<p><b>Step 1.</b> Add $2x$ to both sides: $9=6x-15$.</p><p><b>Step 2.</b> Add $15$: $24=6x$, so $x=4$.</p><p><b>Check:</b> left $9-8=1$, right $16-15=1$. ✓</p>`},
 {sec:`4 Parentheses and fractions`,
- q:`Solve $3(2x-5)=2x+13$.`,
+ q:`$3(2x-5)=2x+13$.`,
  hint:`Strip the packaging first: expand the bracket.`,
  a:`<p><b>Step 1.</b> Expand: $6x-15=2x+13$.</p><p><b>Step 2.</b> Subtract $2x$: $4x-15=13$.</p><p><b>Step 3.</b> Add $15$, divide by $4$: $x=7$.</p><p><b>Check:</b> $3(9)=27$ and $14+13=27$. ✓</p>`},
 {sec:`4 Parentheses and fractions`,
- q:`Solve $\\dfrac{x+4}{5}=3$.`,
+ q:`$\\dfrac{x+4}{5}=3$.`,
  hint:`Clear the fraction in one move.`,
  a:`<p><b>Step 1.</b> Multiply both sides by $5$: $x+4=15$.</p><p><b>Step 2.</b> Subtract $4$: $x=11$.</p><p><b>Check:</b> $(11+4)\\div5=3$. ✓</p>`},
 {sec:`5 From words to equations`,
@@ -16840,7 +17049,7 @@ lineq: {qs:[
  hint:`Let the width be $w$ and write the perimeter in terms of $w$ alone.`,
  a:`<p><b>Step 1.</b> Width $w$, length $2w$. Perimeter: $2(w+2w)=6w$.</p><p><b>Step 2.</b> $6w=54$, so $w=9$; length $=18$.</p><p><b>Check:</b> $2(9+18)=54$. ✓ The rectangle is $9$ cm by $18$ cm.</p>`},
 {sec:`7 The one new rule: flipping the sign`,
- q:`Solve the inequality $-5x+2\\gt17$.`,
+ q:`the inequality $-5x+2\\gt17$.`,
  hint:`The last move divides by $-5$ — what happens to the inequality sign?`,
  a:`<p><b>Step 1.</b> Subtract $2$: $-5x\\gt15$.</p><p><b>Step 2.</b> Divide by $-5$ and <b>flip</b>: $x\\lt-3$.</p><p><b>Check</b> with $x=-4$: $-5(-4)+2=22\\gt17$. ✓ With $x=0$: $2\\gt17$ fails. ✓ The solution is the ray of numbers below $-3$.</p>`},
 {sec:`8 When the x's vanish`,
@@ -16851,7 +17060,7 @@ lineq: {qs:[
 
 elemalg: {qs:[
 {sec:`1 Linear equations`,
- q:`Solve $6x+5=2x-11$.`,
+ q:`$6x+5=2x-11$.`,
  hint:`Herd the $x$&rsquo;s to one side, the numbers to the other.`,
  a:`<p><b>Step 1.</b> Subtract $2x$: $4x+5=-11$.</p><p><b>Step 2.</b> Subtract $5$: $4x=-16$, so $x=-4$.</p><p><b>Check:</b> left $6(-4)+5=-19$; right $2(-4)-11=-19$. ✓</p>`},
 {sec:`2 Polynomials`,
@@ -16875,7 +17084,7 @@ elemalg: {qs:[
  hint:`Factor top and bottom before canceling anything.`,
  a:`<p><b>Step 1.</b> Factor: $\\dfrac{(x-5)(x+5)}{x(x+5)}$.</p><p><b>Step 2.</b> Cancel the common $(x+5)$: $\\dfrac{x-5}{x}$.</p><p><b>Forbidden:</b> the original denominator dies at $x=0$ and $x=-5$ — both stay banned even after the cancellation. You may only cancel <i>factors</i>, never terms.</p>`},
 {sec:`5 Quadratic equations`,
- q:`Solve $x^2-4x-21=0$.`,
+ q:`$x^2-4x-21=0$.`,
  hint:`Two numbers multiplying to $-21$, adding to $-4$.`,
  a:`<p><b>Step 1.</b> $-7\\times3=-21$ and $-7+3=-4$: factor as $(x-7)(x+3)=0$.</p><p><b>Step 2.</b> Zero product: $x=7$ or $x=-3$.</p><p><b>Check</b> $x=7$: $49-28-21=0$. ✓ (The full quadratic toolkit lives in the Quadratic Equations node.)</p>`},
 {sec:`6 Radicals and their operations`,
@@ -16887,30 +17096,30 @@ elemalg: {qs:[
  hint:`Multiply top and bottom by $\\sqrt3$.`,
  a:`<p><b>Step 1.</b> $\\dfrac{6}{\\sqrt3}\\times\\dfrac{\\sqrt3}{\\sqrt3}=\\dfrac{6\\sqrt3}{3}$.</p><p><b>Step 2.</b> Simplify: $2\\sqrt3$.</p><p>Same number, tidier address — no root left living downstairs.</p>`},
 {sec:`7 Systems of equations`,
- q:`Solve the system: $x+y=11$ and $x-y=3$.`,
+ q:`the system: $x+y=11$ and $x-y=3$.`,
  hint:`Add the two equations and watch a variable vanish.`,
  a:`<p><b>Step 1.</b> Add them: $2x=14$, so $x=7$.</p><p><b>Step 2.</b> Back-substitute: $7+y=11$, so $y=4$.</p><p><b>Check</b> in the second equation: $7-4=3$. ✓ Graphically you have just found where two lines cross: the point $(7,4)$.</p>`}
 ]},
 
 quadratics: {qs:[
 {sec:`1 Why two answers?`,
- q:`Solve $x^2=64$, and then $3x^2-75=0$.`,
+ q:`$x^2=64$, and then $3x^2-75=0$.`,
  hint:`Square roots of both sides — keeping both signs.`,
  a:`<p><b>First:</b> $x=\\pm8$ — two answers, always, from a squared unknown.</p><p><b>Second:</b> add $75$, divide by $3$: $x^2=25$, so $x=\\pm5$.</p><p><b>Check</b> $x=-5$: $3(25)-75=0$. ✓ Forgetting the negative twin is the field&rsquo;s most common lost point.</p>`},
 {sec:`2 Solving by factoring`,
- q:`Solve $x^2-x-12=0$.`,
+ q:`$x^2-x-12=0$.`,
  hint:`Multiply to $-12$, add to $-1$.`,
  a:`<p><b>Step 1.</b> $-4\\times3=-12$, $-4+3=-1$: $(x-4)(x+3)=0$.</p><p><b>Step 2.</b> Zero product: $x=4$ or $x=-3$.</p><p><b>Check</b> $x=4$: $16-4-12=0$. ✓</p>`},
 {sec:`2 Solving by factoring`,
- q:`Solve $2x^2+7x=0$.`,
+ q:`$2x^2+7x=0$.`,
  hint:`No constant term — so there is a common factor to pull out.`,
  a:`<p><b>Step 1.</b> Factor out $x$: $x(2x+7)=0$.</p><p><b>Step 2.</b> $x=0$ or $2x+7=0$, i.e. $x=-\\tfrac72$.</p><p>Do <b>not</b> divide both sides by $x$ at the start — that quietly throws away the solution $x=0$. Factor; never divide by the unknown.</p>`},
 {sec:`3 Completing the square`,
- q:`Solve $x^2+8x+3=0$ by completing the square.`,
+ q:`$x^2+8x+3=0$ by completing the square.`,
  hint:`Half of $8$ is $4$; add $4^2$ to both sides after moving the $3$.`,
  a:`<p><b>Step 1.</b> Move the constant: $x^2+8x=-3$.</p><p><b>Step 2.</b> Add $16$ to both sides: $x^2+8x+16=13$, i.e. $(x+4)^2=13$.</p><p><b>Step 3.</b> Square roots: $x+4=\\pm\\sqrt{13}$, so $x=-4\\pm\\sqrt{13}$.</p><p>No factoring would have found these — completing the square handles the roots the integers cannot reach.</p>`},
 {sec:`4 The quadratic formula`,
- q:`Solve $3x^2-5x-2=0$ with the quadratic formula.`,
+ q:`$3x^2-5x-2=0$ with the quadratic formula.`,
  hint:`$a=3$, $b=-5$, $c=-2$ — mind the signs inside $b^2-4ac$.`,
  a:`<p><b>Step 1.</b> Discriminant: $b^2-4ac=25-4(3)(-2)=25+24=49$.</p><p><b>Step 2.</b> $x=\\dfrac{5\\pm\\sqrt{49}}{6}=\\dfrac{5\\pm7}{6}$.</p><p><b>Answers:</b> $x=2$ and $x=-\\tfrac13$.</p><p><b>Check</b> $x=2$: $12-10-2=0$. ✓</p>`},
 {sec:`5 The discriminant: counting answers in advance`,
@@ -17214,7 +17423,7 @@ explog: {qs:[
  hint:`Products add, quotients subtract, powers jump out front.`,
  a:`<p><b>Expand:</b> $\\log(a^2b)-\\log c=2\\log a+\\log b-\\log c$.</p><p><b>Condense:</b> $\\log50+\\log2=\\log(50\\times2)=\\log100=2$.</p><p>The laws are the exponent laws, translated — logs turn multiplication into addition, which is why they were invented.</p>`},
 {sec:`5 Solving for the exponent`,
- q:`Solve $2^x=100$.`,
+ q:`$2^x=100$.`,
  hint:`Take logs of both sides and pull the exponent down.`,
  a:`<p><b>Step 1.</b> $x\\log2=\\log100$.</p><p><b>Step 2.</b> $x=\\dfrac{\\log100}{\\log2}=\\dfrac{2}{0.30103}\\approx6.64$.</p><p><b>Sense check:</b> $2^6=64$ and $2^7=128$ — so between $6$ and $7$, nearer $7$. ✓</p>`},
 {sec:`5 Solving for the exponent`,
@@ -17401,7 +17610,7 @@ precalc: {qs:[
  hint:`The machine subtracts $5$ then halves — undo in reverse.`,
  a:`<p><b>Inverse:</b> double, then add $5$: $f^{-1}(x)=2x+5$.</p><p><b>Round trip:</b> $f(9)=2$, then $f^{-1}(2)=9$. ✓</p><p>Graphically the two are mirror images across $y=x$ — the inverse figure from the lesson.</p>`},
 {sec:`5 Exponential and logarithmic functions`,
- q:`Solve $5^x=125$, and then $\\log_3 x=4$.`,
+ q:`$5^x=125$, and then $\\log_3 x=4$.`,
  hint:`Rewrite each so both sides speak the same language.`,
  a:`<p><b>First:</b> $125=5^3$, so $x=3$.</p><p><b>Second:</b> the log statement <i>means</i> $x=3^4=81$.</p><p>Exponential and log are one relationship read in two directions.</p>`},
 {sec:`5 Exponential and logarithmic functions`,
@@ -17467,7 +17676,7 @@ coremath: {qs:[
  hint:`Multipliers: down was $\\times0.75$ — what multiplier undoes it?`,
  a:`<p><b>Step 1.</b> The undo multiplier is $1\\div0.75=\\tfrac43\\approx1.333$.</p><p><b>Step 2.</b> That is a rise of about $33.3\\%$ — not $25\\%$.</p><p>Percent changes are not symmetric because the base changes underneath you — the single most useful percent fact in adult life.</p>`},
 {tier:'c',diff:2,sec:`6 Four ideas that run through everything`,
- q:`Solve both, then name the through-line idea each one uses: (a) $x-7=12$; (b) $5:8$ scaled up to $x:24$.`,
+ q:`both, then name the through-line idea each one uses: (a) $x-7=12$; (b) $5:8$ scaled up to $x:24$.`,
  hint:`One is a balance move, one is a scaling move — the ladder&rsquo;s two great verbs.`,
  a:`<p><b>(a)</b> Add $7$ to both sides: $x=19$ — the <i>equality-preserving move</i>, algebra&rsquo;s engine.</p><p><b>(b)</b> The $8$ grew by $\\times3$, so $x=15$ — <i>proportional reasoning</i>, geometry and science&rsquo;s engine.</p><p>Balance and scale: two ideas that climb the whole ladder with you, from these one-liners to differential equations and similar manifolds.</p>`},
 {tier:'w',diff:1,sec:`1 The ladder, in order`,
@@ -18051,7 +18260,7 @@ group: {qs:[
 
 linalg: {qs:[
 {sec:`4 Solving linear systems`,
- q:`Solve the system $2x+y=5$ and $x-y=1$.`,
+ q:`the system $2x+y=5$ and $x-y=1$.`,
  hint:`Add the two equations to eliminate $y$.`,
  a:`<p><b>Step 1.</b> Adding: $3x=6$, so $x=2$.</p><p><b>Step 2.</b> Back-substitute: $2-y=1$, so $y=1$.</p><p><b>Check:</b> $2(2)+1=5$ ✓ and $2-1=1$ ✓. Geometrically, the two lines cross at $(2,1)$.</p>`},
 {sec:`3 Linear maps are matrices`,
@@ -18436,7 +18645,7 @@ complex: {qs:[
  hint:`Write $1+i=\\sqrt2\\,e^{i\\pi/4}$, then raise to the eighth power.`,
  a:`<p><b>Step 1.</b> $(1+i)^8=(\\sqrt2)^8\\,e^{i\\cdot8\\pi/4}=16\\,e^{i2\\pi}$.</p><p><b>Step 2.</b> $e^{i2\\pi}=1$, so $(1+i)^8=16$.</p><p>Polar form turns an eightfold multiplication into "raise the length, multiply the angle" — De Moivre&rsquo;s theorem in action.</p>`},
 {sec:`4 Every polynomial has roots`,
- q:`Solve $z^2+1=0$ over the complex numbers.`,
+ q:`$z^2+1=0$ over the complex numbers.`,
  hint:`What squares to $-1$?`,
  a:`<p>$z^2=-1$, so $z=\\pm i$.</p><p>Over the reals this equation had no solution; over $\\mathbb{C}$ it has two. The Fundamental Theorem of Algebra promises that <i>every</i> non-constant polynomial factors completely once you allow complex roots.</p>`}
 ]},
@@ -18631,19 +18840,19 @@ harmonic: {qs:[
 
 de: {qs:[
 {sec:`3 Separable equations`,
- q:`Solve $y'=ky$ by separating variables.`,
+ q:`$y'=ky$ by separating variables.`,
  hint:`Divide by $y$, integrate both sides.`,
  a:`<p><b>Step 1.</b> $\\dfrac{dy}{y}=k\\,dx$, so $\\ln|y|=kx+C$.</p><p><b>Step 2.</b> Exponentiate: $y=Ae^{kx}$.</p><p>Exponential growth (or decay if $k\\lt0$) — the single most consequential differential equation in science, describing everything from populations to radioactivity.</p>`},
 {sec:`3 Separable equations`,
- q:`Solve $y'=y^2$ with $y(0)=1$, and note where the solution breaks down.`,
+ q:`$y'=y^2$ with $y(0)=1$, and note where the solution breaks down.`,
  hint:`Separate to $dy/y^2=dx$; watch the resulting formula near a certain $x$.`,
  a:`<p><b>Step 1.</b> $\\dfrac{dy}{y^2}=dx\\Rightarrow -\\dfrac1y=x+C$.</p><p><b>Step 2.</b> $y(0)=1$ gives $C=-1$, so $y=\\dfrac{1}{1-x}$.</p><p>The solution <b>blows up to infinity at $x=1$</b>, in finite time, even though the equation looks tame. Nonlinear equations can destroy their own solutions — a phenomenon linear ones never show.</p>`},
 {sec:`4 First-order linear equations`,
- q:`Solve $y'+y=e^{x}$ using an integrating factor.`,
+ q:`$y'+y=e^{x}$ using an integrating factor.`,
  hint:`The integrating factor is $e^{\\int 1\\,dx}=e^{x}$.`,
  a:`<p><b>Step 1.</b> Multiply by $e^{x}$: $(e^{x}y)'=e^{x}\\cdot e^{x}=e^{2x}$.</p><p><b>Step 2.</b> Integrate: $e^{x}y=\\tfrac12 e^{2x}+C$, so $y=\\tfrac12 e^{x}+Ce^{-x}$.</p><p><b>Check:</b> $y'+y=(\\tfrac12 e^x-Ce^{-x})+(\\tfrac12 e^x+Ce^{-x})=e^x$ ✓. The integrating factor turns the left side into an exact derivative.</p>`},
 {sec:`5 Second-order linear equations`,
- q:`Solve $y''+y=0$.`,
+ q:`$y''+y=0$.`,
  hint:`Characteristic equation $\\lambda^2+1=0$.`,
  a:`<p><b>Step 1.</b> $\\lambda^2+1=0$ gives $\\lambda=\\pm i$.</p><p><b>Step 2.</b> Complex roots $\\pm i$ mean oscillation: $y=A\\cos x+B\\sin x$.</p><p>This is the equation of the undamped oscillator — a mass on a spring, a pendulum for small swings — and its solutions are exactly the sines and cosines.</p>`},
 {sec:`7 Systems and the eigenvalue method`,
@@ -18670,7 +18879,7 @@ pde: {qs:[
  hint:`Assume $u=T(t)X(x)$; the sine is the spatial mode, and $T$ solves a simple ODE.`,
  a:`<p>Guessing $u=T(t)X(x)$ splits the PDE into $X''=-\\lambda X$ and $T'=-\\lambda T$. The boundary conditions force $X=\\sin x$ with $\\lambda=1$, and then $T'=-T$ gives $T=e^{-t}$. Multiplying, $u=e^{-t}\\sin x$. Each spatial mode decays at its own rate; higher-frequency modes (sharper wiggles) die faster.</p>`},
 {sec:`7 First-order equations and characteristics`,
- q:`Solve the transport equation $u_t+cu_x=0$ with initial data $u(x,0)=f(x)$.`,
+ q:`the transport equation $u_t+cu_x=0$ with initial data $u(x,0)=f(x)$.`,
  hint:`The solution is constant along the lines $x-ct=\\text{const}$ (the characteristics).`,
  a:`<p>The solution is $u(x,t)=f(x-ct)$: the initial profile simply translates rightward at speed $c$, unchanged in shape.</p><p>Along each characteristic line $x-ct=\\text{const}$, $u$ stays constant — first-order PDEs move information along these curves, which is the whole method of characteristics.</p>`},
 {sec:`3 Three personalities &mdash; and how to tell them apart`,
@@ -20289,7 +20498,7 @@ sieve: {qs:[
 
 diophantine: {qs:[
 {sec:`1 Linear Diophantine equations: the solvable case`,
- q:`Solve $7x+5y=1$ in integers using the extended Euclidean algorithm.`,
+ q:`$7x+5y=1$ in integers using the extended Euclidean algorithm.`,
  hint:`Run the Euclidean algorithm on $7$ and $5$, then back-substitute.`,
  a:`<p><b>Step 1.</b> $7=1\\cdot5+2$, $5=2\\cdot2+1$, $2=2\\cdot1+0$. So $\\gcd(7,5)=1$.</p><p><b>Step 2.</b> Back-substitute: $1=5-2\\cdot2=5-2(7-5)=3\\cdot5-2\\cdot7$.</p><p><b>Step 3.</b> $x=-2$, $y=3$. Check: $7(-2)+5(3)=-14+15=1$.</p><p>The general solution is $x=-2+5t$, $y=3-7t$ for any integer $t$ &mdash; infinitely many solutions, all found by one algorithm.</p>`},
 {sec:`2 Pythagorean triples and the rational circle`,
@@ -20419,7 +20628,7 @@ specfn: {qs:[
 
 inteq: {qs:[
 {sec:`3 Volterra equations always solve`,
- q:`Solve the Volterra integral equation $u(x)=x+\\int_0^x u(t)\\,dt$ by differentiating both sides.`,
+ q:`the Volterra integral equation $u(x)=x+\\int_0^x u(t)\\,dt$ by differentiating both sides.`,
  hint:`Differentiating turns the integral equation into an ODE.`,
  a:`<p><b>Step 1.</b> Differentiate: $u'(x)=1+u(x)$. This is a first-order linear ODE.</p><p><b>Step 2.</b> Solve: $u'- u=1$, integrating factor $e^{-x}$. $(e^{-x}u)'=e^{-x}$, so $e^{-x}u=-e^{-x}+C$, giving $u(x)=Ce^x-1$.</p><p><b>Step 3.</b> Initial condition from the original equation: $u(0)=0+0=0$, so $C=1$. $u(x)=e^x-1$.</p><p>Volterra equations with continuous kernels always have a unique solution &mdash; the triangular structure of the integral prevents the resonance issues that plague Fredholm equations.</p>`},
 {sec:`4 The Fredholm alternative`,
@@ -21692,7 +21901,7 @@ math: {qs:[
   function openers(){
     return [
       {label:'What should I learn next?', go:learnNext},
-      {label:'Can you read my level?', go:function(){ overlay.classList.remove('open'); if(window.startLevelCheck) setTimeout(window.startLevelCheck,150); }},
+      {label:'Can you read my math level?', go:function(){ overlay.classList.remove('open'); if(window.startLevelCheck) setTimeout(window.startLevelCheck,150); }},
       {label:'Read my map, Gami', go:readMap},
       {label:'Which journey do you recommend?', go:journeyRec},
       {label:'Tell me a story, Gami', go:tellStory},
@@ -22006,7 +22215,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
         var decompressed = LZString.decompressFromEncodedURIComponent(saveStr);
         if(!decompressed) throw new Error("Invalid");
         var bundle = JSON.parse(decompressed);
-        var UD_KEYS=["mathmap_progress","mathmap_activity","mathmap_journeys","mathmap_pos","mathmap_prac","mathmap_notes_order","mathmap_global_scroll","mathmap_global_scroll_height","mathmap_gami","mathmap_theme","mathmap_display"];
+        var UD_KEYS=["mathmap_progress","mathmap_activity","mathmap_journeys","mathmap_pos_v4","mathmap_prac","mathmap_notes_order","mathmap_global_scroll","mathmap_global_scroll_height","mathmap_gami","mathmap_theme","mathmap_display"];
         UD_KEYS.forEach(function(k){
           if(bundle[k]!==undefined && bundle[k]!==null) localStorage.setItem(k, typeof bundle[k]==='object' ? JSON.stringify(bundle[k]) : bundle[k]);
         });
