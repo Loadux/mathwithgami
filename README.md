@@ -7,3 +7,5 @@ It has much more features in it that gami don't want to spoil. Gami would love y
 Gami will keep working on its home and keep updating it constantly.
 
 Live site: https://mathwithgami.com/
+
+Contact: support@mathwithgami.com
