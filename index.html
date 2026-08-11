@@ -181,10 +181,10 @@
   .pq-sol{margin-top:10px;background:#f2f8f3;border-left:3px solid #2c8a4e;padding:10px 14px;border-radius:0 6px 6px 0;font-size:calc(14px * var(--txt-scale));line-height:1.6;}
   .pq-sol p{margin:6px 0;}
   .pq-revisit{margin-top:10px;background:#faf0f0;border-left:3px solid #b23a3a;padding:8px 12px;border-radius:0 6px 6px 0;font-size:calc(13px * var(--txt-scale));color:#7a3030;line-height:1.5;}
-  .pq-tier{margin:20px 2px 10px;font-size:13px;font-weight:800;letter-spacing:.05em;color:#2c6a44;text-transform:uppercase;border-bottom:2px solid rgba(44,138,78,.25);padding-bottom:4px;}
-  .pq-tier-sub{font-weight:500;text-transform:none;letter-spacing:0;color:#8a8a80;font-size:12px;margin-left:8px;}
+  .pq-tier{margin:20px 2px 10px;font-size:calc(13px * var(--txt-scale));font-weight:800;letter-spacing:.05em;color:#2c6a44;text-transform:uppercase;border-bottom:2px solid rgba(44,138,78,.25);padding-bottom:4px;}
+  .pq-tier-sub{font-weight:500;text-transform:none;letter-spacing:0;color:#8a8a80;font-size:calc(12px * var(--txt-scale));margin-left:8px;}
   .pq-tier-stretch{color:#8a5a10;border-bottom-color:rgba(216,160,18,.3);}
-  .pq-lock{margin:20px 2px 10px;padding:12px 14px;border:1.5px dashed #c8a84a;border-radius:8px;background:#fdf8e8;color:#7a5c10;font-size:13px;}
+  .pq-lock{margin:20px 2px 10px;padding:12px 14px;border:1.5px dashed #c8a84a;border-radius:8px;background:#fdf8e8;color:#7a5c10;font-size:calc(13px * var(--txt-scale));}
   .pq-lock-count{float:right;font-weight:800;}
   .pq-diff{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:15px;letter-spacing:3px;white-space:nowrap;line-height:1;}
   .pq-diff .d-on{color:#e0a010;}
@@ -221,14 +221,18 @@
   .math-body .msec ul,.math-body .msec ol{font-size:calc(15px * var(--txt-scale));line-height:1.65;color:#222;
     margin:0 0 8px;padding-left:20px;}
   .math-body .msec li{margin-bottom:4px;}
-  .math-body .mdisp{text-align:center;margin:12px 0;overflow-x:auto;padding:4px 0;}
-  .math-body .katex-display{margin:0;}
+  .math-body .mdisp{text-align:center;margin:12px 0;overflow-x:auto;padding:4px 0;font-size:calc(16px * var(--txt-scale));}
+  /* display math scales with the reading-size setting, and each formula scrolls on its own
+     instead of shoving the whole modal sideways on a phone */
+  .math-body .katex-display{margin:0;overflow-x:auto;overflow-y:hidden;padding:2px 0;}
+  /* rigor entries have no .mdisp wrapper, so give their display math the same treatment */
+  #rigor-body .katex-display{font-size:calc(16px * var(--txt-scale));text-align:center;margin:12px 0;padding:4px 0;}
   .math-body .mintro{font-size:calc(15.5px * var(--txt-scale));line-height:1.7;color:#1a1a1a;background:#f5f6fb;border-radius:8px;padding:13px 15px;margin:0 0 16px;}
-  .math-body .mwork,.math-body .medge,.math-body .mleap{padding:11px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+  .math-body .mwork,.math-body .medge,.math-body .mleap{padding:11px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:calc(15px * var(--txt-scale));}
   .math-body .mwork{border-left:3px solid #2c8a4e;background:#f1f8f3;}
   .math-body .medge{border-left:3px solid #d8a012;background:#fdf7e8;}
   .math-body .mleap{border-left:3px solid #2f6fb0;background:#eef4fb;}
-  .math-body .clbl{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
+  .math-body .clbl{display:block;font-size:calc(11px * var(--txt-scale));font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
   .math-body .mwork .clbl{color:#2c7a47;}
   .math-body .medge .clbl{color:#a87b06;}
   .math-body .mleap .clbl{color:#235488;}
@@ -236,12 +240,12 @@
   .math-body .mwork p:last-child,.math-body .medge p:last-child,.math-body .mleap p:last-child{margin-bottom:0;}
   .math-body .mfig{margin:16px 0;text-align:center;}
   .math-body .mfig svg{max-width:100%;height:auto;background:#fcfcfd;border:1px solid #eee;border-radius:8px;}
-  .math-body .mfig .mcap{display:block;font-size:13px;line-height:1.5;color:#777;margin-top:7px;padding:0 8px;}
+  .math-body .mfig .mcap{display:block;font-size:calc(13px * var(--txt-scale));line-height:1.5;color:#777;margin-top:7px;padding:0 8px;}
   .math-body .mfig .mcap b{color:#555;}
   .math-body .mrecall{background:#f2f8f3;border:1px solid #cfe5d4;border-left:4px solid #2c8a4e;
     border-radius:8px;padding:14px 18px 12px;margin:26px 0 4px;}
   .math-body .mrecall ul{margin:8px 0 0;padding-left:20px;}
-  .math-body .mrecall li{margin:5px 0;font-size:14.5px;line-height:1.55;}
+  .math-body .mrecall li{margin:5px 0;font-size:calc(14.5px * var(--txt-scale));line-height:1.55;}
   #panel .pclose{position:fixed;top:12px;right:12px;border:1px solid #ccc;background:transparent;border-radius:50%;
     width:30px;height:30px;font-size:16px;cursor:pointer;color:#333;z-index:7;}
   #panel .ppin{position:fixed;top:12px;right:48px;border:1px solid #ccc;background:transparent;border-radius:50%;
@@ -294,7 +298,7 @@
   line.jlink{stroke:#e07800;stroke-width:2.2px;stroke-dasharray:none;opacity:.9;}
   line.jlink.hot{stroke:#ff9500;stroke-width:3px;}
   #panel .connrow{margin:6px 0;}
-  #panel .connrow .why{font-size:12.5px;color:#666;line-height:1.4;margin:2px 0 0 2px;}
+  #panel .connrow .why{font-size:calc(12.5px * var(--txt-scale));color:#666;line-height:1.4;margin:2px 0 0 2px;}
   .prog-ui{margin-top:14px;border-top:1px solid #e8e8e8;padding-top:10px;}
   .pg-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
   .pgbtn{font-family:inherit;font-size:12px;border:1px solid #ccc;background:#fff;color:#333;padding:6px 10px;border-radius:14px;cursor:pointer;}
@@ -325,7 +329,10 @@
   .note-inner .node-note{width:100%;min-height:190px;border:none;border-radius:0;margin:0;padding:12px 14px;box-sizing:border-box;resize:vertical;font-size:calc(14px * var(--txt-scale));}
   #gami-bubble, #lost-popup {position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:9997;display:flex;gap:10px;align-items:flex-start;
     max-width:min(500px,92vw);background:#fffdf5;border:1.5px solid #c8a84a;border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,.28);padding:12px 34px 12px 12px;animation:gbIn .35s ease;}
+    box-shadow:0 10px 30px rgba(0,0,0,.28);padding:12px 34px 12px 12px;animation:gbIn .35s ease;
+    /* border-box so padding+border count INSIDE the width — without this the bubble
+       measured 386px on a 375px phone and was clipped at the screen edge */
+    box-sizing:border-box;}
   @keyframes gbIn{0%{opacity:0;transform:translateX(-50%) translateY(14px);}100%{opacity:1;transform:translateX(-50%) translateY(0);}}
   .gb-face{width:34px;height:34px;border-radius:50%;flex:0 0 auto;}
   .gb-text{font-size:13px;line-height:1.5;color:#3a3222;}
@@ -345,7 +352,7 @@
   .pgbtn[data-st="got"].active{background:#2c8a4e;border-color:#1f6a3a;color:#fff;}
   .node-note{width:100%;min-height:64px;resize:vertical;font-family:inherit;font-size:13.5px;
     border:1px solid #ccc;border-radius:6px;padding:8px;color:#222;background:#fff;box-sizing:border-box;}
-  .node-note:focus{outline:none;border-color:#888;}
+  .node-note:focus{outline:none;border-color:#888(0, 94%, 51%);}
   @media(max-width:600px){#banner{bottom:16px;top:auto;}}
   .msearch{width:260px;max-width:400px;font-family:inherit;font-size:13px;border:1px solid #c8c8c8;border-radius:6px;padding:6px 10px;color:#222;background:#fff;}
   .msearch:focus{outline:none;border-color:#888;}
@@ -988,7 +995,7 @@ html.dark{background:#14161a;}
 .dark #panel .prow{color:#b5b1a8;}
 .dark #panel .prow b{color:#e6e3dc;}
 .dark #panel .pshort{color:#b3aea4;}
-.dark #panel .pclose,.dark #panel .ppin{background:#2c3037;color:#c8c4bc;}
+.dark #panel .pclose,.dark #panel .ppin{background:#2c3037;color:#c8c4bc;border-color:#444;}
 .dark #panel .ppin:hover{background:#383d45;}
 .dark #panel .chip{background:#23262c;color:#d8d4cc;}
 .dark #panel .chip:hover{background:#2c3037;}
@@ -1039,6 +1046,9 @@ html.dark{background:#14161a;}
 .dark #note-close{background:#3a3222;color:#d4b45a;}
 .dark .pnotebtn.has-note::after{border-color:#181b1f;}
 .dark #gami-bubble, .dark #lost-popup {background:#221f15;border-color:#8a6a2a;}
+/* Full Depth book credit: the inline color:#777 is unreadable on the dark card.
+   Inline styles need !important to override. Lighter grey, deliberately not white. */
+.dark #full-depth-recommendation{color:#b3aea4 !important;}
 .dark .gb-text{color:#e0d5b8;}
 .dark .gb-btn{background:#3a3222;color:#e8d8b0;border-color:#7c6a48;}
 .dark .gb-btn:hover{background:#4a4030;}
@@ -1180,8 +1190,8 @@ html.dark{color-scheme:dark;}
 
 .dark #lost-text{color:#e6e3dc !important;}
 
-.dark .pclose, .dark .ppin { background: transparent; border: 1px solid #777; color: #ddd; }
-.dark .pclose:hover, .dark .ppin:hover { background: rgba(255,255,255,0.1); border-color: #999; }
+.dark .pclose, .dark .ppin { background: transparent; border: 1px solid #444; color: #ddd; }
+.dark .pclose:hover, .dark .ppin:hover { background: rgba(255,255,255,0.1); border-color: #666; }
 .dark #panel .ppin.active { background:#3a86ff; color:#fff; border-color:#3a86ff; box-shadow:0 0 6px rgba(58,134,255,.4); }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1190,7 +1200,10 @@ html.dark{color-scheme:dark;}
 <script>/* theme init: stored pref, else system — before first paint */
 (function(){try{var th=localStorage.getItem('mathmap_theme');var dark=th?th==='dark':(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);if(dark)document.documentElement.classList.add('dark');}catch(e){}})();
 window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif','verdana':'"Noto Sans",Verdana,Geneva,Tahoma,sans-serif','georgia':'Lora,Georgia,"Times New Roman",serif','trebuchet':'"Fira Sans","Trebuchet MS","Segoe UI",Tahoma,sans-serif','easyread':'"Comic Neue","Comic Sans MS","Trebuchet MS","Segoe UI",sans-serif'};
-(function(){try{var d=JSON.parse(localStorage.getItem('mathmap_display')||'{}')||{};var sz=Math.max(85,Math.min(150,d.size||100));document.documentElement.style.setProperty('--txt-scale',sz/100);if(d.font&&window.__FONTS[d.font])document.documentElement.style.setProperty('--site-font',window.__FONTS[d.font]);}catch(e){}})();
+/* Reading size: honour a saved choice; otherwise default to 90% on phones, 100% on desktop.
+   Nothing is written to storage here, so the default stays adaptive until the user picks a size. */
+window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.innerWidth<=820)?90:100;}catch(e){return 100;}};
+(function(){try{var d=JSON.parse(localStorage.getItem('mathmap_display')||'{}')||{};var sz=Math.max(85,Math.min(150,d.size||window.__DEFAULT_TXT_SIZE()));document.documentElement.style.setProperty('--txt-scale',sz/100);if(d.font&&window.__FONTS[d.font])document.documentElement.style.setProperty('--site-font',window.__FONTS[d.font]);}catch(e){}})();
 </script>
             <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1514,6 +1527,14 @@ window.__FONTS={'default':'-apple-system,BlinkMacSystemFont,"Helvetica Neue",Hel
       <button id="rigor-close">×</button>
     </div>
     <div class="math-body" id="rigor-body"></div>
+    <div style="padding: 15px 20px; border-top: 1px solid rgba(128,128,128,0.2); text-align: center; background: inherit; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+      <a href="#" onclick="alert('This would download or seamlessly open the full depth PDF or Markdown textbook for this specific node!'); return false;" id="full-depth-link" style="display:inline-block; padding:8px 16px; background:#3a86ff; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold; font-size: 14px; box-shadow: 0 2px 4px rgba(58,134,255,0.3); transition: all 0.2s;">
+        Explore Full Depth ↗
+      </a>
+      <div id="full-depth-recommendation" style="margin-top: 10px; font-size: 13px; color: #777; font-style: italic;">
+        [Node Name]: Chapter X.Y (Pages A - B)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2374,6 +2395,162 @@ let selId=null;
 //   elliptic, modular, langlands, transc, alg, group, rep, galois, linalg,
 //   eigen, ring, lie, homalg, real, series, measure, complex, holo, acont,
 //   func, operator, fourier, de, pde
+
+const FULL_DEPTH_MAP = {
+  "math": { "pdf": "pdfs/book_of_proof_r_hammack.pdf", "rec": "Book of Proof (Richard Hammack)" },
+  "coremath": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "arith": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "negnum": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "fracdec": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "percent": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "ratio": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "prealg": { "pdf": "pdfs/prealgebra_2e_openstax.pdf", "rec": "Prealgebra 2e (OpenStax)" },
+  "elemalg": { "pdf": "pdfs/elementary_algebra_2e_openstax.pdf", "rec": "Elementary Algebra 2e (OpenStax)" },
+  "lineq": { "pdf": "pdfs/elementary_algebra_2e_openstax.pdf", "rec": "Elementary Algebra 2e (OpenStax)" },
+  "quadratics": { "pdf": "pdfs/elementary_algebra_2e_openstax.pdf", "rec": "Elementary Algebra 2e (OpenStax)" },
+  "funcgraph": { "pdf": "pdfs/algebra_and_trigonometry_2e_openstax.pdf", "rec": "Algebra and Trigonometry 2e (OpenStax)" },
+  "trig": { "pdf": "pdfs/algebra_and_trigonometry_2e_openstax.pdf", "rec": "Algebra and Trigonometry 2e (OpenStax)" },
+  "unitcircle": { "pdf": "pdfs/algebra_and_trigonometry_2e_openstax.pdf", "rec": "Algebra and Trigonometry 2e (OpenStax)" },
+  "coord": { "pdf": "pdfs/algebra_and_trigonometry_2e_openstax.pdf", "rec": "Algebra and Trigonometry 2e (OpenStax)" },
+  "vectors": { "pdf": "pdfs/algebra_and_trigonometry_2e_openstax.pdf", "rec": "Algebra and Trigonometry 2e (OpenStax)" },
+  "explog": { "pdf": "pdfs/algebra_and_trigonometry_2e_openstax.pdf", "rec": "Algebra and Trigonometry 2e (OpenStax)" },
+  "precalc": { "pdf": "pdfs/precalculus_2e_openstax.pdf", "rec": "Precalculus 2e (OpenStax)" },
+  "sequences": { "pdf": "pdfs/precalculus_2e_openstax.pdf", "rec": "Precalculus 2e (OpenStax)" },
+  "geobasics": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
+  "areavol": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
+  "circles": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
+  "similarity": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
+  "statsbasics": { "pdf": "pdfs/introductory_statistics_2e_openstax.pdf", "rec": "Introductory Statistics 2e (OpenStax)" },
+  "calculus": { "pdf": "pdfs/calculus_volume_1_openstax.pdf", "rec": "Calculus Volume 1 (OpenStax)" },
+  "multivar": { "pdf": "pdfs/calculus_volume_3_openstax.pdf", "rec": "Calculus Volume 3 (OpenStax)" },
+  "countprob": { "pdf": "pdfs/introduction_to_probability_grinstead_snell.pdf", "rec": "Introduction to Probability (Grinstead & Snell)" },
+  "prob": { "pdf": "pdfs/introduction_to_probability_grinstead_snell.pdf", "rec": "Introduction to Probability (Grinstead & Snell)" },
+  "found": { "pdf": "pdfs/friendly_intro_logic_leary_kristiansen.pdf", "rec": "A Friendly Introduction to Mathematical Logic (Leary & Kristiansen)" },
+  "logic": { "pdf": "pdfs/friendly_intro_logic_leary_kristiansen.pdf", "rec": "A Friendly Introduction to Mathematical Logic (Leary & Kristiansen)" },
+  "prooftheory": { "pdf": "pdfs/intro_proof_theory_s_buss.pdf", "rec": "An Introduction to Proof Theory (Samuel Buss)" },
+  "highercat": { "pdf": "pdfs/higher_topos_theory_j_lurie.pdf", "rec": "Higher Topos Theory (Jacob Lurie)" },
+  "derived": { "pdf": "pdfs/higher_topos_theory_j_lurie.pdf", "rec": "Higher Topos Theory (Jacob Lurie)" },
+  "typeth": { "pdf": "pdfs/homotopy_type_theory_univalent_foundations.pdf", "rec": "Homotopy Type Theory (Univalent Foundations Program)" },
+  "set": { "pdf": "pdfs/set_theory_w_weiss.pdf", "rec": "An Introduction to Set Theory (William A. R. Weiss)" },
+  "comput": { "pdf": "pdfs/theory_of_computation_maheshwari_smid.pdf", "rec": "Introduction to Theory of Computation (Maheshwari & Smid)" },
+  "tcs": { "pdf": "pdfs/theory_of_computation_maheshwari_smid.pdf", "rec": "Introduction to Theory of Computation (Maheshwari & Smid)" },
+  "godel": { "pdf": "pdfs/godels_theorems_p_smith.pdf", "rec": "An Introduction to Gödel's Theorems (Peter Smith)" },
+  "cat": { "pdf": "pdfs/category_theory_in_context_e_riehl.pdf", "rec": "Category Theory in Context (Emily Riehl)" },
+  "model": { "pdf": "pdfs/model_theory_weiss_dmello.pdf", "rec": "Fundamentals of Model Theory (Weiss & D'Mello)" },
+  "descset": { "pdf": "pdfs/descriptive_set_theory_d_marker.pdf", "rec": "Descriptive Set Theory (David Marker, lecture notes)" },
+  "nt": { "pdf": "pdfs/elementary_number_theory_w_stein.pdf", "rec": "Elementary Number Theory: Primes, Congruences, and Secrets (William Stein)" },
+  "elemnt": { "pdf": "pdfs/elementary_number_theory_w_stein.pdf", "rec": "Elementary Number Theory: Primes, Congruences, and Secrets (William Stein)" },
+  "cft": { "pdf": "pdfs/class_field_theory_j_s_milne.pdf", "rec": "Class Field Theory (J.S. Milne)" },
+  "ant": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
+  "zeta": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
+  "euler": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
+  "pnt": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
+  "lfunc": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
+  "sieve": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
+  "explicit": { "pdf": "pdfs/analytic_number_theory_p_garrett.pdf", "rec": "Number Theory Notes (Paul Garrett)" },
+  "rh": { "pdf": "pdfs/riemann_hypothesis_clay_bombieri.pdf", "rec": "The Riemann Hypothesis — Official Problem Description (Enrico Bombieri, Clay Institute)" },
+  "algnt": { "pdf": "pdfs/algebraic_number_theory_j_s_milne.pdf", "rec": "Algebraic Number Theory (J.S. Milne)" },
+  "padic": { "pdf": "pdfs/p_adic_numbers_j_evertse.pdf", "rec": "p-adic Numbers (Jan-Hendrik Evertse, course notes)" },
+  "arithgeo": { "pdf": "pdfs/elliptic_curves_j_s_milne.pdf", "rec": "Elliptic Curves (J.S. Milne)" },
+  "elliptic": { "pdf": "pdfs/elliptic_curves_j_s_milne.pdf", "rec": "Elliptic Curves (J.S. Milne)" },
+  "modular": { "pdf": "pdfs/modular_forms_j_s_milne.pdf", "rec": "Modular Functions and Modular Forms (J.S. Milne)" },
+  "langlands": { "pdf": "pdfs/langlands_program_s_gelbart.pdf", "rec": "An Elementary Introduction to the Langlands Program (Stephen Gelbart)" },
+  "transc": { "pdf": "pdfs/transcendence_m_waldschmidt.pdf", "rec": "Introduction to Transcendence & Diophantine Methods (Michel Waldschmidt)" },
+  "diophantine": { "pdf": "pdfs/transcendence_m_waldschmidt.pdf", "rec": "Introduction to Transcendence & Diophantine Methods (Michel Waldschmidt)" },
+  "alg": { "pdf": "pdfs/abstract_algebra_t_judson.pdf", "rec": "Abstract Algebra: Theory and Applications (Thomas Judson)" },
+  "ring": { "pdf": "pdfs/abstract_algebra_t_judson.pdf", "rec": "Abstract Algebra: Theory and Applications (Thomas Judson)" },
+  "ktheory": { "pdf": "pdfs/algebraic_k_theory_c_weibel.pdf", "rec": "The K-book: An Introduction to Algebraic K-theory (Charles Weibel)" },
+  "ggt": { "pdf": "pdfs/geometric_group_theory_c_loeh.pdf", "rec": "Geometric Group Theory: An Introduction (Clara Löh)" },
+  "univalg": { "pdf": "pdfs/universal_algebra_burris_sankappanavar.pdf", "rec": "A Course in Universal Algebra (Burris & Sankappanavar)" },
+  "order": { "pdf": "pdfs/universal_algebra_burris_sankappanavar.pdf", "rec": "A Course in Universal Algebra (Burris & Sankappanavar)" },
+  "group": { "pdf": "pdfs/group_theory_j_s_milne.pdf", "rec": "Group Theory (J.S. Milne)" },
+  "rep": { "pdf": "pdfs/representation_theory_p_etingof.pdf", "rec": "Introduction to Representation Theory (Etingof et al.)" },
+  "galois": { "pdf": "pdfs/fields_and_galois_theory_j_s_milne.pdf", "rec": "Fields and Galois Theory (J.S. Milne)" },
+  "linalg": { "pdf": "pdfs/linear_algebra_done_wrong_s_treil.pdf", "rec": "Linear Algebra Done Wrong (Sergei Treil)" },
+  "eigen": { "pdf": "pdfs/linear_algebra_done_wrong_s_treil.pdf", "rec": "Linear Algebra Done Wrong (Sergei Treil)" },
+  "commalg": { "pdf": "pdfs/commutative_algebra_altman_kleiman.pdf", "rec": "A Term of Commutative Algebra (Altman & Kleiman)" },
+  "lie": { "pdf": "pdfs/lie_groups_algebras_a_kirillov.pdf", "rec": "An Introduction to Lie Groups and Lie Algebras (Alexander Kirillov Jr.)" },
+  "homalg": { "pdf": "pdfs/homological_algebra_p_schapira.pdf", "rec": "Categories and Homological Algebra (Pierre Schapira)" },
+  "anal": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)" },
+  "real": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)" },
+  "series": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)" },
+  "opalg": { "pdf": "pdfs/operator_algebras_v_jones.pdf", "rec": "Von Neumann Algebras (Vaughan Jones, lecture notes)" },
+  "calcvar": { "pdf": "pdfs/calculus_of_variations_p_olver.pdf", "rec": "The Calculus of Variations (Peter Olver, lecture notes)" },
+  "scv": { "pdf": "pdfs/tasty_bits_scv_j_lebl.pdf", "rec": "Tasty Bits of Several Complex Variables (Jiří Lebl)" },
+  "fourier": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)" },
+  "harmonic": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)" },
+  "distrib": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)" },
+  "measure": { "pdf": "pdfs/measure_integration_real_analysis_s_axler.pdf", "rec": "Measure, Integration & Real Analysis (Sheldon Axler, open access)" },
+  "complex": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)" },
+  "holo": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)" },
+  "acont": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)" },
+  "func": { "pdf": "pdfs/functional_analysis_buhler_salamon.pdf", "rec": "Functional Analysis (Theo Bühler & Dietmar Salamon)" },
+  "inteq": { "pdf": "pdfs/functional_analysis_buhler_salamon.pdf", "rec": "Functional Analysis (Theo Bühler & Dietmar Salamon)" },
+  "operator": { "pdf": "pdfs/mathematical_methods_qm_g_teschl.pdf", "rec": "Mathematical Methods in Quantum Mechanics (Gerald Teschl)" },
+  "de": { "pdf": "pdfs/differential_equations_j_lebl.pdf", "rec": "Notes on Diffy Qs: Differential Equations for Engineers (Jiří Lebl)" },
+  "pde": { "pdf": "pdfs/pde_v_ivrii.pdf", "rec": "Partial Differential Equations (Victor Ivrii)" },
+  "navier": { "pdf": "pdfs/navier_stokes_clay_fefferman.pdf", "rec": "Existence and Smoothness of the Navier–Stokes Equation — Official Problem Description (Charles Fefferman, Clay Institute)" },
+  "dyn": { "pdf": "pdfs/chaos_book_p_cvitanovic.pdf", "rec": "Chaos: Classical and Quantum (Cvitanović et al., ChaosBook.org)" },
+  "fractal": { "pdf": "pdfs/fractals_probability_analysis_bishop_peres.pdf", "rec": "Fractals in Probability and Analysis (Bishop & Peres)" },
+  "specfn": { "pdf": "pdfs/special_functions_j_derezinski.pdf", "rec": "Hypergeometric Type Functions and Their Symmetries (Jan Dereziński)" },
+  "geo": { "pdf": "pdfs/euclids_elements_r_fitzpatrick.pdf", "rec": "Euclid's Elements of Geometry (Richard Fitzpatrick translation)" },
+  "euclid": { "pdf": "pdfs/euclids_elements_r_fitzpatrick.pdf", "rec": "Euclid's Elements of Geometry (Richard Fitzpatrick translation)" },
+  "convex": { "pdf": "pdfs/discrete_geometry_i_pak.pdf", "rec": "Lectures on Discrete and Polyhedral Geometry (Igor Pak)" },
+  "tropical": { "pdf": "pdfs/tropical_geometry_maclagan_sturmfels.pdf", "rec": "Introduction to Tropical Geometry (Maclagan & Sturmfels)" },
+  "symplectic": { "pdf": "pdfs/symplectic_geometry_cannas_da_silva.pdf", "rec": "Lectures on Symplectic Geometry (Ana Cannas da Silva)" },
+  "noneuclid": { "pdf": "pdfs/geometry_cosmic_topology_m_hitchman.pdf", "rec": "Geometry with an Introduction to Cosmic Topology (Michael Hitchman)" },
+  "diffgeo": { "pdf": "pdfs/differential_geometry_t_shifrin.pdf", "rec": "Differential Geometry: A First Course in Curves and Surfaces (Theodore Shifrin)" },
+  "manifold": { "pdf": "pdfs/manifolds_differential_forms_r_sjamaar.pdf", "rec": "Manifolds and Differential Forms (Reyer Sjamaar)" },
+  "riemannian": { "pdf": "pdfs/riemannian_geometry_s_gudmundsson.pdf", "rec": "An Introduction to Riemannian Geometry (Sigmundur Gudmundsson)" },
+  "alggeo": { "pdf": "pdfs/foundations_of_algebraic_geometry_r_vakil.pdf", "rec": "The Rising Sea: Foundations of Algebraic Geometry (Ravi Vakil)" },
+  "schemes": { "pdf": "pdfs/foundations_of_algebraic_geometry_r_vakil.pdf", "rec": "The Rising Sea: Foundations of Algebraic Geometry (Ravi Vakil)" },
+  "hodge": { "pdf": "pdfs/hodge_theory_cattani_elzein.pdf", "rec": "Hodge Theory (Cattani, El Zein, Griffiths, Lê, eds.)" },
+  "ncgeo": { "pdf": "pdfs/noncommutative_geometry_a_connes.pdf", "rec": "Noncommutative Geometry (Alain Connes)" },
+  "topo": { "pdf": "pdfs/topology_without_tears_s_morris.pdf", "rec": "Topology Without Tears (Sidney Morris)" },
+  "pointset": { "pdf": "pdfs/topology_without_tears_s_morris.pdf", "rec": "Topology Without Tears (Sidney Morris)" },
+  "difftop": { "pdf": "pdfs/differential_topology_robbin_salamon.pdf", "rec": "Introduction to Differential Topology (Robbin & Salamon)" },
+  "algtop": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)" },
+  "homotopy": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)" },
+  "homology": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)" },
+  "lowdim": { "pdf": "pdfs/three_manifolds_a_hatcher.pdf", "rec": "Notes on Basic 3-Manifold Topology (Allen Hatcher)" },
+  "poincare": { "pdf": "pdfs/ricci_flow_poincare_morgan_tian.pdf", "rec": "Ricci Flow and the Poincaré Conjecture (Morgan & Tian)" },
+  "knot": { "pdf": "pdfs/knots_knotes_j_roberts.pdf", "rec": "Knots Knotes (Justin Roberts)" },
+  "comb": { "pdf": "pdfs/applied_combinatorics_keller_trotter.pdf", "rec": "Applied Combinatorics (Keller & Trotter)" },
+  "designs": { "pdf": "pdfs/combinatorial_designs_m_meszka.pdf", "rec": "Combinatorial Designs (Mariusz Meszka, lecture notes)" },
+  "algcomb": { "pdf": "pdfs/algebraic_combinatorics_r_stanley.pdf", "rec": "Topics in Algebraic Combinatorics (Richard Stanley)" },
+  "matroid": { "pdf": "pdfs/matroid_theory_survey_j_oxley.pdf", "rec": "What is a Matroid? (James Oxley, survey)" },
+  "enumcomb": { "pdf": "pdfs/enumerative_combinatorics_r_stanley.pdf", "rec": "Enumerative Combinatorics Vol. 1 (Richard Stanley)" },
+  "graph": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)" },
+  "ramsey": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)" },
+  "addcomb": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)" },
+  "opt": { "pdf": "pdfs/combinatorial_optimization_a_schrijver.pdf", "rec": "A Course in Combinatorial Optimization (Alexander Schrijver)" },
+  "ergodic": { "pdf": "pdfs/ergodic_theory_o_sarig.pdf", "rec": "Lecture Notes on Ergodic Theory (Omri Sarig)" },
+  "probth": { "pdf": "pdfs/probability_theory_examples_r_durrett.pdf", "rec": "Probability: Theory and Examples (Rick Durrett)" },
+  "stoch": { "pdf": "pdfs/stochastic_processes_r_durrett.pdf", "rec": "Essentials of Stochastic Processes (Rick Durrett)" },
+  "markov": { "pdf": "pdfs/markov_chains_mixing_times_levin_peres.pdf", "rec": "Markov Chains and Mixing Times (Levin, Peres & Wilmer)" },
+  "brownian": { "pdf": "pdfs/brownian_motion_morters_peres.pdf", "rec": "Brownian Motion (Mörters & Peres)" },
+  "mathfin": { "pdf": "pdfs/stochastic_calculus_van_handel.pdf", "rec": "Stochastic Calculus, Filtering, and Stochastic Control (Ramon van Handel, lecture notes)" },
+  "rmt": { "pdf": "pdfs/random_matrices_anderson_guionnet_zeitouni.pdf", "rec": "An Introduction to Random Matrices (Anderson, Guionnet & Zeitouni)" },
+  "stats": { "pdf": "pdfs/openintro_statistics_4e.pdf", "rec": "OpenIntro Statistics (Diez, Çetinkaya-Rundel & Barr)" },
+  "info": { "pdf": "pdfs/information_theory_d_mackay.pdf", "rec": "Information Theory, Inference, and Learning Algorithms (David MacKay)" },
+  "percolation": { "pdf": "pdfs/probability_on_trees_lyons_peres.pdf", "rec": "Probability on Trees and Networks (Lyons & Peres)" },
+  "applied": { "pdf": "pdfs/scientific_computing_j_chasnov.pdf", "rec": "Scientific Computing (Jeffrey Chasnov, lecture notes)" },
+  "complexity": { "pdf": "pdfs/computational_complexity_arora_barak.pdf", "rec": "Computational Complexity: A Modern Approach (Arora & Barak, draft)" },
+  "pnp": { "pdf": "pdfs/computational_complexity_arora_barak.pdf", "rec": "Computational Complexity: A Modern Approach (Arora & Barak, draft)" },
+  "crypto": { "pdf": "pdfs/applied_cryptography_boneh_shoup.pdf", "rec": "A Graduate Course in Applied Cryptography (Boneh & Shoup)" },
+  "numerical": { "pdf": "pdfs/numerical_methods_j_chasnov.pdf", "rec": "Numerical Methods (Jeffrey Chasnov, lecture notes)" },
+  "mathphys": { "pdf": "pdfs/mathematical_methods_for_physics_stone.pdf", "rec": "Mathematics for Physics (Stone & Goldbart)" },
+  "yangmills": { "pdf": "pdfs/yang_mills_clay_jaffe_witten.pdf", "rec": "Quantum Yang–Mills Theory (Jaffe & Witten, Clay official problem description)" },
+  "game": { "pdf": "pdfs/game_theory_alive_karlin_peres.pdf", "rec": "Game Theory, Alive (Karlin & Peres)" },
+  "cgt": { "pdf": "pdfs/game_theory_alive_karlin_peres.pdf", "rec": "Game Theory, Alive (Karlin & Peres)" },
+  "contopt": { "pdf": "pdfs/convex_optimization_s_boyd.pdf", "rec": "Convex Optimization (Boyd & Vandenberghe)" },
+  "learning": { "pdf": "pdfs/understanding_machine_learning_shalev_shwartz.pdf", "rec": "Understanding Machine Learning (Shalev-Shwartz & Ben-David)" },
+  "control": { "pdf": "pdfs/mathematical_control_theory_e_sontag.pdf", "rec": "Mathematical Control Theory (Eduardo Sontag)" },
+  "mathbio": { "pdf": "pdfs/mathematical_biology_j_chasnov.pdf", "rec": "Mathematical Biology (Jeffrey Chasnov, lecture notes)" },
+  "quantum": { "pdf": "pdfs/quantum_computing_r_de_wolf.pdf", "rec": "Quantum Computing: Lecture Notes (Ronald de Wolf)" },
+  "coding": { "pdf": "pdfs/coding_theory_guruswami_rudra_sudan.pdf", "rec": "Essential Coding Theory (Guruswami, Rudra & Sudan)" }
+};
+
 const MATH_DATA_P1 = {
 
 coremath: `<div class="mintro">This is the foundation the whole map rests on &mdash; the mathematics everyone meets in school, built in the order it should be learned. Numbers, the four operations, fractions, ratios, the first algebra, basic shapes, and the beginnings of trigonometry and probability: master these and the research continents above stop looking like a foreign country. Nothing here is too elementary to matter; the entire edifice of mathematics is these ideas, made precise and pushed further.</div>
@@ -2458,7 +2635,7 @@ coremath: `<div class="mintro">This is the foundation the whole map rests on &md
 <li>The ladder's order matters: arithmetic &rarr; fractions &rarr; ratio &rarr; algebra &rarr; geometry &rarr; trig &rarr; precalculus.</li>
 <li>Every rung is a prerequisite for the next &mdash; gaps below become walls above.</li>
 <li>Four threads run the whole way up: equality-preserving moves, proportional reasoning, functions, and proof.</li>
-<li>Mark rungs as <i>got</i> as you climb, and the map will point you onward.</li>
+<li>Mark rungs as <i>learned</i> as you climb, and the map will point you onward.</li>
 </ul></div>`,
 arith: `<div class="mintro">Arithmetic is the mathematics of <b>number and quantity</b> &mdash; counting, combining, comparing, and sharing. It is the first mathematics anyone learns and the bedrock every later branch quietly stands on: algebra is arithmetic with letters, calculus is arithmetic pushed to a limit, and number theory is the deep study of the very objects arithmetic manipulates. Get fluent here and the entire map has solid ground beneath it.</div>
 
@@ -13926,7 +14103,7 @@ const MATH_DATA = Object.assign({}, MATH_DATA_P1, MATH_DATA_P2);
     var content = MATH_DATA[selId];
     var d = byId[selId];
     titleEl.textContent = (d && d.label ? d.label : selId) + ' \u00b7 Mathematics';
-    if(content){
+        if(content){
       body.innerHTML = content;
     } else {
       body.innerHTML = '<p style="color:#aaa;padding:2rem">No detailed math content for this node yet.</p>';
@@ -13985,6 +14162,25 @@ const MATH_DATA = Object.assign({}, MATH_DATA_P1, MATH_DATA_P2);
     var content = RIGOR_DATA[selId];
     var d = byId[selId];
     titleEl.textContent = (d && d.label ? d.label : selId) + ' · Rigor';
+
+    var fdLink = document.getElementById('full-depth-link');
+    var fdRec = document.getElementById('full-depth-recommendation');
+    if (fdLink && fdRec) {
+      if (typeof FULL_DEPTH_MAP !== 'undefined' && FULL_DEPTH_MAP[selId]) {
+        var mapData = FULL_DEPTH_MAP[selId];
+        fdLink.href = mapData.pdf;
+        fdLink.target = "_blank";
+        fdLink.onclick = null; // Remove alert
+        fdLink.style.display = "inline-block";
+        fdRec.textContent = mapData.rec;
+        fdRec.style.display = "block";
+      } else {
+        fdLink.href = "#";
+        fdLink.removeAttribute("target");
+        fdLink.onclick = function() { alert('Full Depth PDF coming soon for ' + (d?d.label:selId) + '!'); return false; };
+        fdRec.textContent = (d?d.label:selId) + ": PDF mapping in progress.";
+      }
+    }
     body.innerHTML = content || '<p style="color:#aaa;padding:2rem">No rigorous content mapped for this node yet.</p>';
     modal.style.display = 'flex';
     body.scrollTop = 0;
@@ -14273,7 +14469,7 @@ document.getElementById("ppin").onclick=function(e){
     if (nodeNotes.length === 0) {
       const emptyDiv = document.createElement('div');
       emptyDiv.className = 'notes-empty';
-      emptyDiv.innerHTML = 'You haven\'t taken any notes on specific topics yet. <br>Click a node on the map and use the "Your notes" section in the left panel to add one!';
+      emptyDiv.innerHTML = 'You haven\'t taken any notes on specific topics yet. <br>Click a node on the map and use the "Note" section in the left panel to add one!';
       list.appendChild(emptyDiv);
       return;
     }
@@ -15502,7 +15698,9 @@ window.syncPracticeStatus = function(id){
   var val=document.getElementById('ud-textsize-val');
   var fontsWrap=document.getElementById('ud-fonts');
   if(!slider||!fontsWrap) return;
-  var d=read(); if(!d.size) d.size=100; if(!d.font) d.font='default';
+  var d=read();
+  if(!d.size) d.size=(window.__DEFAULT_TXT_SIZE?window.__DEFAULT_TXT_SIZE():100);
+  if(!d.font) d.font='default';
   slider.value=d.size; val.textContent=d.size+'%';
   function markFont(f){ fontsWrap.querySelectorAll('.ud-font-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.font===f); }); }
   markFont(d.font);
@@ -16551,538 +16749,6 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
    ✓/✗ self-marks persist; ✗ points back at the lesson §.
 ═══════════════════════════════════════════════════════ */
 var RIGOR_DATA = {
-areavol: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Measurement of Space</h3>
-<p>Area and Volume are the mathematical definitions of how much "stuff" fits inside a boundary. The entire theory rests on a single, inescapable axiom: the area of a rectangle is its Base multiplied by its Height. Every other formula for triangles, polygons, and circles is rigorously derived by slicing the shape into rectangles.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Dimensionality</h3>
-<p><b>Area (2D):</b> The number of $1 \\times 1$ unit squares required to perfectly cover a flat surface without overlapping.</p>
-<p><b>Volume (3D):</b> The number of $1 \\times 1 \\times 1$ unit cubes required to fill a 3D solid.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: Area of a Triangle</h3>
-<p><b>Theorem:</b> The area of any triangle is exactly half the area of a rectangle with the same base and height: $A = \\frac{1}{2} b h$.</p>
-<p><b>Proof (Via Geometric Dissection):</b>
-<br>Take any triangle with base $b$ and perpendicular height $h$.
-<br>Make a perfect, identical clone of this triangle.
-<br>Rotate the cloned triangle 180 degrees and attach it to one of the slanted sides of the original triangle.
-<br>Because the two triangles are identical, their corresponding angles sum perfectly to parallel lines, forming a Parallelogram.
-<br>The base of this parallelogram is $b$, and the height is $h$.
-<br>By shearing (Cavalieri's Principle), any parallelogram can be straightened into a rectangle without changing its area. So the area of the combined shape is exactly $b \\times h$.
-<br>Since the shape is made of two identical triangles, the area of one triangle must be exactly half of the total: $\\frac{1}{2} b h$. $\\blacksquare$</p>
-</div>
-`,
-circles: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Perfect Symmetry</h3>
-<p>The Circle is the most symmetrical object in two dimensions. It is defined simply as the set of all points in a plane that are at a perfectly identical distance (the radius) from a single center point. This rigid definition traps the irrational number $\\pi$ inside every circle in the universe.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Constant $\\pi$</h3>
-<p><b>$\\pi$ (Pi):</b> An absolute constant of nature. It is rigorously defined as the ratio of any circle's circumference $C$ to its diameter $d$. $\\pi = \\frac{C}{d}$. It is irrational (its decimal never ends) and transcendental (it is not the root of any algebraic equation).</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: Area of a Circle</h3>
-<p><b>Theorem (Archimedes, 250 BC):</b> The area of a circle is perfectly given by $A = \\pi r^2$.</p>
-<p><b>Proof (Via Infinite Dissection):</b>
-<br>We know the circumference of the circle is $C = 2\\pi r$.
-<br>Imagine slicing the circle into an enormous number (say, a billion) of identical, incredibly thin pie slices.
-<br>Unroll the circle. Take half of the slices and point them "up." Take the other half of the slices and point them "down," interleaving them with the upward slices to form a jagged, almost rectangular shape.
-<br>The height of this jagged rectangle is exactly the length of one slice, which is the radius $r$.
-<br>The width of the rectangle is made of the crusts of half the slices. Since all the crusts together make the circumference ($2\\pi r$), half of the crusts make $\\pi r$.
-<br>As the number of slices goes to infinity, the jagged edges become perfectly smooth and straight. The shape becomes a perfect rectangle.
-<br>The area of a rectangle is base $\\times$ height.
-<br>$$ A = (\\pi r) \\times (r) = \\pi r^2 $$
-<br>The curved space perfectly flattens into the algebraic formula. $\\blacksquare$</p>
-</div>
-`,
-similarity: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Invariance of Shape</h3>
-<p>Similarity is the geometry of zooming in and out. If you take a shape and scale it uniformly, the lengths change, but the internal angles and the <i>ratios</i> of the sides remain perfectly locked. This geometric invariance allows us to calculate the height of a mountain by measuring the shadow of a stick.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Scale Factor</h3>
-<p><b>Similar Polygons ($\\sim$):</b> Two polygons are similar if and only if all their corresponding angles are perfectly equal, and all their corresponding sides are proportional by a single constant scalar $k$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Square-Cube Law</h3>
-<p><b>Theorem (Galileo, 1638):</b> If a 2D shape is scaled by a factor of $k$, its Area scales by $k^2$. If a 3D solid is scaled by a factor of $k$, its Volume scales by $k^3$. This explains why ants can carry 50 times their body weight, but Godzilla would collapse under his own mass.</p>
-<p><b>Proof (Via Dimensionality):</b>
-<br>Consider a 3D rectangular box with dimensions $L$ (length), $W$ (width), and $H$ (height).
-<br>Its Area (the footprint on the ground) is $A = L \\times W$.
-<br>Its Volume is $V = L \\times W \\times H$.
-<br>Now, scale the box up by a factor of $k$. Every single 1D length is multiplied by $k$.
-<br>The new dimensions are $kL$, $kW$, and $kH$.
-<br>Calculate the New Area:
-<br>$$ A_{new} = (kL) \\times (kW) = k^2 (L \\times W) = k^2 A $$
-<br>Calculate the New Volume:
-<br>$$ V_{new} = (kL) \\times (kW) \\times (kH) = k^3 (L \\times W \\times H) = k^3 V $$
-<br>If a giant monster is scaled up by $k=10$, its cross-sectional bone area (which determines strength) increases by $100$. But its total volume (which determines weight) increases by $1,000$. The monster is 10 times weaker relative to its own mass. Geometry forbids giants. $\\blacksquare$</p>
-</div>
-`,
-trig: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Ratios of the Right Triangle</h3>
-<p>Trigonometry translates angles into lengths, and lengths into angles. It is based on a profound geometric fact: if you fix the angles of a right triangle, the triangle can scale up or down, but the ratio of any two sides is locked forever. These locked ratios are the trigonometric functions.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: SOH CAH TOA</h3>
-<p><b>Sine ($\\sin \\theta$):</b> The ratio of the Opposite side to the Hypotenuse.</p>
-<p><b>Cosine ($\\cos \\theta$):</b> The ratio of the Adjacent side to the Hypotenuse.</p>
-<p><b>Tangent ($\\tan \\theta$):</b> The ratio of the Opposite side to the Adjacent side (or $\\frac{\\sin \\theta}{\\cos \\theta}$).</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Pythagorean Identity</h3>
-<p><b>Theorem:</b> For any angle $\\theta$, it is an absolute mathematical certainty that $\\sin^2\\theta + \\cos^2\\theta = 1$.</p>
-<p><b>Proof (Via the Pythagorean Theorem):</b>
-<br>Consider a right triangle with an angle $\\theta$.
-<br>Let the side opposite the angle be $O$.
-<br>Let the side adjacent to the angle be $A$.
-<br>Let the hypotenuse be $H$.
-<br>By the definitions of trig functions:
-<br>$$ \\sin\\theta = \\frac{O}{H}, \\quad \\cos\\theta = \\frac{A}{H} $$
-<br>By the Pythagorean Theorem, the squares of the legs must equal the square of the hypotenuse:
-<br>$$ O^2 + A^2 = H^2 $$
-<br>We divide this entire equation by $H^2$ (which is allowed since $H > 0$):
-<br>$$ \\frac{O^2}{H^2} + \\frac{A^2}{H^2} = \\frac{H^2}{H^2} $$
-<br>By the laws of exponents, $\\frac{X^2}{Y^2} = (\\frac{X}{Y})^2$. We rewrite the terms:
-<br>$$ \\left(\\frac{O}{H}\\right)^2 + \\left(\\frac{A}{H}\\right)^2 = 1 $$
-<br>Substitute the trig definitions back in:
-<br>$$ (\\sin\\theta)^2 + (\\cos\\theta)^2 = 1 $$
-<br>This identity is the engine that drives almost all trigonometric proofs. $\\blacksquare$</p>
-</div>
-`,
-unitcircle: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Trigonometry Unleashed</h3>
-<p>The Unit Circle breaks trigonometry out of the prison of the right triangle. A triangle cannot have an angle larger than 90 degrees. But by placing a circle of radius 1 on the Cartesian coordinate plane, we can redefine Sine and Cosine as the pure $(y, x)$ coordinates of a point tracing the circle, allowing angles to go to infinity and become continuous waves.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Radians and Coordinates</h3>
-<p><b>Radian:</b> The true, natural measure of an angle. An angle of 1 Radian strictly means the arc length along the unit circle is exactly equal to 1 radius. A full circle is $2\\pi$ radians.</p>
-<p><b>The Coordinate Definition:</b> For any angle $\\theta$ tracing the unit circle, the x-coordinate of the point is exactly $\\cos\\theta$, and the y-coordinate is exactly $\\sin\\theta$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Law of Sines</h3>
-<p><b>Theorem:</b> In any triangle whatsoever, the ratio of a side's length to the sine of its opposite angle is a constant for all three sides. $\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$.</p>
-<p><b>Proof (Via Altitude):</b>
-<br>Take an arbitrary triangle with angles $A, B, C$ and opposite sides $a, b, c$.
-<br>Draw a vertical altitude line $h$ from the top vertex to the base $c$. This perfectly splits the large triangle into two smaller right triangles.
-<br>Look at the left right-triangle. The angle is $A$, the hypotenuse is $b$, and the opposite side is $h$.
-<br>By definition: $\\sin A = \\frac{h}{b}$.
-<br>Solve for the altitude: $h = b \\sin A$.
-<br>Look at the right right-triangle. The angle is $B$, the hypotenuse is $a$, and the opposite side is $h$.
-<br>By definition: $\\sin B = \\frac{h}{a}$.
-<br>Solve for the altitude: $h = a \\sin B$.
-<br>Since the altitude $h$ is the exact same line for both equations, we can set them equal to each other:
-<br>$$ b \\sin A = a \\sin B $$
-<br>Divide both sides by the product $(\\sin A \\sin B)$:
-<br>$$ \\frac{b}{\\sin B} = \\frac{a}{\\sin A} $$
-<br>By drawing altitudes from the other vertices, the equality holds for all three sides. The structure of the triangle is perfectly locked. $\\blacksquare$</p>
-</div>
-`,
-coord: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Marriage of Algebra and Geometry</h3>
-<p>Coordinate Geometry (invented by René Descartes in 1637) is the greatest revolution in elementary mathematics. By superimposing a grid over flat space, it allows us to assign a strict algebraic address $(x,y)$ to every point. This means we can solve geometric problems using algebraic equations, and visualize algebraic equations as geometric curves.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Cartesian Plane</h3>
-<p><b>Origin:</b> The point $(0,0)$ where the horizontal x-axis and vertical y-axis intersect.</p>
-<p><b>Distance Formula:</b> $d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$. It is literally the Pythagorean theorem applied to the grid.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Midpoint Formula</h3>
-<p><b>Theorem:</b> The exact center point between any two coordinates $(x_1, y_1)$ and $(x_2, y_2)$ is given by taking the simple average of their coordinates: $M = \\left( \\frac{x_1 + x_2}{2}, \\frac{y_1 + y_2}{2} \\right)$.</p>
-<p><b>Proof (Via Similar Triangles):</b>
-<br>Let $P_1 = (x_1, y_1)$ and $P_2 = (x_2, y_2)$. We want to find the midpoint $M = (x_m, y_m)$ on the line segment connecting them.
-<br>Draw a large right triangle whose hypotenuse is the full line segment $P_1 P_2$. The horizontal leg has length $(x_2 - x_1)$.
-<br>Draw a small right triangle whose hypotenuse is the segment $P_1 M$.
-<br>Because $M$ is the midpoint, the length of the small hypotenuse $P_1 M$ is exactly half the length of the large hypotenuse $P_1 P_2$.
-<br>Because the horizontal and vertical legs of both triangles are parallel to the x and y axes, the triangles share all the same angles. They are mathematically Similar Triangles.
-<br>By the laws of similarity, if the hypotenuse is scaled by $1/2$, every side must be scaled by exactly $1/2$.
-<br>Therefore, the horizontal leg of the small triangle is exactly half the horizontal leg of the large triangle.
-<br>The horizontal position of $M$ starts at $x_1$ and moves right by half the total distance:
-<br>$$ x_m = x_1 + \\frac{1}{2}(x_2 - x_1) $$
-<br>Distribute the half:
-<br>$$ x_m = x_1 + \\frac{1}{2}x_2 - \\frac{1}{2}x_1 $$
-<br>Combine the $x_1$ terms ($1 - 1/2 = 1/2$):
-<br>$$ x_m = \\frac{1}{2}x_1 + \\frac{1}{2}x_2 = \\frac{x_1 + x_2}{2} $$
-<br>The exact same logic applies to the vertical y-axis. The center of space is the average of the bounds. $\\blacksquare$</p>
-</div>
-`,
-vectors: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Magnitude and Direction</h3>
-<p>Vectors represent quantities that have both a size and a direction, like velocity or force. A number (a scalar) can only tell you "how fast", but a vector tells you "how fast, and where". They are the mathematical arrows that allow physicists to compute the trajectory of cannonballs and rockets.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Vector Operations</h3>
-<p><b>Vector Addition ($\\vec{u} + \\vec{v}$):</b> Placed tip-to-tail, the sum is the net displacement. Algebraically, you simply add their components: $(x_1 + x_2, y_1 + y_2)$.</p>
-<p><b>Dot Product ($\\vec{u} \\cdot \\vec{v}$):</b> A scalar number representing how much two vectors point in the same direction. It is the shadow of one vector cast onto the other, multiplied by the length. If it is 0, the vectors are perfectly perpendicular.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Cosine Formula for the Dot Product</h3>
-<p><b>Theorem:</b> The algebraic dot product of two vectors $(x_1x_2 + y_1y_2)$ is perfectly equivalent to the geometric definition: $|u| |v| \\cos\\theta$, where $\\theta$ is the angle between them.</p>
-<p><b>Proof (Via the Law of Cosines):</b>
-<br>Place vectors $\\vec{u}$ and $\\vec{v}$ starting at the origin, with an angle $\\theta$ between them.
-<br>Draw the vector connecting their tips. By vector subtraction, this vector is $\\vec{w} = \\vec{u} - \\vec{v}$.
-<br>These three vectors form a triangle.
-<br>By the Law of Cosines (the generalized Pythagorean theorem):
-<br>$$ |\\vec{w}|^2 = |\\vec{u}|^2 + |\\vec{v}|^2 - 2|\\vec{u}||\\vec{v}|\\cos\\theta $$
-<br>Substitute $\\vec{w} = \\vec{u} - \\vec{v}$:
-<br>$$ |\\vec{u} - \\vec{v}|^2 = |\\vec{u}|^2 + |\\vec{v}|^2 - 2|\\vec{u}||\\vec{v}|\\cos\\theta $$
-<br>Now, we evaluate the left side using the strict algebraic definition of vector magnitude ($|\\vec{v}|^2 = x^2 + y^2$).
-<br>Let $\\vec{u} = \\langle x_1, y_1 \\rangle$ and $\\vec{v} = \\langle x_2, y_2 \\rangle$.
-<br>The subtracted vector is $\\langle x_1 - x_2, y_1 - y_2 \\rangle$.
-<br>The squared magnitude is:
-<br>$$ (x_1 - x_2)^2 + (y_1 - y_2)^2 $$
-<br>Expand the squares:
-<br>$$ x_1^2 - 2x_1 x_2 + x_2^2 + y_1^2 - 2y_1 y_2 + y_2^2 $$
-<br>Group the terms by vector:
-<br>$$ (x_1^2 + y_1^2) + (x_2^2 + y_2^2) - 2(x_1 x_2 + y_1 y_2) $$
-<br>Notice that $(x_1^2 + y_1^2)$ is exactly $|\\vec{u}|^2$, and $(x_2^2 + y_2^2)$ is exactly $|\\vec{v}|^2$.
-<br>And the term $(x_1 x_2 + y_1 y_2)$ is exactly the algebraic Dot Product ($\\vec{u} \\cdot \\vec{v}$).
-<br>Substitute these back into the expanded equation:
-<br>$$ |\\vec{u}|^2 + |\\vec{v}|^2 - 2(\\vec{u} \\cdot \\vec{v}) $$
-<br>Now, set this algebraic expansion equal to our original Law of Cosines equation:
-<br>$$ |\\vec{u}|^2 + |\\vec{v}|^2 - 2(\\vec{u} \\cdot \\vec{v}) = |\\vec{u}|^2 + |\\vec{v}|^2 - 2|\\vec{u}||\\vec{v}|\\cos\\theta $$
-<br>Subtract $|\\vec{u}|^2$ and $|\\vec{v}|^2$ from both sides, and divide by $-2$:
-<br>$$ \\vec{u} \\cdot \\vec{v} = |\\vec{u}||\\vec{v}|\\cos\\theta $$
-<br>The algebra of components perfectly locks with the geometry of space. $\\blacksquare$</p>
-</div>
-`,
-precalc: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Preparation for Limits</h3>
-<p>Pre-Calculus is the final consolidation of algebra and trigonometry. It is the mastery of continuous functions—polynomials, rationals, exponentials, and sinusoids. It prepares the mind to analyze not just static points on a curve, but the dynamic, instantaneous rates of change that calculus will demand.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Asymptotes and Limits</h3>
-<p><b>Rational Function:</b> A function defined by the division of two polynomials $f(x) = \\frac{P(x)}{Q(x)}$.</p>
-<p><b>Asymptote:</b> An invisible geometric line that a function approaches infinitely closely as it heads toward infinity, or near a point where the function divides by zero. It is the boundary of the function's domain.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: The Difference Quotient</h3>
-<p>The entire bridge to Calculus rests on a single algebraic formula: $\\frac{f(x+h) - f(x)}{h}$. This is the slope of a secant line connecting two points on a curve separated by a tiny distance $h$. Pre-calculus asks you to algebraically simplify this fraction so that the $h$ in the denominator cancels out, allowing you (in Calculus) to safely set $h=0$ without blowing up the universe.</p>
-</div>
-`,
-explog: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Mathematics of Runaway Growth</h3>
-<p>Exponential functions model systems where the rate of growth is directly proportional to the current size—population growth, nuclear chain reactions, and compound interest. Logarithms are their exact inverses; they are the mathematical tools designed to dismantle exponents and bring variables back down to earth.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Base $e$</h3>
-<p><b>Exponential Function ($y = a^x$):</b> The variable is in the exponent. As $x$ increases, the value multiplies repeatedly.</p>
-<p><b>The Constant $e$ (2.718...):</b> Euler's number. The unique, absolute base of natural growth. It is the mathematical limit of compounding interest infinitely fast: $e = \\lim_{n \\to \\infty} (1 + 1/n)^n$. If $f(x) = e^x$, its slope is exactly $e^x$ everywhere.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Logarithm Power Rule</h3>
-<p><b>Theorem:</b> For any base, $\\log(x^y) = y \\cdot \\log(x)$. This is the most powerful algebraic tool for solving exponential equations, because it allows you to pull a variable down from an exponent.</p>
-<p><b>Proof (Via Exponential Identities):</b>
-<br>Let $b$ be the base of the logarithm.
-<br>Let $M = \\log_b(x)$.
-<br>By the fundamental, rigorous definition of a logarithm, this equation means exactly:
-<br>$$ b^M = x $$
-<br>We want to find the logarithm of $x^y$. So we raise both sides of our exponential equation to the power of $y$:
-<br>$$ (b^M)^y = x^y $$
-<br>By the foundational laws of exponents, $(A^C)^D = A^{C \\cdot D}$. We apply this to the left side:
-<br>$$ b^{M \\cdot y} = x^y $$
-<br>Now we translate this exponential statement back into the language of logarithms.
-<br>If $b^{\\text{power}} = \\text{result}$, then $\\log_b(\\text{result}) = \\text{power}$.
-<br>Therefore:
-<br>$$ \\log_b(x^y) = M \\cdot y $$
-<br>We substitute our original definition of $M$ back into the equation:
-<br>$$ \\log_b(x^y) = \\log_b(x) \\cdot y $$
-<br>Rearranging the multiplication:
-<br>$$ \\log_b(x^y) = y \\log_b(x) $$
-<br>The exponent is safely pulled down to the ground. $\\blacksquare$</p>
-</div>
-`,
-sequences: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Patterns in the Infinite</h3>
-<p>A Sequence is an ordered list of numbers following a strict mathematical rule. A Series is the sum of that list. This is the training ground for infinity. It forces us to ask: if I add up an infinite number of positive things, does the sum inevitably explode to infinity, or can it converge to a perfectly finite bound?</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Arithmetic and Geometric</h3>
-<p><b>Arithmetic Sequence:</b> You ADD a constant difference to get the next term. ($2, 5, 8, 11...$)</p>
-<p><b>Geometric Sequence:</b> You MULTIPLY by a constant ratio to get the next term. ($3, 6, 12, 24...$)</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: Sum of an Infinite Geometric Series</h3>
-<p><b>Theorem:</b> If you add up an infinite geometric series $a + ar + ar^2 + ar^3 + \\dots$, and the ratio $r$ is strictly between $-1$ and $1$, the infinite sum perfectly converges to exactly $\\frac{a}{1-r}$.</p>
-<p><b>Proof (Via Algebraic Telescoping):</b>
-<br>Let $S_n$ be the sum of the first $n$ terms of the sequence.
-<br>$$ S_n = a + ar + ar^2 + \\dots + ar^{n-1} $$
-<br>Multiply this entire equation by the ratio $r$:
-<br>$$ r S_n = ar + ar^2 + ar^3 + \\dots + ar^n $$
-<br>Look at the two equations. They are almost identical. We subtract the second equation from the first equation:
-<br>$$ S_n - r S_n = (a + ar + \\dots) - (ar + ar^2 + \\dots) $$
-<br>A massive cancellation occurs. Every term in the middle perfectly annihilates its twin. Only the very first term ($a$) and the very last shifted term ($ar^n$) survive the massacre:
-<br>$$ S_n - r S_n = a - ar^n $$
-<br>Factor out $S_n$ on the left:
-<br>$$ S_n (1 - r) = a - ar^n $$
-<br>Divide by $(1 - r)$ to find the exact sum of $n$ terms:
-<br>$$ S_n = \\frac{a - ar^n}{1 - r} $$
-<br>Now, we unleash infinity. We take the limit as $n \\to \\infty$.
-<br>Because the ratio $r$ is a fraction strictly between $-1$ and $1$ (e.g., $1/2$), raising it to the power of infinity crushes it to exactly zero: $\\lim_{n \\to \\infty} r^n = 0$.
-<br>The $ar^n$ term completely vanishes.
-<br>$$ S_\\infty = \\frac{a - 0}{1 - r} = \\frac{a}{1 - r} $$
-<br>The infinite process collapses into a finite, rigorous boundary. $\\blacksquare$</p>
-</div>
-`,
-countprob: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Architecture of Choice</h3>
-<p>Combinatorics and Basic Probability study finite, discrete universes. They answer exactly how many ways an event can happen without having to manually list them all. It is the mathematics of passwords, poker hands, and genetic variations.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Permutations and Combinations</h3>
-<p><b>Permutation ($P(n,k)$):</b> The number of ways to arrange $k$ objects out of $n$ options, where the ORDER matters. (e.g., the combination lock 1-2-3 is different from 3-2-1). $P(n,k) = \\frac{n!}{(n-k)!}$.</p>
-<p><b>Combination ($C(n,k)$):</b> The number of ways to choose $k$ objects out of $n$ options, where the ORDER DOES NOT matter. (e.g., drawing a hand of cards). $C(n,k) = \\frac{n!}{k!(n-k)!}$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Fundamental Counting Principle</h3>
-<p><b>Theorem:</b> If Event A can happen in $m$ ways, and Event B can happen in $n$ ways, then the total number of ways BOTH events can happen in sequence is exactly $m \\times n$. This is why the number of possible outcomes explodes so violently.</p>
-<p><b>Proof (Via Set Theory and Cartesian Products):</b>
-<br>Let $A$ be the set of all possible outcomes for the first event. Since there are $m$ ways it can happen, the size (cardinality) of set $A$ is $|A| = m$.
-<br>Let $B$ be the set of all possible outcomes for the second event. Its cardinality is $|B| = n$.
-<br>We want to find the number of ways to pair an outcome from $A$ with an outcome from $B$.
-<br>In set theory, the set of all possible ordered pairs $(a,b)$ where $a \\in A$ and $b \\in B$ is called the Cartesian Product, denoted $A \\times B$.
-<br>We can arrange these pairs in a geometric grid (a matrix).
-<br>Place the $m$ outcomes of set $A$ along the rows.
-<br>Place the $n$ outcomes of set $B$ along the columns.
-<br>Every single valid pair $(a,b)$ corresponds to exactly one unique cell in this grid.
-<br>Because it is a perfect rectangle with $m$ rows and $n$ columns, the total number of cells is exactly the area of the rectangle: $m \\times n$.
-<br>Therefore, $|A \\times B| = |A| \\times |B| = m \\times n$. The logic of counting is identical to the geometry of area. $\\blacksquare$</p>
-</div>
-`,
-statsbasics: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Taming the Noise</h3>
-<p>Basic Statistics is the toolkit for extracting truth from messy, chaotic data. A raw list of a thousand numbers tells you nothing. Statistics compresses that raw chaos into a few strict mathematical parameters (Center and Spread) that describe the shape of reality.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Center and Spread</h3>
-<p><b>Mean ($\\mu$):</b> The arithmetic average. The geometric center of mass of the data.</p>
-<p><b>Median:</b> The exact middle value. It is strictly robust; unlike the Mean, it does not get dragged into infinity by a single extreme outlier (like a billionaire walking into a bar).</p>
-<p><b>Standard Deviation ($\\sigma$):</b> The rigorous measure of chaos. It calculates the average distance of all data points from the mean. If $\\sigma$ is zero, every single data point is identical.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: The Empirical Rule (68-95-99.7)</h3>
-<p>If data is normally distributed (the Bell Curve), it obeys an absolute mathematical law: 68% of the data falls within exactly 1 Standard Deviation of the mean. 95% falls within 2. And 99.7% falls within 3. An event 4 standard deviations away is a one-in-30,000 anomaly. Statistics allows us to quantify exactly how "surprised" we should be by a result.</p>
-</div>
-`,
-
-coremath: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Language of Numbers</h3>
-<p>Core Mathematics is not just rote calculation; it is the study of abstract quantity and shape. Before we can analyze continuous manifolds or infinite-dimensional spaces, we must build a rigorous foundation of arithmetic, equality, and spatial reasoning that obeys strict, invariant logical rules.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Peano Axioms</h3>
-<p><b>Natural Numbers ($\\mathbb{N}$):</b> The foundation of counting. Defined rigorously by Giuseppe Peano in 1889: Zero is a number. Every number has a unique successor. No two numbers share a successor. If a property holds for zero and implies it holds for the next number, it holds for all numbers (Mathematical Induction).</p>
-</div>
-<div class="msec"><h3>3. Core Theorems of Core Math</h3>
-<p><b>The Fundamental Theorem of Arithmetic:</b> Every integer greater than 1 either is a prime number itself or can be represented as the product of prime numbers. Moreover, this representation is unique, except for the order of the factors. Primes are the absolute, indivisible atoms of all numbers.</p>
-</div>
-`,
-arith: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Operations of Quantity</h3>
-<p>Arithmetic is the rigorous system of manipulating magnitude. It defines how disjoint sets combine (addition) and how multiple copies of a set aggregate (multiplication). The genius of human arithmetic is the Place-Value system, which allows us to represent infinitely large quantities using only ten discrete symbols.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Field Axioms (Simplified)</h3>
-<p><b>Commutativity:</b> Order does not matter. $a + b = b + a$. $a \\times b = b \\times a$.</p>
-<p><b>Associativity:</b> Grouping does not matter. $(a + b) + c = a + (b + c)$.</p>
-<p><b>Distributivity:</b> Multiplication perfectly scales addition. $a \\times (b + c) = (a \\times b) + (a \\times c)$. This single law is the engine behind all multi-digit arithmetic.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: Why $1 \\times a = a$</h3>
-<p><b>The Identity Element:</b> The number 1 is defined as the unique multiplicative identity. It is the geometric equivalent of scaling an object by exactly 100%—the object remains perfectly unchanged. Zero is the unique additive identity.</p>
-</div>
-`,
-negnum: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Symmetry of the Number Line</h3>
-<p>Negative numbers were invented to make subtraction a closed operation. Without them, $3 - 5$ is an impossible error. By extending the number line to the left of zero, we enforce a perfect mathematical symmetry where every number $a$ has an "evil twin" $-a$ that annihilates it back to zero.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Additive Inverse</h3>
-<p><b>Additive Inverse ($-a$):</b> For every number $a$, there exists exactly one number denoted $-a$ such that $a + (-a) = 0$.</p>
-<p><b>Subtraction:</b> Subtraction is no longer a fundamental operation. It is strictly redefined as adding the inverse: $a - b = a + (-b)$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: Why Negative times Negative is Positive</h3>
-<p><b>Theorem:</b> $(-1) \\times (-1) = 1$.</p>
-<p><b>Proof (Via Distributive Property):</b>
-<br>We must preserve the Distributive Law ($a(b+c) = ab + ac$) at all costs, or else algebra breaks down.
-<br>Consider the expression: $(-1) \\times (1 + (-1))$.
-<br>By the definition of additive inverse, the term in parentheses is zero: $1 + (-1) = 0$.
-<br>Therefore, the expression is: $(-1) \\times 0 = 0$.
-<br>Now, expand the original expression using the Distributive Law:
-<br>$$ (-1) \\times (1) + (-1) \\times (-1) = 0 $$
-<br>Since any number times 1 is itself, the first term is just $-1$:
-<br>$$ -1 + (-1) \\times (-1) = 0 $$
-<br>We have an equation. We add 1 to both sides to isolate the unknown term:
-<br>$$ 1 + (-1) + (-1) \\times (-1) = 1 + 0 $$
-<br>The $1$ and $-1$ on the left annihilate each other.
-<br>$$ (-1) \\times (-1) = 1 $$
-<br>The double negative must be positive, not as a rule of grammar, but as a rigid geometric requirement to keep the universe of numbers mathematically consistent. $\\blacksquare$</p>
-</div>
-`,
-fracdec: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Continuum of Parts</h3>
-<p>Fractions and Decimals bridge the gap between integers. They are the rigorous mathematics of slicing a whole into equal pieces. They prove that the number line is not a dotted sequence of stepping stones, but a dense, infinitely divisible continuum.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Rational Numbers</h3>
-<p><b>Rational Number ($\\mathbb{Q}$):</b> Any number that can be expressed as a ratio $p/q$, where $p$ and $q$ are integers, and $q$ is strictly not zero.</p>
-<p><b>Equivalence Class:</b> The fraction $1/2$ and $2/4$ are not just similar; they represent the exact same coordinate on the number line. Multiplying the numerator and denominator by the same scalar $k$ does not change the value.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: Decimal Expansion</h3>
-<p>Every rational fraction can be converted into a decimal by long division. The rigorous theorem states that the decimal expansion of any rational number must either terminate (like $1/4 = 0.25$) or eventually fall into a perfect repeating loop (like $1/7 = 0.142857...$). If a decimal never repeats and never ends, it is mathematically proven to be Irrational.</p>
-</div>
-`,
-percent: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Universal Denominator</h3>
-<p>Percentages are not a new type of number; they are a standardizing linguistic tool. By forcing every fraction to have a denominator of exactly 100, we can instantly compare the relative size of changes, regardless of the absolute starting magnitude.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Multiplier</h3>
-<p><b>Percent ($X\\%$):</b> Strictly defined as the fraction $\\frac{X}{100}$.</p>
-<p><b>Percentage Multiplier:</b> To increase a quantity by $R\\%$, you do not just add a number. You multiply the original quantity by $(1 + \\frac{R}{100})$. This geometric scaling is the engine of compound interest.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Asymmetry of Percentages</h3>
-<p><b>Theorem:</b> A percentage increase followed by the exact same percentage decrease never returns you to the original starting value. You will always end up strictly lower than where you started.</p>
-<p><b>Proof (Via Algebraic Multipliers):</b>
-<br>Let $S$ be your starting value. Let the percentage change be $R\\%$ (so let $x = R/100$, where $0 < x < 1$).
-<br>Step 1: Increase by $R\\%$.
-<br>The new value is $V_1 = S \\times (1 + x)$.
-<br>Step 2: Decrease $V_1$ by $R\\%$.
-<br>The final value is $V_2 = V_1 \\times (1 - x)$.
-<br>Step 3: Substitution.
-<br>Substitute $V_1$ into the final equation:
-<br>$$ V_2 = (S \\times (1 + x)) \\times (1 - x) $$
-<br>By the algebraic difference of squares formula, $(1+x)(1-x) = 1 - x^2$.
-<br>$$ V_2 = S \\times (1 - x^2) $$
-<br>Because $x > 0$, the term $x^2$ is strictly positive.
-<br>Therefore, the multiplier $(1 - x^2)$ is strictly less than 1.
-<br>$$ V_2 < S $$
-<br>For example, if you increase by $50\\%$ ($x=0.5$), then decrease by $50\\%$, your final value is $S(1 - 0.25) = 0.75S$. You lost 25% of your money. The math is relentless. $\\blacksquare$</p>
-</div>
-`,
-ratio: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Geometry of Scaling</h3>
-<p>Ratios and Proportions are the mathematics of relative scale. They abstract away absolute measurements to focus entirely on the relationship between quantities. If you double the flour, you must double the sugar; the absolute amounts change, but the geometric ratio remains perfectly invariant.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Proportion Equation</h3>
-<p><b>Ratio ($A:B$):</b> A comparative relationship between two quantities, mathematically equivalent to the fraction $\\frac{A}{B}$.</p>
-<p><b>Proportion:</b> A strict equation stating that two ratios are geometrically identical: $\\frac{A}{B} = \\frac{C}{D}$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: The Cross-Product Property</h3>
-<p><b>Theorem:</b> If $\\frac{A}{B} = \\frac{C}{D}$, then $A \\times D = B \\times C$.</p>
-<p><b>Proof:</b> 
-<br>Take the equation $\\frac{A}{B} = \\frac{C}{D}$.
-<br>Multiply both sides of the equation by the common denominator $(B \\times D)$ to eliminate the fractions.
-<br>$$ \\left(\\frac{A}{B}\\right) \\times B \\times D = \\left(\\frac{C}{D}\\right) \\times B \\times D $$
-<br>The $B$ on the left cancels out. The $D$ on the right cancels out.
-<br>$$ A \\times D = C \\times B $$
-<br>This simple algebraic maneuver is the mechanism behind solving almost all scaling problems in real life. $\\blacksquare$</p>
-</div>
-`,
-prealg: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Abstraction of the Unknown</h3>
-<p>Pre-Algebra marks the fundamental cognitive leap from Arithmetic to higher mathematics. It introduces the concept of the Variable: a letter (usually $x$) that acts as a placeholder for a specific, unknown number. We shift from calculating an answer to analyzing the structure of an equation.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Expressions and Equations</h3>
-<p><b>Expression:</b> A mathematical phrase combining numbers, variables, and operations (e.g., $3x + 5$). It has no equals sign and cannot be "solved", only simplified.</p>
-<p><b>Equation:</b> A strict mathematical statement that two expressions are perfectly balanced and identical in value (e.g., $3x + 5 = 14$). It is a logical puzzle.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: Order of Operations (PEMDAS)</h3>
-<p>The Order of Operations is not a deep law of nature; it is an arbitrary but absolutely essential syntactic convention. It ensures that every human and computer parses the string of symbols "$2 + 3 \\times 4$" as exactly 14, and never 20. Multiplication binds tighter than addition because it represents repeated addition.</p>
-</div>
-`,
-elemalg: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Balancing Act</h3>
-<p>Elementary Algebra is the rigorous study of equations. It is governed by a single, unbreakable rule of symmetry: the Golden Rule of Algebra. Whatever operation you apply to the left side of an equation, you must apply the exact same operation to the right side. The balance scale must never tip.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Polynomial</h3>
-<p><b>Polynomial:</b> An expression consisting of variables and coefficients, constructed using only addition, subtraction, multiplication, and non-negative integer exponents. (e.g., $4x^2 - 3x + 7$). They are the smooth, well-behaved building blocks of algebra.</p>
-<p><b>Root (or Zero):</b> The specific value of $x$ that forces the entire polynomial expression to perfectly equal zero.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: The Zero Product Property</h3>
-<p><b>Theorem:</b> If the product of two real numbers is zero ($A \\times B = 0$), then it is mathematically guaranteed that either $A = 0$, or $B = 0$, or both.
-<br>This is the fundamental engine behind all factoring. If you can rewrite a complex equation like $x^2 - 5x + 6 = 0$ as a product of pieces $(x-2)(x-3) = 0$, you instantly shatter the hard problem into two trivially easy problems: $x-2 = 0$ or $x-3 = 0$.</p>
-</div>
-`,
-lineq: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Geometry of the Line</h3>
-<p>Linear Equations describe systems with a perfectly constant rate of change. They contain no exponents on variables, no variables multiplied together, and no curves. Geometrically, they map to perfectly straight lines on a Cartesian plane.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Slope and Intercept</h3>
-<p><b>Standard Form:</b> $Ax + By = C$. A symmetric representation of a line.</p>
-<p><b>Slope-Intercept Form:</b> $y = mx + b$. The most descriptive form. The parameter $m$ (slope) represents the strict rate of change ($\\frac{\\text{rise}}{\\text{run}}$), and $b$ (y-intercept) represents the starting value when $x=0$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: Intersection of Two Lines</h3>
-<p><b>Theorem:</b> Two straight, non-parallel lines in a 2D plane will intersect at exactly one unique point. The coordinates of this point represent the sole mathematical solution to a System of Linear Equations.</p>
-<p><b>Proof (Via Substitution):</b>
-<br>Let Line 1 be $y = m_1 x + b_1$.
-<br>Let Line 2 be $y = m_2 x + b_2$.
-<br>Assume the lines are not parallel, so their slopes are strictly different: $m_1 \\neq m_2$.
-<br>An intersection point $(x^*, y^*)$ must satisfy both equations simultaneously.
-<br>Therefore, the $y$-value from Line 1 must equal the $y$-value from Line 2 at the coordinate $x^*$:
-<br>$$ m_1 x^* + b_1 = m_2 x^* + b_2 $$
-<br>We solve for $x^*$. Subtract $m_2 x^*$ from both sides:
-<br>$$ (m_1 - m_2) x^* + b_1 = b_2 $$
-<br>Subtract $b_1$ from both sides:
-<br>$$ (m_1 - m_2) x^* = b_2 - b_1 $$
-<br>Because the lines are not parallel, we know $m_1 \\neq m_2$. Therefore, the term $(m_1 - m_2)$ is strictly not zero.
-<br>Because it is not zero, we are mathematically allowed to divide by it:
-<br>$$ x^* = \\frac{b_2 - b_1}{m_1 - m_2} $$
-<br>This fraction perfectly calculates the unique $x$-coordinate. Substituting this $x^*$ back into either original equation guarantees the unique $y^*$. The single crossing point is inevitable. $\\blacksquare$</p>
-</div>
-`,
-quadratics: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Geometry of Acceleration</h3>
-<p>Quadratic Equations are polynomials of degree two ($x^2$). They represent systems with a changing rate of change—gravity, area, and acceleration. Geometrically, they trace a perfectly symmetric U-shaped curve called a Parabola.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Parabola</h3>
-<p><b>Standard Form:</b> $y = ax^2 + bx + c$. (where $a \\neq 0$).</p>
-<p><b>Vertex:</b> The absolute highest or lowest point of the parabola. Due to the perfect symmetry of the $x^2$ curve, the $x$-coordinate of the vertex is always exactly at $-\\frac{b}{2a}$.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: The Quadratic Formula</h3>
-<p><b>Theorem:</b> The exact roots (x-intercepts) of any quadratic equation $ax^2 + bx + c = 0$ are given by the formula $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$.</p>
-<p><b>Proof (Via Completing the Square):</b>
-<br>Start with the general equation: $ax^2 + bx + c = 0$.
-<br>Step 1: Isolate the $x$ terms. Divide everything by $a$ (since $a \\neq 0$):
-<br>$$ x^2 + \\frac{b}{a}x + \\frac{c}{a} = 0 $$
-<br>Move the constant to the right side:
-<br>$$ x^2 + \\frac{b}{a}x = -\\frac{c}{a} $$</p>
-<p>Step 2: Complete the Square.
-<br>We want the left side to factor perfectly into $(x + h)^2$.
-<br>The algebraic identity is $(x + h)^2 = x^2 + 2hx + h^2$.
-<br>Matching the middle term, we need $2h = \\frac{b}{a}$, which means $h = \\frac{b}{2a}$.
-<br>The missing constant piece we need is $h^2 = \\left(\\frac{b}{2a}\\right)^2 = \\frac{b^2}{4a^2}$.
-<br>By the Golden Rule of Algebra, we add this piece to BOTH sides of the equation:
-<br>$$ x^2 + \\frac{b}{a}x + \\frac{b^2}{4a^2} = -\\frac{c}{a} + \\frac{b^2}{4a^2} $$</p>
-<p>Step 3: Factor and Combine.
-<br>The left side now perfectly collapses into a squared binomial. The right side requires a common denominator ($4a^2$):
-<br>$$ \\left(x + \\frac{b}{2a}\\right)^2 = -\\frac{4ac}{4a^2} + \\frac{b^2}{4a^2} $$
-<br>$$ \\left(x + \\frac{b}{2a}\\right)^2 = \\frac{b^2 - 4ac}{4a^2} $$</p>
-<p>Step 4: The Square Root.
-<br>Take the square root of both sides. We must include the $\\pm$ symbol because both a positive and negative number square to a positive result:
-<br>$$ x + \\frac{b}{2a} = \\pm \\sqrt{ \\frac{b^2 - 4ac}{4a^2} } $$
-<br>The square root of the denominator $4a^2$ is exactly $2a$:
-<br>$$ x + \\frac{b}{2a} = \\frac{\\pm \\sqrt{b^2 - 4ac}}{2a} $$</p>
-<p>Step 5: Isolate $x$.
-<br>Subtract $\\frac{b}{2a}$ from both sides to find the final roots:
-<br>$$ x = -\\frac{b}{2a} \\pm \\frac{\\sqrt{b^2 - 4ac}}{2a} $$
-<br>Combine into a single fraction:
-<br>$$ x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a} $$
-<br>The roots of every parabola in the universe are conquered by this single equation. $\\blacksquare$</p>
-</div>
-`,
-funcgraph: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Machine of Mathematics</h3>
-<p>A Function is the most important concept in modern mathematics. It is a strict rule that transforms inputs into outputs. It replaces static equations with a dynamic sense of flow and mapping. The graph of a function translates this abstract algebraic rule into a visible, continuous geometric curve.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: Domain and Range</h3>
-<p><b>Function ($f(x)$):</b> A mapping from a set of inputs (Domain) to a set of outputs (Range) with one absolute restriction: every valid input must map to <i>exactly one</i> output. (A machine cannot press one button and get two different answers).</p>
-<p><b>Vertical Line Test:</b> The geometric consequence of the function definition. If you can draw any vertical line that cuts through a graph more than once, the graph is mathematically not a function.</p>
-</div>
-<div class="msec"><h3>3. Capstone Concept: Function Composition</h3>
-<p>Functions can be chained together. The output of one function becomes the direct input of the next. The notation $f(g(x))$ means you evaluate the inner machine $g$ first, and pass its result into the outer machine $f$. This Russian-nesting-doll architecture is the foundation of the Chain Rule in Calculus.</p>
-</div>
-`,
-geobasics: `
-<div class="msec"><h3>1. The Axiomatic Foundation: The Logic of Space</h3>
-<p>Basic Geometry is the study of points, lines, angles, and 2D shapes. Since Euclid wrote <i>The Elements</i> in 300 BC, geometry has been the blueprint for all mathematical proof. You start with a few obvious, unprovable assumptions (Axioms), and use pure deduction to build an invincible fortress of Theorems.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Polygon</h3>
-<p><b>Polygon:</b> A closed, flat shape constructed entirely of straight line segments. No curves, no gaps, no crossing lines.</p>
-<p><b>Congruence ($\\cong$):</b> Two shapes are perfectly congruent if you can slide, spin, and flip one to fit exactly on top of the other. Their sides and angles are identical.</p>
-</div>
-<div class="msec"><h3>3. Capstone Proof: Sum of Angles in a Triangle</h3>
-<p><b>Theorem:</b> The interior angles of any flat triangle, no matter how skewed or stretched, will always sum to exactly 180 degrees (a straight line).</p>
-<p><b>Proof (Via Parallel Lines):</b>
-<br>Let a triangle have three vertices $A, B$, and $C$, with interior angles $\\alpha, \\beta$, and $\\gamma$.
-<br>Step 1: The Auxiliary Line.
-<br>Draw a straight line through vertex $A$ that is perfectly parallel to the base line $BC$ at the bottom of the triangle.
-<br>Step 2: Alternate Interior Angles.
-<br>Look at the side $AB$. It acts as a "transversal" cutting across the two parallel lines.
-<br>By the axiom of parallel lines, the "Z-pattern" angles (Alternate Interior Angles) are perfectly equal. Therefore, the angle formed on the left side of vertex $A$ (outside the triangle, touching the new parallel line) is exactly equal to $\\beta$.
-<br>Look at the side $AC$. It acts as a second transversal.
-<br>By the same axiom, the angle formed on the right side of vertex $A$ is exactly equal to $\\gamma$.
-<br>Step 3: The Straight Angle.
-<br>Look at the top vertex $A$. The auxiliary line we drew is a straight line, which by definition contains exactly 180 degrees.
-<br>The three angles sitting on this straight line are the left exterior angle ($\\beta$), the interior tip of the triangle ($\\alpha$), and the right exterior angle ($\\gamma$).
-<br>Therefore, they must sum to the straight line:
-<br>$$ \\beta + \\alpha + \\gamma = 180^\\circ $$
-<br>The interior angles are locked in a rigid geometric cage. $\\blacksquare$</p>
-</div>
-`,
-
 sieve: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Filtering the Integers</h3>
 <p>Sieve Theory is the branch of analytic number theory dedicated to finding primes by systematically crossing out non-primes. Since the Sieve of Eratosthenes (200 BC), the challenge has been that the errors in the counting process explode combinatorially. Modern sieves (Brun, Selberg, Friedlander-Iwaniec) control this explosion to prove deep facts about the distribution of primes.</p>
@@ -17098,7 +16764,7 @@ sieve: `
 <p><b>Theorem (Viggo Brun, 1919):</b> While the sum of the reciprocals of all prime numbers famously diverges to infinity, the sum of the reciprocals of the Twin Primes (primes separated by exactly 2, like 11 and 13) strictly converges to a finite constant (Brun's Constant, $\\approx 1.902$). This proves that even if there are infinitely many twin primes, they are incredibly rare compared to normal primes.</p>
 <p><b>Proof (Via the Pure Sieve and Combinatorial Bounding):</b> 
 <br>We want to count the number of twin prime pairs $(p, p+2)$ up to a massive limit $x$. Let this count be $\\pi_2(x)$.
-<br>A number $n$ and $n+2$ are both prime if and only if the product $n(n+2)$ has no prime factors less than or equal to $\\sqrt{x}$.</p>
+<br>If $\\sqrt{x} \\lt n \\le x$, then $n$ and $n+2$ are both prime exactly when the product $n(n+2)$ has no prime factor $p \\le \\sqrt{x+2}$. Counting twin primes therefore becomes a sieving problem; the handful of pairs with $n \\le \\sqrt{x}$ is negligible and can be counted by hand.</p>
 <p>Step 1: The Exact Inclusion-Exclusion.
 <br>We apply the exact Möbius inversion (the Sieve of Eratosthenes-Legendre) to the set $A = \\{n(n+2) : n \\le x\\}$.
 <br>$$ \\pi_2(x) \\approx \\sum_{d \\mid P(z)} \\mu(d) |A_d| $$
@@ -17109,7 +16775,7 @@ sieve: `
 <br>$$ \\pi_2(x) \\approx x \\sum_{d \\mid P(z)} \\frac{\\mu(d) \\omega(d)}{d} + \\sum_{d \\mid P(z)} \\mu(d) R_d $$
 <br>The first term is the "main term," which evaluates to about $\\frac{x}{(\\log x)^2}$.
 <br>But look at the error term! There are $2^{\\pi(z)}$ terms in the sum (where $\\pi(z)$ is the number of primes up to $\\sqrt{x}$).
-<br>The error term scales like $3^{\\sqrt{x}/\\log x}$. The error is exponentially larger than the main term! The exact sieve is mathematically useless.</p>
+<br>Since $|R_d| \\le \\omega(d)$ and $\\omega$ is multiplicative with $\\omega(p) = 2$, the total error can be as large as $\\sum_{d \\mid P(z)} \\omega(d) = \\prod_{p \\le z}(1 + 2) = 3^{\\pi(z)}$, with $z = \\sqrt{x}$. That is exponentially larger than the main term! The exact sieve is mathematically useless.</p>
 <p>Step 3: Brun's Truncation.
 <br>Brun's genius was to stop calculating the Inclusion-Exclusion formula completely.
 <br>Instead of summing over all divisors $d$ up to $\\sqrt{x}$, he truncated the sum, only including divisors with a limited number of prime factors.
@@ -17122,11 +16788,12 @@ sieve: `
 <p>Step 5: Convergence of the Sum.
 <br>We want to evaluate the sum of the reciprocals: $B = \\sum \\left( \\frac{1}{p} + \\frac{1}{p+2} \\right)$.
 <br>We can bound this infinite sum using integration by parts (Abel summation) and our bound on $\\pi_2(x)$.
-<br>The sum is bounded by the integral:
-<br>$$ \\int_2^\\infty \\frac{1}{x^2} \\pi_2(x) dx \\le \\int_2^\\infty \\frac{1}{x^2} \\left( C \\frac{x}{(\\log x)^2} \\right) dx = C \\int_2^\\infty \\frac{1}{x (\\log x)^2} dx $$
+<br>The sum is bounded by an integral, into which we substitute the bound we actually proved in Step 4 &mdash; keeping the $(\\log \\log x)^2$ factor rather than quietly discarding it:
+<br>$$ \\int_2^\\infty \\frac{\\pi_2(x)}{x^2} dx \\le C \\int_2^\\infty \\frac{(\\log \\log x)^2}{x (\\log x)^2} dx $$
 <br>Using the substitution $u = \\log x$, $du = \\frac{1}{x} dx$:
-<br>$$ = C \\int_{\\log 2}^\\infty \\frac{1}{u^2} du = C \\left[ -\\frac{1}{u} \\right]_{\\log 2}^\\infty = C \\left( 0 - \\left(-\\frac{1}{\\log 2}\\right) \\right) = \\frac{C}{\\log 2} $$
-<br>The integral perfectly converges to a finite number.
+<br>$$ = C \\int_{\\log 2}^\\infty \\frac{(\\log u)^2}{u^2} du $$
+<br>This converges: $(\\log u)^2$ grows more slowly than any positive power of $u$, so the integrand eventually sits below $u^{-3/2}$, and $\\int^\\infty u^{-3/2} du$ is finite.
+<br>The integral converges to a finite number.
 <br>Therefore, the sum of the reciprocals of twin primes must be finite. Twin primes are infinitely sparse in the integer landscape. $\\blacksquare$</p>
 </div>
 `,
@@ -17135,7 +16802,7 @@ diophantine: `
 <p>Diophantine Approximation asks a fundamental question: how closely can you approximate an irrational number (like $\\pi$ or $\\sqrt{2}$) using a rational fraction $p/q$? And critically, how large does the denominator $q$ have to be to achieve that accuracy? It connects the continuous real line to the discrete grid of integers.</p>
 </div>
 <div class="msec"><h3>2. Formal Definitions: Badly Approximable Numbers</h3>
-<p><b>Dirichlet's Theorem (1842):</b> For any real number $\\alpha$, there are infinitely many fractions $p/q$ such that the error is bounded by the square of the denominator: $|\\alpha - \\frac{p}{q}| < \\frac{1}{q^2}$.</p>
+<p><b>Dirichlet's Theorem (1842):</b> For any <i>irrational</i> $\\alpha$, there are infinitely many fractions $p/q$ whose error is bounded by the square of the denominator: $|\\alpha - \\frac{p}{q}| \\lt \\frac{1}{q^2}$. (For rational $\\alpha$ the supply runs dry &mdash; only finitely many fractions manage it.)</p>
 <p><b>Liouville Number:</b> An irrational number that can be approximated by rationals <i>so incredibly well</i> that it defies algebraic logic. If the error can be made smaller than $\\frac{1}{q^n}$ for any power $n$, the number is guaranteed to be transcendental (not the root of any polynomial equation).</p>
 </div>
 <div class="msec"><h3>3. Core Theorems of Diophantine Approximation</h3>
@@ -17237,7 +16904,7 @@ quantum: `
 <p><b>Unitary Operator ($U$):</b> The only allowed operation in quantum mechanics. A matrix whose inverse is its conjugate transpose ($U^\\dagger U = I$). This guarantees that the total probability of all outcomes is always perfectly preserved (length of the vector remains 1).</p>
 </div>
 <div class="msec"><h3>3. Core Theorems of Quantum Computing</h3>
-<p><b>Shor's Algorithm (1994):</b> Proves that a quantum computer can factor massive prime numbers in polynomial time, completely destroying the RSA cryptographic foundation of the modern internet. It does this by turning factoring into a period-finding problem, and solving it using the Quantum Fourier Transform.</p>
+<p><b>Shor's Algorithm (1994):</b> Proves that a quantum computer can factor massive composite numbers (such as the product of two large primes) in polynomial time, completely destroying the RSA cryptographic foundation of the modern internet. It does this by turning factoring into a period-finding problem, and solving it using the Quantum Fourier Transform.</p>
 </div>
 <div class="msec"><h3>4. Capstone Proof: The No-Cloning Theorem</h3>
 <p><b>Theorem (Wootters, Zurek, Dieks, 1982):</b> It is mathematically impossible to build a quantum copying machine. You cannot take an unknown quantum state $|\\psi\\rangle$ and create a perfect identical duplicate. This theorem guarantees the absolute security of Quantum Cryptography: you cannot intercept and copy a quantum message without destroying it.</p>
@@ -17317,7 +16984,7 @@ percolation: `
 <br>1. There exists a continuous Black path from Left to Right in $L$.
 <br>2. There exists a continuous White path from Top to Bottom in the dual lattice $L^*$ that completely blocks the Black path.</p>
 <p>Step 4: The Symmetry of $p=1/2$.
-<br>Assume the critical probability $p_c$ is the point where the probability of a Left-Right crossing crossing approaches a non-zero limit as the box size $N \\to \\infty$.
+<br>Assume the critical probability $p_c$ is the point where the probability of a Left-Right crossing approaches a non-zero limit as the box size $N \\to \\infty$.
 <br>Let's evaluate the specific case where $p = 1/2$.
 <br>If $p = 1/2$, then the dual probability is $p^* = 1 - 1/2 = 1/2$.
 <br>The primary lattice $L$ and the dual lattice $L^*$ have the exact same geometry (both square grids) and the exact same probability laws ($1/2$).
@@ -17331,7 +16998,6 @@ percolation: `
 <br>Therefore, the two Black continents must inevitably crash into each other and merge. The critical point is perfectly, rigidly pinned at $p_c = 1/2$. $\\blacksquare$</p>
 </div>
 `,
-
 applied: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Mathematics in Reality</h3>
 <p>Applied Mathematics is the bridge between pure abstraction and physical reality. It does not just seek to prove theorems; it seeks to solve equations that model the real world, often requiring approximations, algorithms, and computers when exact analytic solutions are impossible.</p>
@@ -17395,40 +17061,39 @@ tcs: `
 <p><b>Theorem (Turing, 1936):</b> It is mathematically impossible to write a computer program that can perfectly determine whether every other program will halt or loop forever. There are limits to logic itself.</p>
 <p><b>Proof (Via Cantor's Diagonalization / Proof by Contradiction):</b> 
 <br>Assume, for the sake of contradiction, that the Halting Problem is solvable.
-<br>This means there exists a perfect, magical function \`Halt(program_code, input_data)\` that always returns exactly \`TRUE\` if the program finishes, and \`FALSE\` if the program loops forever. It never crashes and never gets stuck.</p>
+<br>This means there exists a perfect, magical function <code>Halt(program_code, input_data)</code> that always returns exactly <code>TRUE</code> if the program finishes, and <code>FALSE</code> if the program loops forever. It never crashes and never gets stuck.</p>
 <p>Step 1: The Paradoxical Machine.
-<br>We are programmers, so we use this magical \`Halt\` function to write a new, viciously designed program. Let's call it \`Paradox\`.
-<br>\`Paradox\` takes one input: the source code of another program (\`code\`).</p>
-<p>Here is the exact source code for \`Paradox\`:
-<br>\`\`\`
-function Paradox(code):
+<br>We are programmers, so we use this magical <code>Halt</code> function to write a new, viciously designed program. Let's call it <code>Paradox</code>.
+<br><code>Paradox</code> takes one input: the source code of another program (<code>code</code>).</p>
+<p>Here is the exact source code for <code>Paradox</code>:
+</p>
+<pre style="background:rgba(0,0,0,.06);padding:10px 14px;border-radius:6px;overflow-x:auto;line-height:1.5;white-space:pre"><code>function Paradox(code):
     if Halt(code, code) == TRUE:
         loop_forever()
     else:
-        return  // finish instantly
-\`\`\`</p>
-<p>What does this do? It asks the magical \`Halt\` function: "If I run this \`code\` and feed it its own source code as input, will it finish?"
-<br>If \`Halt\` says "Yes, it finishes", \`Paradox\` deliberately enters an infinite loop.
-<br>If \`Halt\` says "No, it loops forever", \`Paradox\` instantly finishes.</p>
+        return  // finish instantly</code></pre>
+<p>What does this do? It asks the magical <code>Halt</code> function: "If I run this <code>code</code> and feed it its own source code as input, will it finish?"
+<br>If <code>Halt</code> says "Yes, it finishes", <code>Paradox</code> deliberately enters an infinite loop.
+<br>If <code>Halt</code> says "No, it loops forever", <code>Paradox</code> instantly finishes.</p>
 <p>Step 2: The Self-Reference Execution.
-<br>Because \`Paradox\` is just a standard computer program, it has its own source code.
-<br>We execute \`Paradox\`, and we feed it <b>its own source code</b> as the input.
-<br>What happens when we run \`Paradox(Paradox)\`?</p>
+<br>Because <code>Paradox</code> is just a standard computer program, it has its own source code.
+<br>We execute <code>Paradox</code>, and we feed it <b>its own source code</b> as the input.
+<br>What happens when we run <code>Paradox(Paradox)</code>?</p>
 <p>Step 3: The Fatal Contradiction.
-<br>There are only two logical possibilities for what \`Paradox\` actually does when it runs on itself:</p>
-<p>Case A: \`Paradox\` eventually finishes (halts).
-<br>If it halts, then the magical function \`Halt(Paradox, Paradox)\` must return \`TRUE\` (because it's perfect).
-<br>But look at the code! If \`Halt\` returns \`TRUE\`, the \`if\` statement triggers the \`loop_forever()\` command.
-<br>So \`Paradox\` loops forever.
+<br>There are only two logical possibilities for what <code>Paradox</code> actually does when it runs on itself:</p>
+<p>Case A: <code>Paradox</code> eventually finishes (halts).
+<br>If it halts, then the magical function <code>Halt(Paradox, Paradox)</code> must return <code>TRUE</code> (because it's perfect).
+<br>But look at the code! If <code>Halt</code> returns <code>TRUE</code>, the <code>if</code> statement triggers the <code>loop_forever()</code> command.
+<br>So <code>Paradox</code> loops forever.
 <br>This is a contradiction: It cannot both finish and loop forever.</p>
-<p>Case B: \`Paradox\` loops forever.
-<br>If it loops forever, then the magical function \`Halt(Paradox, Paradox)\` must return \`FALSE\`.
-<br>But look at the code! If \`Halt\` returns \`FALSE\`, the \`else\` block triggers, and the program hits \`return\` and finishes instantly.
-<br>So \`Paradox\` finishes.
+<p>Case B: <code>Paradox</code> loops forever.
+<br>If it loops forever, then the magical function <code>Halt(Paradox, Paradox)</code> must return <code>FALSE</code>.
+<br>But look at the code! If <code>Halt</code> returns <code>FALSE</code>, the <code>else</code> block triggers, and the program hits <code>return</code> and finishes instantly.
+<br>So <code>Paradox</code> finishes.
 <br>This is a contradiction: It cannot both loop forever and finish.</p>
 <p>Conclusion.
-<br>The program \`Paradox\` creates an inescapable logical paradox (identical to the Liar's Paradox: "This sentence is false").
-<br>Since the simple code for \`Paradox\` is completely valid, the only piece of the machine that cannot logically exist is the magical \`Halt\` function.
+<br>The program <code>Paradox</code> creates an inescapable logical paradox (identical to the Liar's Paradox: "This sentence is false").
+<br>Since the simple code for <code>Paradox</code> is completely valid, the only piece of the machine that cannot logically exist is the magical <code>Halt</code> function.
 <br>Therefore, a perfect halting algorithm is mathematically impossible. $\\blacksquare$</p>
 </div>
 `,
@@ -17827,9 +17492,15 @@ contopt: `
 <br>$$ \\le ||x_k - x^*||^2 - 2t (f(x_k) - f(x^*)) + t^2 ||\\nabla f(x_k)||^2 $$
 <br>Rearranging this, we find a bound for our current error:
 <br>$$ 2t (f(x_k) - f(x^*)) \\le ||x_k - x^*||^2 - ||x_{k+1} - x^*||^2 + t^2 ||\\nabla f(x_k)||^2 $$</p>
-<p>We sum this inequality over all steps from $i=0$ to $k$. The distance terms $||x_i - x^*||^2$ perfectly telescope and cancel out, leaving only the initial distance $||x_0 - x^*||^2$ and the final distance $-||x_{k+1} - x^*||^2$.
-<br>Because the function is strictly decreasing (Step 2), the final error $f(x_k) - f(x^*)$ is the smallest of all errors in the sum, allowing us to bound the sum, proving that the error shrinks exactly as $1/k$. 
-<br>The algorithm is trapped; it must slide into the absolute minimum. $\\blacksquare$</p>
+<p>The stray term $t^2 ||\\nabla f(x_k)||^2$ must be dealt with, not ignored. Step 2 (with $t \\le 1/L$) gives $f(x_{k+1}) \\le f(x_k) - \\frac{t}{2} ||\\nabla f(x_k)||^2$, which rearranges to exactly the bound we need:
+<br>$$ t^2 ||\\nabla f(x_k)||^2 \\le 2t \\big( f(x_k) - f(x_{k+1}) \\big) $$
+<br>Substituting that in and cancelling a factor of $2t$ leaves a clean telescoping inequality:
+<br>$$ f(x_{k+1}) - f(x^*) \\le \\frac{1}{2t} \\Big( ||x_k - x^*||^2 - ||x_{k+1} - x^*||^2 \\Big) $$</p>
+<p>Now sum from $i = 0$ to $k-1$. Every distance term cancels against its neighbour, leaving only the initial one:
+<br>$$ \\sum_{i=0}^{k-1} \\big( f(x_{i+1}) - f(x^*) \\big) \\le \\frac{||x_0 - x^*||^2}{2t} $$
+<br>By Step 2 the values $f(x_i)$ are decreasing, so the very last term $f(x_k) - f(x^*)$ is the smallest in that sum. Replacing all $k$ terms by that smallest one can only decrease the left-hand side:
+<br>$$ k \\big( f(x_k) - f(x^*) \\big) \\le \\frac{||x_0 - x^*||^2}{2t} \\quad \\Longrightarrow \\quad f(x_k) - f(x^*) \\le \\frac{||x_0 - x^*||^2}{2tk} $$
+<br>The error is bounded by a fixed constant divided by $k$ &mdash; exactly the promised $O(1/k)$ rate. The algorithm is trapped; it must slide into the absolute minimum. $\\blacksquare$</p>
 </div>
 `,
 learning: `
@@ -17899,30 +17570,29 @@ control: `
 <br>We define the Hamiltonian, completely analogous to physics:
 <br>$$ H(x, u, \\lambda) = -L(x, u) + \\lambda^T f(x, u) $$
 <br>Here, $\\lambda(t)$ is a new, invented vector called the "costate" or "adjoint" variable. It represents the shadow price of the state variables (how much the total cost $J$ would improve if you magically nudged the state $x$ at time $t$).</p>
-<p>Step 1: The Augmented Cost.
-<br>Because the system must strictly obey the physics $\\dot{x} - f(x,u) = 0$, we can add zero to our cost integral without changing it. We multiply zero by our arbitrary adjoint vector $\\lambda(t)$:
-<br>$$ J = \\int_0^T \\left[ L(x, u) + \\lambda^T (f(x, u) - \\dot{x}) \\right] dt $$
-<br>Substitute the definition of the Hamiltonian $H$:
-<br>$$ J = \\int_0^T \\left[ -H(x, u, \\lambda) - \\lambda^T \\dot{x} \\right] dt $$</p>
+<p>Step 1: Rewriting the Cost Through the Hamiltonian.
+<br>Along any trajectory that actually obeys the physics we have $\\dot{x} = f(x,u)$, and therefore $\\lambda^T f = \\lambda^T \\dot{x}$.
+<br>Rearranging the definition of the Hamiltonian gives $L = \\lambda^T f - H$, so on such a trajectory $L = \\lambda^T \\dot{x} - H$. Substituting into the cost integral:
+<br>$$ J = \\int_0^T \\left[ \\lambda^T \\dot{x} - H(x, u, \\lambda) \\right] dt $$</p>
 <p>Step 2: Integration by Parts.
 <br>We want to remove the derivative $\\dot{x}$ so we can analyze the pure variations. We use integration by parts on $\\int \\lambda^T \\dot{x} dt$:
 <br>$$ \\int_0^T \\lambda^T \\dot{x} dt = \\left[ \\lambda^T x \\right]_0^T - \\int_0^T \\dot{\\lambda}^T x dt $$
 <br>Substitute this back into the integral:
-<br>$$ J = -\\left[ \\lambda^T x \\right]_0^T + \\int_0^T \\left[ -H(x, u, \\lambda) + \\dot{\\lambda}^T x \\right] dt $$</p>
+<br>$$ J = \\left[ \\lambda^T x \\right]_0^T - \\int_0^T \\left[ \\dot{\\lambda}^T x + H(x, u, \\lambda) \\right] dt $$</p>
 <p>Step 3: The First Variation.
 <br>We perturb the optimal control $u^*$ by a tiny amount $\\delta u$. This causes a tiny perturbation in the state $\\delta x$.
 <br>Because $u^*$ is the absolute minimum cost, the first variation (derivative) of $J$ with respect to these perturbations must be exactly zero.
-<br>$$ \\delta J = -\\left[ \\lambda^T \\delta x \\right]_0^T + \\int_0^T \\left[ -\\frac{\\partial H}{\\partial x} \\delta x - \\frac{\\partial H}{\\partial u} \\delta u + \\dot{\\lambda}^T \\delta x \\right] dt = 0 $$
+<br>$$ \\delta J = \\left[ \\lambda^T \\delta x \\right]_0^T - \\int_0^T \\left[ \\dot{\\lambda}^T \\delta x + \\frac{\\partial H}{\\partial x} \\delta x + \\frac{\\partial H}{\\partial u} \\delta u \\right] dt = 0 $$
 <br>We group the $\\delta x$ terms together:
-<br>$$ \\delta J = -\\left[ \\lambda^T \\delta x \\right]_0^T + \\int_0^T \\left[ \\left( \\dot{\\lambda}^T - \\frac{\\partial H}{\\partial x} \\right) \\delta x - \\frac{\\partial H}{\\partial u} \\delta u \\right] dt = 0 $$</p>
+<br>$$ \\delta J = \\left[ \\lambda^T \\delta x \\right]_0^T - \\int_0^T \\left[ \\left( \\dot{\\lambda}^T + \\frac{\\partial H}{\\partial x} \\right) \\delta x + \\frac{\\partial H}{\\partial u} \\delta u \\right] dt = 0 $$</p>
 <p>Step 4: Choosing the Adjoint Physics.
 <br>We invented the vector $\\lambda(t)$, so we are completely free to choose how it evolves. 
 <br>We deliberately choose the differential equation for $\\lambda(t)$ so that the $\\delta x$ term in the integral perfectly vanishes:
-<br>$$ \\dot{\\lambda}^T = \\frac{\\partial H}{\\partial x} \\quad \\implies \\quad \\dot{\\lambda} = \\left(\\frac{\\partial H}{\\partial x}\\right)^T $$
-<br>This is the Adjoint Equation. It defines how the "shadow prices" evolve backwards in time.</p>
+<br>$$ \\dot{\\lambda}^T = -\\frac{\\partial H}{\\partial x} \\quad \\implies \\quad \\dot{\\lambda} = -\\left(\\frac{\\partial H}{\\partial x}\\right)^T $$
+<br>This is the Adjoint Equation. The minus sign is what makes the "shadow prices" evolve <i>backwards</i> in time: they are integrated from the terminal condition back toward $t = 0$, while the state $x$ runs forwards.</p>
 <p>Step 5: The Maximum Principle.
 <br>With the $\\delta x$ term annihilated, and assuming the boundary conditions handle the $\\left[ \\lambda^T \\delta x \\right]$ term, the variation integral collapses to:
-<br>$$ \\int_0^T -\\frac{\\partial H}{\\partial u} \\delta u dt = 0 $$
+<br>$$ \\int_0^T \\frac{\\partial H}{\\partial u} \\delta u \\, dt = 0 $$
 <br>Because this must be zero for <i>any</i> possible tiny perturbation $\\delta u(t)$ at any time $t$, the term inside the integral must be identically zero at every instant:
 <br>$$ \\frac{\\partial H}{\\partial u} = 0 $$</p>
 <p>This is the condition for a stationary point. Pontryagin extended this (using spike variations instead of smooth variations) to prove that the Hamiltonian is not just stationary, it is strictly <b>maximized</b> over the set of all allowed controls $U$.
@@ -17956,7 +17626,7 @@ mathbio: `
 <br>Look at the equation for infected individuals: $\\frac{dI}{dt} = I (\\beta S - \\gamma)$.
 <br>The number of infected people $I(t)$ will only grow (meaning $\\frac{dI}{dt} > 0$) if the term in parentheses is positive: $\\beta S - \\gamma > 0$.
 <br>This happens exactly when $S > \\frac{\\gamma}{\\beta}$.
-<br>This critical threshold ratio $\\frac{\\beta}{\\gamma}$ is defined as $R_0$.
+<br>Whether this threshold is already crossed at the outset is measured by $R_0 = \\frac{\\beta S_0}{\\gamma}$, the number of secondary infections a single case produces in a wholly susceptible population. (With the population normalised so that $S_0 = 1$, this is simply $\\beta/\\gamma$.)
 <br>As the disease spreads, $S(t)$ strictly decreases (because $\\frac{dS}{dt}$ is always negative).
 <br>Eventually, $S(t)$ must drop below the threshold $\\frac{\\gamma}{\\beta}$. The instant that happens, $\\frac{dI}{dt}$ becomes negative, and the epidemic peaks and permanently decays.</p>
 <p>Step 2: Eliminating Time.
@@ -17991,7 +17661,6 @@ mathbio: `
 <br>No matter how infectious the disease ($\\beta$) or how long it lasts ($1/\\gamma$), the mathematics of the differential equations strictly guarantee that the epidemic will run out of momentum before it consumes the entire population. $\\blacksquare$</p>
 </div>
 `,
-
 prob: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Geometry of Chance</h3>
 <p>Probability is the rigorous mathematical study of uncertainty. Before 1933, it was a loose collection of paradoxes about gambling. Andrey Kolmogorov transformed it into a strict branch of Measure Theory, where "probabilities" are simply geometric volumes (measures) of subsets in an abstract space, and the total volume of the universe is exactly 1.</p>
@@ -18066,9 +17735,8 @@ ergodic: `
 <br>Our goal is to prove that $\\mu(F) = 0$.</p>
 <p>Step 2: The Disjoint Shifts.
 <br>Look at the set $F$. It is a subset of $E$.
-<br>Where does $F$ go after 1 step? It goes to $T(F)$.
-<br>Where does $F$ go after $k$ steps? It goes to $T^k(F)$. (Equivalently, look at the pre-images $T^{-k}(F)$ if the map isn't invertible, but the logic holds: we track the flow).
-<br>Let's use pre-images for absolute rigor: consider the sets $F, T^{-1}(F), T^{-2}(F), \\dots$
+<br>We track $F$ <i>backwards</i> rather than forwards. The map $T$ need not be invertible, so forward images $T^k(F)$ can overlap in unhelpful ways, whereas pre-images always behave. Consider the sets
+<br>$$ F, \\quad T^{-1}(F), \\quad T^{-2}(F), \\quad T^{-3}(F), \\quad \\dots $$
 <br>We claim these sets are completely, mutually disjoint.</p>
 <p>Assume, for contradiction, that they are not disjoint. Suppose there is some point $y$ that is in both $T^{-i}(F)$ and $T^{-j}(F)$, with $i < j$.
 <br>By definition of pre-image, this means $T^i(y) \\in F$ and $T^j(y) \\in F$.
@@ -18389,22 +18057,26 @@ stats: `
 <div class="msec"><h3>4. Capstone Proof: The Bias-Variance Tradeoff</h3>
 <p><b>Theorem:</b> In any predictive model or estimator, the total error (Mean Squared Error) can always be perfectly algebraically decomposed into three distinct parts: the Bias (how wrong your average guess is), the Variance (how violently your guess jumps around based on the data sample), and the Irreducible Noise. You cannot minimize one without often increasing the other.</p>
 <p><b>Proof (Via Expected Value Algebra):</b> 
-<br>Let $Y$ be the true value we are trying to predict (or the true parameter).
+<br>Let $Y$ be the value we observe. In general an observation carries noise no model can ever remove, so we write $Y = \\theta + \\varepsilon$, where $\\theta$ is the true underlying signal, the noise satisfies $E[\\varepsilon] = 0$ and $\\text{Var}(\\varepsilon) = \\sigma^2$, and $\\varepsilon$ is independent of the training data.
 <br>Let $\\hat{Y}$ be our mathematical estimator (which is a random variable because it is calculated from random training data).
-<br>We define the Mean Squared Error (MSE) as the expected value of the squared distance between our guess and the truth:
+<br>We define the Mean Squared Error (MSE) as the expected value of the squared distance between our guess and the observation:
 <br>$$ \\text{MSE} = E\\left[ (\\hat{Y} - Y)^2 \\right] $$</p>
-<p>Step 1: Isolating the True Mean.
-<br>Assume the true value $Y$ is a deterministic constant $\\theta$ (for simplicity, ignoring irreducible noise for a moment, the math works the same).
-<br>$$ \\text{MSE} = E\\left[ (\\hat{Y} - \\theta)^2 \\right] $$
-<br>We introduce the expected average value of our guess across all possible datasets. Let $E[\\hat{Y}] = \\mu$.
+<p>Step 1: Splitting Off the Irreducible Noise.
+<br>Substitute $Y = \\theta + \\varepsilon$ and expand:
+<br>$$ \\text{MSE} = E\\left[ \\big((\\hat{Y} - \\theta) - \\varepsilon\\big)^2 \\right] = E\\left[ (\\hat{Y} - \\theta)^2 \\right] - 2E\\left[ (\\hat{Y} - \\theta)\\varepsilon \\right] + E\\left[ \\varepsilon^2 \\right] $$
+<br>The middle term dies: $\\hat{Y}$ depends only on the training data, so it is independent of $\\varepsilon$, giving $E[(\\hat{Y} - \\theta)\\varepsilon] = E[\\hat{Y} - \\theta] \\cdot E[\\varepsilon] = 0$.
+<br>The last term is $E[\\varepsilon^2] = \\text{Var}(\\varepsilon) = \\sigma^2$, the <b>Irreducible Noise</b>. No estimator whatsoever can reduce it &mdash; it is the price of a noisy universe.
+<br>$$ \\text{MSE} = \\sigma^2 + E\\left[ (\\hat{Y} - \\theta)^2 \\right] $$</p>
+<p>Step 1b: Isolating the True Mean.
+<br>We now decompose the remaining term. Introduce the expected average value of our guess across all possible datasets. Let $E[\\hat{Y}] = \\mu$.
 <br>We add and subtract this mean inside the squared term:
-<br>$$ \\text{MSE} = E\\left[ ( (\\hat{Y} - \\mu) + (\\mu - \\theta) )^2 \\right] $$</p>
+<br>$$ E\\left[ (\\hat{Y} - \\theta)^2 \\right] = E\\left[ ( (\\hat{Y} - \\mu) + (\\mu - \\theta) )^2 \\right] $$</p>
 <p>Step 2: Expanding the Square.
 <br>We expand the quadratic $(a+b)^2 = a^2 + 2ab + b^2$:
-<br>$$ \\text{MSE} = E\\left[ (\\hat{Y} - \\mu)^2 + 2(\\hat{Y} - \\mu)(\\mu - \\theta) + (\\mu - \\theta)^2 \\right] $$</p>
+<br>$$ = E\\left[ (\\hat{Y} - \\mu)^2 + 2(\\hat{Y} - \\mu)(\\mu - \\theta) + (\\mu - \\theta)^2 \\right] $$</p>
 <p>Step 3: The Linearity of Expectation.
 <br>We push the Expected Value operator into the sum. Because it is a linear operator:
-<br>$$ \\text{MSE} = E\\left[ (\\hat{Y} - \\mu)^2 \\right] + E\\left[ 2(\\hat{Y} - \\mu)(\\mu - \\theta) \\right] + E\\left[ (\\mu - \\theta)^2 \\right] $$</p>
+<br>$$ = E\\left[ (\\hat{Y} - \\mu)^2 \\right] + E\\left[ 2(\\hat{Y} - \\mu)(\\mu - \\theta) \\right] + E\\left[ (\\mu - \\theta)^2 \\right] $$</p>
 <p>Step 4: Analyzing the Terms.
 <br>Term 1: $E\\left[ (\\hat{Y} - \\mu)^2 \\right]$.
 <br>This is the expected squared distance of the estimator $\\hat{Y}$ from its own mean $\\mu$.
@@ -18424,9 +18096,9 @@ stats: `
 <br>So this becomes $\\mu - \\mu = 0$.
 <br>The cross-term is exactly equal to zero and perfectly vanishes.</p>
 <p>Step 6: The Final Law.
-<br>Putting the surviving terms back together, we arrive at the absolute, inescapable law of statistical learning:
-<br>$$ \\text{MSE} = \\text{Variance}(\\hat{Y}) + (\\text{Bias}(\\hat{Y}, \\theta))^2 $$
-<br>To reduce the total error, you must balance the rigidity of the model (Bias) against the volatility of the model (Variance). $\\blacksquare$</p>
+<br>The surviving terms give $E\\big[(\\hat{Y} - \\theta)^2\\big] = \\text{Variance}(\\hat{Y}) + \\text{Bias}^2$. Restoring the noise split off in Step 1, we arrive at the absolute, inescapable law of statistical learning:
+<br>$$ \\text{MSE} = \\underbrace{\\sigma^2}_{\\text{irreducible}} + \\underbrace{\\big(\\text{Bias}(\\hat{Y}, \\theta)\\big)^2}_{\\text{wrong on average}} + \\underbrace{\\text{Variance}(\\hat{Y})}_{\\text{unstable}} $$
+<br>Only the last two terms are yours to control: to reduce them you must balance the rigidity of the model (Bias) against its volatility (Variance). The $\\sigma^2$ floor can never be crossed by any estimator, however clever. $\\blacksquare$</p>
 </div>
 `,
 info: `
@@ -18480,7 +18152,6 @@ info: `
 <br>Therefore, the Uniform distribution is the unique state of maximum uncertainty. $\\blacksquare$</p>
 </div>
 `,
-
 comb: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Science of the Discrete</h3>
 <p>Combinatorics is the study of discrete, finite structures. Unlike analysis, which studies the continuous and smooth, combinatorics studies the bumpy and atomic. It answers questions of existence (is there a pattern?), enumeration (how many are there?), and optimization (what is the best one?).</p>
@@ -18564,7 +18235,7 @@ designs: `
 <br>The determinant is the product of all eigenvalues:
 <br>$$ \\det(M M^T) = rk (r - \\lambda)^{v-1} $$</p>
 <p>Step 3: The Rank Bound.
-<br>Because it is an incomplete design ($k < v$), we know a point cannot appear in every block with every other point, so $r > \\lambda$.
+<br>Double-counting the pairs through a fixed point gives the standard identity $\\lambda(v-1) = r(k-1)$, so $\\frac{r}{\\lambda} = \\frac{v-1}{k-1}$. Because the design is incomplete ($k \\lt v$), that ratio is strictly greater than $1$, so $r \\gt \\lambda$.
 <br>Therefore, every single eigenvalue is strictly greater than zero.
 <br>This means $\\det(M M^T) \\neq 0$.
 <br>A square $v \\times v$ matrix with a non-zero determinant has full rank.
@@ -18779,37 +18450,35 @@ addcomb: `
 <br>The set $B$ is a single element $\\{b\\}$. The sumset $A + B$ is just $A$ shifted by $b$.
 <br>The size is $|A+B| = |A| = |A| + 1 - 1 = |A| + |B| - 1$. The bound holds strictly.</p>
 <p>Inductive Step:
-<br>Assume the theorem holds for all sets $B$ of size less than $k$. We want to prove it for $|B| = k > 1$.
-<br>Since $B$ has at least two elements, we can shift it (which doesn't change sizes) so that $0 \\in B$ and some other non-zero element $e \\in B$.
-<br>This is where Freeman Dyson's brilliant "e-transform" enters. We define two new sets:
-<br>$$ A' = A \\cup (B + e) $$
-<br>$$ B' = A \\cap (B + e) $$</p>
+<br>Assume the theorem holds whenever the second set is strictly smaller than $B$, and let $|B| = k \\gt 1$.
+<br>This is where Freeman Dyson's brilliant "e-transform" enters. For an element $e \\in \\mathbb{Z}_p$ we define two new sets:
+<br>$$ A_e = A \\cup (B + e) \\qquad\\qquad B_e = B \\cap (A - e) $$</p>
 <p>Step 1: The Size Invariant.
-<br>By the standard inclusion-exclusion principle for sizes of sets:
-<br>$$ |A'| + |B'| = |A \\cup (B+e)| + |A \\cap (B+e)| = |A| + |B+e| = |A| + |B| $$
-<br>The sum of the sizes of the two new sets is perfectly identical to the sum of the sizes of the old sets.</p>
+<br>First note that translating by $e$ carries $B_e$ exactly onto $A \\cap (B+e)$: an element $b$ lies in $B \\cap (A-e)$ precisely when $b + e$ lies in $(B+e) \\cap A$. Hence $|B_e| = |A \\cap (B+e)|$.
+<br>Now inclusion-exclusion on sizes gives:
+<br>$$ |A_e| + |B_e| = |A \\cup (B+e)| + |A \\cap (B+e)| = |A| + |B+e| = |A| + |B| $$
+<br>The two new sets carry exactly the same total size as the original pair.</p>
 <p>Step 2: The Sumset Inclusion.
-<br>We claim that $A' + B' \\subseteq A + B$.
-<br>Let $x \\in A' + B'$. This means $x = a' + b'$ where $a' \\in A'$ and $b' \\in B'$.
-<br>Because $b' \\in B'$, it is in the intersection, so $b' \\in A$ and $b' \\in B+e$. This means $b' - e \\in B$.
-<br>Since $a' \\in A'$, there are two cases:
-<br>Case 1: $a' \\in A$. Then $x = a' + b'$. Since $b' - e \\in B$ and $0 \\in B$, $b'$ itself must be in $A+B$ (WAIT, $b' \\in B+e$, this logic is tricky. Simpler path: $b' \\in B'$, so $b' \\in A$. And $a' \\in A'$. If $a' \\in B+e$, then $a'-e \\in B$. We can write $x = a' + b' = b' + a' = (b') + ((a'-e)+e)$. Because $b' \\in A$ and $a'-e \\in B$, $b' + (a'-e) \\in A+B$. This implies $A' + B' \\subseteq A + B \\cup (A+B+e)$ which is $\\subseteq A+B$ if $e$ is chosen carefully).
-<br>Let's use the standard exact shifting: $A' = A \\cup (A+e)$, $B' = B \\cap (B-e)$.
-<br>Then any $a' + b'$ is either $a + b$ (if $a' \\in A$) or $(a+e) + b'$ (if $a' \\notin A$). If $a' \\notin A$, $a' \\in A+e$. And $b' \\in B-e$, so $b'+e \\in B$. Thus $(a'+e-e) + b' = a + (b'+e) \\in A+B$.
-<br>Therefore, the new sumset is strictly contained in the old sumset: $|A' + B'| \\le |A + B|$.</p>
-<p>Step 3: Forcing the Induction.
-<br>For the induction to work, we need $|B'| < |B|$.
-<br>Can we guarantee this? Yes. If $|B \\cap (B-e)| = |B|$, it means $B = B-e$. 
-<br>This means the set $B$ is perfectly invariant under shifting by $e$. It is a union of cosets of the subgroup generated by $e$.
-<br>But we are working in $\\mathbb{Z}_p$, a prime cyclic group! The only subgroup generated by a non-zero element $e$ is the entire group $\\mathbb{Z}_p$.
-<br>This would force $B = \\mathbb{Z}_p$, meaning $|B| = p$, which violates our assumption that $|A|+|B|-1 < p$.
-<br>Therefore, $|B'|$ is strictly less than $|B|$.</p>
+<br>We claim $A_e + B_e \\subseteq A + B$. Take any $a' \\in A_e$ and $b' \\in B_e$.
+<br>Membership in $B_e$ tells us two things at once: $b' \\in B$, and $b' \\in A - e$, so that $b' + e \\in A$.
+<br><i>Case 1: $a' \\in A$.</i> Then $a' + b'$ is an element of $A$ plus an element of $B$, so $a' + b' \\in A + B$ immediately.
+<br><i>Case 2: $a' \\in B + e$.</i> Then $a' - e \\in B$. Regroup the sum, sliding the $e$ from one term to the other:
+<br>$$ a' + b' = (b' + e) + (a' - e) $$
+<br>The first bracket lies in $A$ and the second lies in $B$, so again $a' + b' \\in A + B$.
+<br>Both cases land inside $A + B$, so $|A_e + B_e| \\le |A + B|$.</p>
+<p>Step 3: Choosing $e$ so the Induction Bites.
+<br>We need an $e$ for which $B_e$ is non-empty but strictly smaller than $B$.
+<br>Non-emptiness is easy: pick any $a \\in A$ and $b \\in B$ and set $e = a - b$. Then $b + e = a \\in A$, so $b \\in B_e$.
+<br>Now suppose, for contradiction, that every such choice gave the whole set back, $B_e = B$. Fixing one $b_1 \\in B$, that says $B + (a - b_1) \\subseteq A$ for every $a \\in A$; rewriting, $(B - b_1) + a \\subseteq A$ for every $a \\in A$. So $A$ is closed under translation by every element of $B - b_1$.
+<br>Since $|B| \\ge 2$ there is some $b_2 \\in B$ with $d = b_2 - b_1 \\neq 0$. Then $A + d \\subseteq A$, and because $A$ is finite this forces $A + d = A$ &mdash; making $A$ a union of cosets of the subgroup generated by $d$.
+<br>But $\\mathbb{Z}_p$ has prime order, so the only subgroup generated by a non-zero $d$ is the whole of $\\mathbb{Z}_p$. That forces $A = \\mathbb{Z}_p$, hence $A + B = \\mathbb{Z}_p$ and $|A+B| = p$, and the theorem holds trivially in that case.
+<br>Outside that trivial case we may therefore fix an $e$ with $\\emptyset \\neq B_e \\subsetneq B$, so $|B_e| \\lt |B|$.</p>
 <p>Step 4: The Kill Shot.
-<br>Because $|B'| < |B|$, the inductive hypothesis flawlessly applies to the sets $A'$ and $B'$:
-<br>$$ |A' + B'| \\ge |A'| + |B'| - 1 $$
-<br>Substituting our structural inequalities:
-<br>$$ |A + B| \\ge |A' + B'| \\ge |A'| + |B'| - 1 = |A| + |B| - 1 $$
-<br>The sumset bound holds strictly for the original sets. $\\blacksquare$</p>
+<br>Because $|B_e| \\lt |B|$, the inductive hypothesis applies flawlessly to the pair $A_e, B_e$:
+<br>$$ |A_e + B_e| \\ge |A_e| + |B_e| - 1 $$
+<br>Chaining this with Step 2 (the inclusion) and Step 1 (the size invariant):
+<br>$$ |A + B| \\ge |A_e + B_e| \\ge |A_e| + |B_e| - 1 = |A| + |B| - 1 $$
+<br>The sumset bound holds for the original sets. $\\blacksquare$</p>
 </div>
 `,
 graph: `
@@ -18881,7 +18550,7 @@ ramsey: `
 <br>Because every pair of people is either friends or strangers, we have colored every edge of the complete graph $K_6$ with exactly two colors.
 <br>We must prove that there is either a Red Triangle (3 mutual friends) or a Blue Triangle (3 mutual strangers).</p>
 <p>Step 1: Isolate a single vertex.
-<br>Pick any arbitrary person at the party, call him Alice (vertex $A$).
+<br>Pick any arbitrary person at the party, call them Alice (vertex $A$).
 <br>There are exactly 5 other people at the party.
 <br>Therefore, there are exactly 5 edges extending outward from vertex $A$.
 <br>Every edge is painted either Red or Blue.</p>
@@ -18963,7 +18632,6 @@ opt: `
 <br>The maximum exactly equals the minimum. $\\blacksquare$</p>
 </div>
 `,
-
 acont: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Rigidity of Holomorphy</h3>
 <p>Analytic Continuation is the process of extending the domain of a given analytic function. Because holomorphic functions are infinitely rigid, knowing their values on even a tiny line segment strictly determines their values across the entire complex universe. It allows us to evaluate functions like the Riemann Zeta function at points where their defining formula mathematically diverges.</p>
@@ -19216,10 +18884,11 @@ de: `
 <br>A solution to the ODE is exactly a function $y$ such that $T[y] = y$. This is called a <b>Fixed Point</b> of the operator $T$.</p>
 <p>Step 2: Picard Iteration.
 <br>We create an infinite sequence of "guess" functions.
-<br>Let our first guess be completely flat: $y_0(t) = y_0$.
+<br>Write the iterates as $\\varphi_n(t)$ to keep them clearly distinct from the initial <i>value</i> $y_0$.
+<br>Let the first guess be completely flat: $\\varphi_0(t) = y_0$ for every $t$.
 <br>We generate the next guess by plugging the previous guess into the operator:
-<br>$$ y_{n+1}(t) = T[y_n](t) = y_0 + \\int_{t_0}^t f(s, y_n(s)) ds $$
-<br>This creates a sequence of functions $y_0, y_1, y_2, \\dots$</p>
+<br>$$ \\varphi_{n+1}(t) = T[\\varphi_n](t) = y_0 + \\int_{t_0}^t f(s, \\varphi_n(s)) ds $$
+<br>This creates a sequence of functions $\\varphi_0, \\varphi_1, \\varphi_2, \\dots$</p>
 <p>Step 3: The Contraction Mapping.
 <br>We must prove this sequence actually converges. We measure the maximum distance between two functions in the space $C[t_0-\\delta, t_0+\\delta]$ using the supremum norm: $||u - v||_\\infty = \\max |u(t) - v(t)|$.
 <br>We analyze the distance between $T[u]$ and $T[v]$:
@@ -19233,7 +18902,7 @@ de: `
 <br>We deliberately choose our time window $\\delta$ to be small enough so that $L\\delta < 1$. Let $k = L\\delta$.
 <br>This proves that the operator $T$ is a <b>Contraction Mapping</b>. Every time you apply $T$, the maximum distance between any two functions shrinks by a factor of $k < 1$.
 <br>By the Banach Fixed-Point Theorem in a complete metric space, any sequence generated by repeatedly applying a contraction mapping must mathematically converge to a single, unique fixed point.
-<br>Therefore, the sequence of functions $y_n(t)$ converges uniformly to a unique limit function $y(t)$.
+<br>Therefore, the sequence of functions $\\varphi_n(t)$ converges uniformly to a unique limit function $y(t)$.
 <br>Since $T[y] = y$, this function is the exact, unique solution to the integral equation, and thus the differential equation. $\\blacksquare$</p>
 </div>
 `,
@@ -19324,7 +18993,7 @@ navier: `
 <br>In 3 Dimensions, the Sobolev math breaks down. 
 <br>The dimensions do not balance. The nonlinear term scales like $L^{-3}$, while the known controls only scale like $L^{-1}$.
 <br>The inequality allows the nonlinear convection term to theoretically stretch vortices infinitely thin, amplifying their velocity to infinity faster than the viscosity can damp them out.
-<br>No known mathematical tool is powerful enough to prove the viscosity wins, nor is any computer simulation precise enough to prove a singularity actually happens. The gap between the physics of energy and the mathematics of 3D topology remains completely open. $\\blacksquare$</p>
+<br>No known mathematical tool is powerful enough to prove the viscosity wins, nor is any computer simulation precise enough to prove a singularity actually happens. The gap between the physics of energy and the mathematics of 3D scaling remains completely open &mdash; which is precisely why this section carries no closing box: nothing here has been proved.</p>
 </div>
 `,
 dyn: `
@@ -19400,7 +19069,8 @@ fractal: `
 <br>But it is vastly larger than just the endpoints. Every point in the interval $[0,1]$ can be written in base-3 (ternary).
 <br>Removing the middle third is exactly equivalent to removing every number whose ternary expansion contains the digit '1'.
 <br>The Cantor set consists of all numbers whose ternary expansion consists entirely of $0$s and $2$s.
-<br>By mapping every $2$ to a $1$, we create a perfect one-to-one bijection between the Cantor set and the set of all infinite binary decimals, which is exactly the real numbers $[0,1]$.
+<br>By mapping every $2$ to a $1$, we get a perfect one-to-one correspondence between the Cantor set and the set of <i>all infinite binary sequences</i>.
+<br>That set of sequences is uncountable, by Cantor's diagonal argument. (Reading those sequences as binary expansions lands on every number in $[0,1]$, though not quite one-to-one &mdash; dyadic fractions such as $0.1000\\dots = 0.0111\\dots$ have two expansions apiece. A surjection onto an uncountable set is all we need.)
 <br>Therefore, the Cantor set contains an uncountable infinity of points.</p>
 <p>Step 3: The Fractional Dimension.
 <br>The Cantor set is perfectly self-similar. 
@@ -19526,7 +19196,6 @@ inteq: `
 <br>By the completeness of the space, the series converges to a unique, continuous function $f(x)$ that perfectly solves the integral equation. $\\blacksquare$</p>
 </div>
 `,
-
 anal: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Limits and Continuity</h3>
 <p>Analysis is the rigorous study of the continuous. It builds the machinery of calculus—limits, derivatives, and integrals—on an absolutely unshakable logical foundation, replacing the intuitive "infinitely small" with strict $\\epsilon-\\delta$ inequalities.</p>
@@ -19676,49 +19345,6 @@ scv: `
 <p>By the Identity Theorem for holomorphic functions, since $F$ and $f$ agree on a massive open subset, they must be the exact same analytic function wherever they are both defined.
 <br>Thus, $F$ provides a perfect, unique holomorphic extension of $f$ straight across the hole $K$.
 <br>Singularities in SCV cannot be points; they must be entire hypersurfaces of complex dimension $n-1$. $\\blacksquare$</p>
-</div>
-`,
-calculus: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Rates and Accumulation</h3>
-<p>Calculus is the mathematics of continuous change. It solves two ancient geometric problems: finding the exact slope of a tangent line to a curve (the derivative), and finding the exact area under a curve (the integral). Its crowning achievement is proving these two problems are exact inverses.</p>
-</div>
-<div class="msec"><h3>2. Formal Definitions: The Derivative and Integral</h3>
-<p><b>Derivative:</b> The instantaneous rate of change, defined rigorously as a limit: $f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$.</p>
-<p><b>Definite Integral:</b> The net signed area under a curve, defined as the limit of Riemann sums as the width of the rectangles approaches zero.</p>
-</div>
-<div class="msec"><h3>3. Core Theorems of Calculus</h3>
-<p><b>Mean Value Theorem:</b> If a function is continuous and differentiable on an interval, there is at least one point where the instantaneous slope exactly equals the average slope over the interval. (If you average 60 mph, you must have been going exactly 60 mph at some exact instant).</p>
-</div>
-<div class="msec"><h3>4. Capstone Proof: Fundamental Theorem of Calculus</h3>
-<p><b>Theorem (Newton & Leibniz):</b> The operations of integration (accumulation) and differentiation (rate of change) are perfect inverses. If $F(x) = \\int_a^x f(t) dt$ for a continuous function $f$, then $F'(x) = f(x)$.</p>
-<p><b>Proof (Via Limits of Integration):</b> 
-<br>Let $f$ be a continuous function on an interval $[a,b]$.
-<br>We define the area accumulation function $F(x) = \\int_a^x f(t) dt$.
-<br>We must evaluate the derivative of $F(x)$ from first principles using the strict definition of the derivative:
-<br>$$ F'(x) = \\lim_{h \\to 0} \\frac{F(x+h) - F(x)}{h} $$</p>
-<p>Step 1: Geometric subtraction.
-<br>Substitute the definition of $F$ into the limit:
-<br>$$ F(x+h) - F(x) = \\int_a^{x+h} f(t) dt - \\int_a^x f(t) dt $$
-<br>By the fundamental geometric property of integrals, the area from $a$ to $x+h$ minus the area from $a$ to $x$ leaves only the small sliver of area from $x$ to $x+h$:
-<br>$$ F(x+h) - F(x) = \\int_x^{x+h} f(t) dt $$
-<br>So the derivative limit becomes:
-<br>$$ F'(x) = \\lim_{h \\to 0} \\frac{1}{h} \\int_x^{x+h} f(t) dt $$</p>
-<p>Step 2: The Mean Value Theorem for Integrals.
-<br>Because the function $f(t)$ is continuous on the tiny interval $[x, x+h]$, it must attain a minimum value $m$ and a maximum value $M$ on that interval.
-<br>The area of the sliver is strictly bounded by the area of two rectangles:
-<br>$$ m \\cdot h \\le \\int_x^{x+h} f(t) dt \\le M \\cdot h $$
-<br>Dividing everything by $h$ (assuming $h > 0$), we trap the fraction:
-<br>$$ m \\le \\frac{1}{h} \\int_x^{x+h} f(t) dt \\le M $$
-<br>By the Intermediate Value Theorem, since the continuous function $f$ takes every value between its minimum $m$ and maximum $M$, there must exist some specific point $c$ in the interval $[x, x+h]$ where the function exactly equals the average height:
-<br>$$ f(c) = \\frac{1}{h} \\int_x^{x+h} f(t) dt $$</p>
-<p>Step 3: The Squeeze.
-<br>We substitute this exact value back into our derivative limit:
-<br>$$ F'(x) = \\lim_{h \\to 0} f(c) $$
-<br>The point $c$ is trapped in the interval $[x, x+h]$.
-<br>As $h$ shrinks to $0$, the upper bound of the interval crashes into $x$. The point $c$ is violently squeezed, forcing $c \\to x$.
-<br>Because $f$ is a continuous function, taking the limit as the input $c$ approaches $x$ simply yields the function evaluated at $x$:
-<br>$$ \\lim_{c \\to x} f(c) = f(x) $$
-<br>Therefore, $F'(x) = f(x)$. The rate of accumulation of area is exactly the height of the curve. $\\blacksquare$</p>
 </div>
 `,
 multivar: `
@@ -20041,13 +19667,13 @@ holo: `
 <p>Step 4: The Contradiction.
 <br>The only way the average of a set of numbers that are all $\\le M$ can equal exactly $M$ is if every single number in the set is exactly $M$.
 <br>Therefore, the function $|f(z)|$ must be perfectly constant on the entire circle $C$.
-<br>Because we can vary the radius $r$ from $0$ up to the boundary of our local patch, $|f(z)|$ is constant on the entire local disk.
-<br>By the Identity Theorem for holomorphic functions, if a function is constant on any open disk, it must be constant everywhere in the connected domain $D$.
+<br>Because we can vary the radius $r$ from $0$ up to the boundary of our local patch, $|f(z)|$ is constant on the entire local disk &mdash; say $|f| \\equiv k$ there.
+<br>Constant <i>modulus</i> now forces constant $f$, and this step deserves its own argument. If $k = 0$ then $f \\equiv 0$ on the disk and we are finished. Otherwise $f$ never vanishes there, so from $f \\overline{f} = k^2$ we may write $\\overline{f} = k^2 / f$ &mdash; exhibiting $\\overline{f}$ as a quotient of holomorphic functions with non-vanishing denominator, hence holomorphic itself. A function whose conjugate is also holomorphic must have zero derivative: writing $f = u + iv$, the Cauchy-Riemann equations for $f$ give $u_x = v_y$, $u_y = -v_x$, while those for $\\overline{f} = u - iv$ give $u_x = -v_y$, $u_y = v_x$. Adding each pair forces $u_x = u_y = v_x = v_y = 0$. So $f$ is constant on the disk.
+<br>By the Identity Theorem for holomorphic functions, a function constant on an open disk must be constant everywhere in the connected domain $D$.
 <br>But we assumed $f$ was a non-constant function. This is a fatal contradiction.
 <br>Therefore, the maximum cannot exist in the interior. $\\blacksquare$</p>
 </div>
 `,
-
 convex: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Convexity</h3>
 <p>Convex Geometry is the study of shapes without dents. A set is <b>convex</b> if, for any two points inside the set, the straight line segment connecting them lies entirely within the set. It fundamentally links linear algebra to geometry.</p>
@@ -20348,7 +19974,7 @@ knot: `
 </div>
 <div class="msec"><h3>2. Formal Definitions: Reidemeister Moves</h3>
 <p><b>Knot Diagram:</b> A 2D projection of a knot with broken lines to indicate over/under crossings.</p>
-<p><b>Reidemeister Moves:</b> Three simple local changes you can make to a knot diagram (untwisting a loop, sliding a string over another, sliding a string over a crossing). Alexander famously proved that two diagrams represent the same knot if and only if they can be connected by a sequence of these three moves.</p>
+<p><b>Reidemeister Moves:</b> Three simple local changes you can make to a knot diagram (untwisting a loop, sliding a string over another, sliding a string over a crossing). Reidemeister proved in 1927 &mdash; as did Alexander and Briggs independently &mdash; that two diagrams represent the same knot if and only if they can be connected by a sequence of these three moves, which is why the moves carry Reidemeister's name.</p>
 </div>
 <div class="msec"><h3>3. Core Theorems of Knot Theory</h3>
 <p><b>Gordon-Luecke Theorem (1989):</b> A knot is absolutely and uniquely determined by the topology of its complement in $S^3$. If you remove the knot from the universe, the shape of the empty space left behind identifies the knot perfectly.</p>
@@ -20387,7 +20013,6 @@ knot: `
 <br>The polynomial is strictly invariant under all three Reidemeister moves, proving it is a genuine, mathematically flawless invariant of the 3-dimensional knot. $\\blacksquare$</p>
 </div>
 `,
-
 topo: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Open Sets</h3>
 <p>Topology is the formal mathematical study of spatial structure, proximity, and continuity, stripped entirely of any notion of absolute distance or rigid shape. A coffee mug and a donut are topologically identical because they share the exact same intrinsic connectivity (one hole).</p>
@@ -20551,8 +20176,8 @@ homotopy: `
 <br>To move a $k$-manifold freely, we need a dimension of at least $2k + 2$.
 <br>Therefore, we require $(n+k+1) \\ge 2k + 2$.
 <br>Simplifying this inequality yields $n \\ge k + 1$.
-<br>When this dimensional threshold is crossed, we have absolute freedom to smoothly deform the map to pull the inverse images away from the poles, proving the map can be desuspended.
-<br>Therefore, the suspension homomorphism is a strict isomorphism for $n > k+1$.
+<br>That crude count lands exactly one step short of the sharp result, and the gap is precisely where the theorem does its real work. At the borderline $n = k+1$ there is just enough room to deform a <i>map</i> off the poles &mdash; giving surjectivity, every class desuspends &mdash; but not enough to also deform every <i>homotopy between two maps</i>, which is what injectivity would require. Once $n \\gt k+1$, both deformations have room, and the map is injective as well.
+<br>Therefore, the suspension homomorphism is surjective when $n = k+1$, and a strict isomorphism when $n \\gt k+1$.
 <br>The chaotic complexity of homotopy groups eventually crystallizes into absolute stability. $\\blacksquare$</p>
 </div>
 `,
@@ -20678,7 +20303,6 @@ lowdim: `
 <br>Therefore, the original manifold must be the 3-sphere. $\\blacksquare$</p>
 </div>
 `,
-
 riemannian: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Metric Tensor</h3>
 <p>Riemannian Geometry introduces the absolute notion of distance and angles to abstract manifolds. The foundation is the <b>Metric Tensor</b> $g$. At every point $p$ on the manifold, $g_p$ is a strictly positive-definite, symmetric bilinear form (an inner product) acting on the tangent space $T_p M$. This allows the rigorous measurement of the lengths of curves and volumes of spaces.</p>
@@ -20767,106 +20391,6 @@ symplectic: `
 <br>Therefore, the symplectic embedding cannot exist. You cannot squeeze the symplectic ball. $\\blacksquare$</p>
 </div>
 `,
-complexgeo: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Complex Manifolds</h3>
-<p>Complex Geometry studies spaces modeled on $\\mathbb{C}^n$. A <b>Complex Manifold</b> has an atlas of charts to $\\mathbb{C}^n$ where every single transition function is completely <i>holomorphic</i> (complex analytic). Because holomorphic functions are infinitely rigid, complex manifolds are extraordinarily constrained compared to smooth manifolds.</p>
-</div>
-
-<div class="msec"><h3>2. Formal Definitions: Kähler Manifolds</h3>
-<p><b>Almost Complex Structure ($J$):</b> A smooth tensor field that mimics multiplication by $i$, meaning $J^2 = -I$. By the Newlander-Nirenberg theorem, this comes from a true complex atlas if its Nijenhuis tensor vanishes.</p>
-<p><b>Kähler Manifold:</b> The holy trinity of geometry. A space equipped with a Riemannian metric $g$, a symplectic form $\\omega$, and a complex structure $J$ that perfectly lock together: $\\omega(X,Y) = g(JX, Y)$, and the complex structure is parallel transported cleanly ($\\nabla J = 0$).</p>
-</div>
-
-<div class="msec"><h3>3. Core Theorems of Complex Geometry</h3>
-<p><b>Chow's Theorem:</b> A shocking rigidity result. Any closed analytic subvariety of complex projective space $\\mathbb{P}^n$ is actually strictly algebraic (it can be defined entirely by a finite number of simple polynomials).</p>
-<p><b>Calabi-Yau Manifolds:</b> Compact Kähler manifolds with a vanishing first Chern class (they have Ricci-flat metrics). They form the geometric foundation of String Theory.</p>
-</div>
-
-<div class="msec"><h3>4. Capstone Proof: Hodge Decomposition</h3>
-<p><b>Theorem (Hodge, 1930s):</b> For any compact Kähler manifold, the standard de Rham cohomology groups (measuring the topological holes in the space) shatter perfectly into a direct sum of complex Dolbeault cohomology groups: 
-<br>$$H^k(M, \\mathbb{C}) \\cong \\bigoplus_{p+q=k} H^{p,q}(M)$$
-<br>This proves that the abstract topology of the space is rigidly dictated by its complex analytic structure.</p>
-<p><b>Proof (The analytic architecture via Harmonic Forms):</b> 
-<br>The proof relies on the heavy machinery of elliptic partial differential equations on manifolds.</p>
-<p>Step 1: The Hodge Laplacian.
-<br>On a Riemannian manifold, we define the exterior derivative $d$. We use the metric to define its formal adjoint $d^*$.
-<br>We construct the Hodge Laplacian operator: $\\Delta_d = d d^* + d^* d$.
-<br>Hodge's Theorem for Riemannian manifolds states that every de Rham cohomology class contains exactly one unique "harmonic form" (a form $\\alpha$ where $\\Delta_d \\alpha = 0$).
-<br>Therefore, $H^k(M, \\mathbb{C}) \\cong \\mathcal{H}^k_{d}$ (the space of $d$-harmonic $k$-forms).</p>
-<p>Step 2: Complex Operators.
-<br>Because the manifold is complex, the exterior derivative splits into two parts: $d = \\partial + \\bar{\\partial}$, where $\\partial$ differentiates in holomorphic directions and $\\bar{\\partial}$ in anti-holomorphic directions.
-<br>We define their respective Laplacians: $\\Delta_\\partial = \\partial \\partial^* + \\partial^* \\partial$ and $\\Delta_{\\bar{\\partial}} = \\bar{\\partial} \\bar{\\partial}^* + \\bar{\\partial}^* \\bar{\\partial}$.
-<br>By the complex version of Hodge's Theorem, the Dolbeault cohomology groups correspond to the harmonic forms of $\\bar{\\partial}$: 
-<br>$$H^{p,q}(M) \\cong \\mathcal{H}^{p,q}_{\\bar{\\partial}}$$</p>
-<p>Step 3: The Kähler Miracle.
-<br>This is the crux of the proof. In a general complex manifold, these three Laplacian operators ($\\Delta_d, \\Delta_\\partial, \\Delta_{\\bar{\\partial}}$) have absolutely nothing to do with each other.
-<br>However, on a <i>Kähler manifold</i>, the metric $g$ perfectly locks with the complex structure $J$ ($\\nabla J = 0$).
-<br>By utilizing the Kähler identities (deep algebraic commutators involving the symplectic form $\\omega$, like $[\\Lambda, \\partial] = i\\bar{\\partial}^*$), one can brutally calculate the commutators of the operators.</p>
-<p>The Kähler identities mathematically force a spectacular collapse:
-<br>$$\\Delta_d = 2\\Delta_\\partial = 2\\Delta_{\\bar{\\partial}}$$
-<br>The three vastly different second-order differential operators are, up to a constant, the exact same operator!</p>
-<p>Step 4: The Decomposition.
-<br>Because the operators are identical, a differential form is $d$-harmonic if and only if it is $\\bar{\\partial}$-harmonic.
-<br>Therefore, the space of topological harmonic forms $\\mathcal{H}^k_{d}$ is exactly the same vector space as the sum of the complex harmonic forms $\\mathcal{H}^{p,q}_{\\bar{\\partial}}$ for $p+q=k$.
-<br>Since the harmonic spaces perfectly map to the cohomology groups, the cohomology groups must perfectly decompose:
-<br>$$H^k(M, \\mathbb{C}) \\cong \\bigoplus_{p+q=k} H^{p,q}(M)$$
-<br>The topological shape of the universe is strictly bound to its complex analytic equations. $\\blacksquare$</p>
-</div>
-`,
-algcurves: `
-<div class="msec"><h3>1. The Axiomatic Foundation: 1-Dimensional Varieties</h3>
-<p>Algebraic Curves are the 1-dimensional objects of algebraic geometry (though over $\\mathbb{C}$, they are 2-dimensional Riemann Surfaces). They are defined by polynomial equations like $P(x,y)=0$. The focus is on <b>Projective, Non-Singular Curves</b>, which are completely smooth and extend seamlessly to infinity.</p>
-</div>
-
-<div class="msec"><h3>2. Formal Definitions: Divisors</h3>
-<p><b>Divisor ($D$):</b> A formal mechanism to track the poles and zeros of functions. It is a finite formal sum of points on the curve: $D = \\sum n_i P_i$. If $n_i > 0$, it's a zero; if $n_i < 0$, it's a pole. The degree of the divisor is $\\sum n_i$.</p>
-<p><b>Principal Divisor:</b> The divisor $(f)$ representing the exact zeros and poles of a globally defined meromorphic function $f$. A fundamental theorem states the degree of any principal divisor is exactly $0$ (the number of zeros equals the number of poles).</p>
-</div>
-
-<div class="msec"><h3>3. Core Theorems of Algebraic Curves</h3>
-<p><b>Bélyi's Theorem:</b> A compact Riemann surface can be defined by algebraic equations using strictly rational numbers (over $\\overline{\\mathbb{Q}}$) if and only if it can be mapped to the Riemann sphere in such a way that it is branched over at most 3 specific points (usually $0, 1, \\infty$).</p>
-</div>
-
-<div class="msec"><h3>4. Capstone Proof: The Riemann-Roch Theorem</h3>
-<p><b>Theorem (1865):</b> Let $C$ be a smooth projective curve of genus $g$. Let $D$ be a divisor. Let $l(D)$ be the dimension of the vector space of meromorphic functions whose poles are strictly bounded by $D$. Let $K$ be the canonical divisor (representing differential forms). Then:
-<br>$$l(D) - l(K - D) = \\text{deg}(D) - g + 1$$</p>
-<p><b>Proof (The logical architecture):</b> 
-<br>Riemann originally proved an inequality $l(D) \\ge \\text{deg}(D) - g + 1$ using the Dirichlet principle from analysis. Roch calculated the exact error term. We sketch the modern algebraic proof via sheaf cohomology.</p>
-<p>Step 1: Sheaf Cohomology.
-<br>We define the sheaf $\\mathcal{O}(D)$ on the curve $C$. The global sections of this sheaf, $H^0(C, \\mathcal{O}(D))$, are exactly the meromorphic functions we are trying to count. Its dimension is $l(D)$.
-<br>The higher cohomology group $H^1(C, \\mathcal{O}(D))$ represents the obstructions to finding these functions.
-<br>We define the Euler characteristic of the sheaf as the alternating sum of dimensions:
-<br>$$\\chi(D) = \\dim H^0(C, \\mathcal{O}(D)) - \\dim H^1(C, \\mathcal{O}(D))$$</p>
-<p>Step 2: Serre Duality.
-<br>A profound theorem by Jean-Pierre Serre proves that the obstruction space $H^1$ is topologically dual to the space of differential forms.
-<br>Specifically, $H^1(C, \\mathcal{O}(D)) \\cong H^0(C, \\Omega^1 \\otimes \\mathcal{O}(-D))$.
-<br>The sheaf of differential forms $\\Omega^1$ corresponds to the canonical divisor $K$.
-<br>Therefore, the dimension of this obstruction group is exactly $l(K - D)$.
-<br>Substituting this into our Euler characteristic yields:
-<br>$$\\chi(D) = l(D) - l(K - D)$$</p>
-<p>Step 3: Calculating the Euler Characteristic (The Hirzebruch-Riemann-Roch approach).
-<br>We must calculate $\\chi(D)$ strictly in terms of the degree and the genus.
-<br>We proceed by induction on the degree of the divisor $D$.</p>
-<p>Base Case: Let $D = 0$ (the empty divisor, no poles allowed).
-<br>The only functions on a compact curve with absolutely no poles are constant functions. The vector space of constants is 1-dimensional, so $l(0) = 1$.
-<br>The obstruction space $l(K)$ is the dimension of the space of holomorphic differential forms, which is exactly defined to be the genus $g$ of the curve.
-<br>Therefore, $\\chi(0) = l(0) - l(K) = 1 - g$.
-<br>The formula $\\text{deg}(0) - g + 1 = 0 - g + 1 = 1 - g$ holds perfectly.</p>
-<p>Inductive Step: Assume the formula $\\chi(D) = \\text{deg}(D) - g + 1$ holds for a divisor $D$.
-<br>We add a single point $P$ to the divisor, creating $D + P$. (The degree increases by exactly 1).
-<br>We form a short exact sequence of sheaves:
-<br>$$0 \\to \\mathcal{O}(D) \\to \\mathcal{O}(D + P) \\to \\mathcal{O}_{D+P} / \\mathcal{O}_D \\to 0$$
-<br>The quotient sheaf is a "skyscraper sheaf" supported solely at the point $P$. Its dimension is exactly 1.</p>
-<p>Because the Euler characteristic $\\chi$ is additive over short exact sequences, we have:
-<br>$$\\chi(D + P) = \\chi(D) + \\chi(\\text{skyscraper})$$
-<br>$$\\chi(D + P) = \\chi(D) + 1$$
-<br>Substitute the inductive hypothesis for $\\chi(D)$:
-<br>$$\\chi(D + P) = (\\text{deg}(D) - g + 1) + 1$$
-<br>$$\\chi(D + P) = (\\text{deg}(D) + 1) - g + 1$$
-<br>Since $\\text{deg}(D + P) = \\text{deg}(D) + 1$, the formula is preserved!
-<br>By induction (adding or subtracting points), the formula holds universally for all divisors on the curve. $\\blacksquare$</p>
-</div>
-`,
 alggeo: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Schemes</h3>
 <p>Algebraic Geometry studies the solutions to systems of polynomial equations. Grothendieck revolutionized the field by defining the <b>Scheme</b>. Instead of just looking at the geometric points in $\\mathbb{C}^n$, a scheme evaluates the algebraic ring $R$ defining the equations, and defines the "points" of the space to be the prime ideals of $R$. The space $\\text{Spec}(R)$ tracks not just where the equations equal zero, but the <i>multiplicity</i> and <i>nilpotent</i> ghost structures of those intersections.</p>
@@ -20907,7 +20431,6 @@ alggeo: `
 <br>The discrete counting of points over finite fields was ultimately controlled by the continuous topology of complex spaces and the analytic bounds of harmonic forms. $\\blacksquare$</p>
 </div>
 `,
-
 coremath: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Formalizing Intuition</h3>
 <p>Core Mathematics bridges intuitive reality with formal abstraction. It builds the foundational vocabulary of numbers, geometry, and change. The rigorous underpinning of this entire continent lies in the <b>Peano Axioms</b> (for the natural numbers) and the construction of the <b>Real Number Line</b> (via Dedekind cuts or Cauchy sequences), ensuring that the continuous space we intuitively understand is mathematically gapless.</p>
@@ -20959,7 +20482,6 @@ coremath: `
 <br>Therefore, $\\sqrt{2}$ cannot be written as a fraction. It is irrational. $\\blacksquare$</p>
 </div>
 `,
-
 geo: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Study of Space</h3>
 <p>Geometry is the mathematical formalization of space, shape, distance, and transformation. Its foundation lies in separating properties that are intrinsic to the space itself (like distances measured by ants crawling on a surface) from properties that depend on how the space is embedded into a larger universe.</p>
@@ -21079,52 +20601,6 @@ noneuclid: `
 <br>Therefore, there are an uncountably infinite number of lines passing through $P$ that never intersect $L$. The parallel postulate is spectacularly shattered. $\\blacksquare$</p>
 </div>
 `,
-projective: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Projective Space</h3>
-<p>Projective Geometry is the mathematical formalization of perspective (how the eye or a camera sees the world). The foundation is <b>Projective Space</b> $\\mathbb{P}^n$. It is constructed by taking a standard vector space $\\mathbb{R}^{n+1}$, and treating every 1-dimensional line passing through the origin as a single "point".</p>
-</div>
-
-<div class="msec"><h3>2. Formal Definitions: Homogeneous Coordinates</h3>
-<p><b>Homogeneous Coordinates:</b> A point in $\\mathbb{P}^2$ is written as $[x : y : z]$, representing the line through $(x,y,z)$. The scale does not matter: $[x : y : z]$ is strictly equal to $[\\lambda x : \\lambda y : \\lambda z]$.</p>
-<p><b>The Line at Infinity:</b> Points where $z = 0$ do not correspond to standard 2D Euclidean points $(x/z, y/z)$. They form an entire "line at infinity". In projective space, all parallel lines strictly intersect at exactly one point on this line.</p>
-</div>
-
-<div class="msec"><h3>3. Core Theorems of Projective Geometry</h3>
-<p><b>Desargues's Theorem:</b> If two triangles are in perspective from a point (lines joining corresponding vertices meet at one point), they are in perspective from a line (intersections of corresponding sides are perfectly collinear).</p>
-<p><b>The Cross-Ratio:</b> The fundamental geometric invariant. While distance and angles are utterly destroyed by perspective projection, the cross-ratio of four points on a line $\\frac{(A-C)(B-D)}{(A-D)(B-C)}$ remains absolutely invariant.</p>
-</div>
-
-<div class="msec"><h3>4. Capstone Proof: Pappus's Hexagon Theorem</h3>
-<p><b>Theorem (c. 300 AD):</b> Let $A, B, C$ be three distinct points on a straight line, and $X, Y, Z$ be three distinct points on another straight line. If we draw the cross-connecting lines to form a hexagon $AYBZCX$, the three intersection points of the opposite sides ($A$ to $Y$ intersecting $B$ to $X$, etc.) are strictly collinear (they lie on a single straight line).</p>
-<p><b>Proof (Algebraic via Homogeneous Coordinates):</b> 
-<br>We leverage the massive power of the projective coordinate system. Because projective transformations preserve collinearity, we can apply a matrix transformation to map our arbitrary lines to incredibly simple coordinates without breaking the theorem.</p>
-<p>Let the first line be the x-axis, defined by the equation $y = 0$.
-<br>Let the second line be the y-axis, defined by the equation $x = 0$.
-<br>Thus, the points on the first line have homogeneous coordinates:
-<br>$A = [a : 0 : 1]$, $B = [b : 0 : 1]$, $C = [c : 0 : 1]$
-<br>The points on the second line have homogeneous coordinates:
-<br>$X = [0 : x : 1]$, $Y = [0 : y : 1]$, $Z = [0 : z : 1]$</p>
-<p>We must find the intersection of the cross-connecting lines. 
-<br>In projective geometry, the line connecting two points $P$ and $Q$ is given strictly by the algebraic cross product $P \\times Q$. 
-<br>The intersection of two lines $L$ and $M$ is given strictly by the cross product $L \\times M$.</p>
-<p>Step 1: Calculate intersection point $P_1 = (AY \\cap BX)$.
-<br>Line $AY = A \\times Y = [a, 0, 1] \\times [0, y, 1] = [ -y, -a, ay ]$.
-<br>Line $BX = B \\times X = [b, 0, 1] \\times [0, x, 1] = [ -x, -b, bx ]$.
-<br>Intersection $P_1 = [-y, -a, ay] \\times [-x, -b, bx]$.
-<br>Evaluating the cross product determinant yields:
-<br>$P_1 = [ a(bx - xy), b(ay - xy), ab(x - y) ]$.
-<br>Because homogeneous coordinates allow us to scale, we divide the entire vector by $abxy$ (assuming no coordinates are zero, handling zeros requires limits but the algebra holds).
-<br>Scaling simplifies this to: $P_1 = [ \\frac{1}{y} - \\frac{1}{b}, \\frac{1}{x} - \\frac{1}{a}, \\frac{1}{xy} - \\frac{1}{ab} ]$ (this specific scaling is messy, let's use a cleaner vector).</p>
-<p>Actually, let's just write the three intersection points in their raw cross-product form:
-<br>$P_1 = (AY \\cap BX) \\implies P_1$
-<br>$P_2 = (AZ \\cap CX) \\implies P_2$
-<br>$P_3 = (BZ \\cap CY) \\implies P_3$</p>
-<p>To prove three points $P_1, P_2, P_3$ are collinear in $\\mathbb{P}^2$, we must rigorously prove that their $3 \\times 3$ determinant is exactly zero: $\\det(P_1, P_2, P_3) = 0$.
-<br>By executing the cross products and factoring the resulting massive polynomial in the variables $a,b,c,x,y,z$, a miraculous algebraic cancellation occurs.
-<br>The determinant factors identically into terms that cancel out completely, yielding exactly $0$.
-<br>Therefore, the three intersection points are mathematically guaranteed to lie on a single straight line, known as the Pappus Line. $\\blacksquare$</p>
-</div>
-`,
 diffgeo: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Smooth Manifolds</h3>
 <p>Differential Geometry applies the rigorous tools of calculus to curved spaces. The foundation is the <b>Smooth Manifold</b>. A topological space is equipped with an "atlas" of coordinate charts (maps to $\\mathbb{R}^n$). If the transition functions between overlapping charts are infinitely differentiable ($C^\\infty$), the manifold is smooth, allowing calculus to exist globally.</p>
@@ -21161,7 +20637,6 @@ diffgeo: `
 <br>The involutivity condition $[X, Y] \\in \\Delta$ geometrically guarantees that as the $(k-1)$-manifolds are dragged along the flow of $X$, their tangent spaces do not violently twist out of the distribution $\\Delta$. They lock together perfectly to form the required $k$-dimensional integral manifold. $\\blacksquare$</p>
 </div>
 `,
-
 rep: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Linearizing Symmetry</h3>
 <p>Representation Theory seeks to make abstract algebra computable by turning it into linear algebra. A <b>Representation</b> of a group $G$ over a vector space $V$ is a strict group homomorphism $\\rho: G \\to GL(V)$. This maps every abstract group element to an invertible matrix, ensuring that the group operation perfectly matches matrix multiplication.</p>
@@ -21320,7 +20795,7 @@ ktheory: `
 </div>
 
 <div class="msec"><h3>3. Core Theorems of K-Theory</h3>
-<p><b>Bott Periodicity:</b> A shocking topological symmetry proving that the K-theory of spheres is completely periodic. Specifically, $K(X) \\cong K(X \\times S^2)$. The homotopy groups of the stable unitary group repeat perfectly every 2 steps.</p>
+<p><b>Bott Periodicity:</b> A shocking topological symmetry proving that the K-theory of spheres is completely periodic. Specifically, suspending a space twice returns you to where you started: $\\tilde{K}(\\Sigma^2 X) \\cong \\tilde{K}(X)$, equivalently $K(X \\times S^2) \\cong K(X) \\otimes K(S^2)$. The homotopy groups of the stable unitary group repeat perfectly every 2 steps.</p>
 <p><b>The Atiyah-Singer Index Theorem:</b> A monumental theorem utilizing K-theory to equate the analytic index of a differential operator directly to the topological index of the underlying space.</p>
 </div>
 
@@ -21337,7 +20812,7 @@ ktheory: `
 <br>By definition, a module $M$ is a <i>finitely generated projective module</i> if and only if there exists another module $N$ such that $M \\oplus N \\cong R^n$ (it is a direct summand of a free module).
 <br>Thus, $\\Gamma(E)$ is strictly a finitely generated projective module over $C(X)$.</p>
 <p><b>Reverse mapping:</b> Given a finitely generated projective module $P$ over $R = C(X)$, we construct a geometric vector bundle.
-<br>Because $P$ is finitely generated and projective, it is a direct summand of $R^n$. Thus, there exists an idempotent matrix matrix $e \\in M_n(R)$ (where $e^2 = e$) such that $P \\cong e(R^n)$.
+<br>Because $P$ is finitely generated and projective, it is a direct summand of $R^n$. Thus, there exists an idempotent matrix $e \\in M_n(R)$ (where $e^2 = e$) such that $P \\cong e(R^n)$.
 <br>The entries of $e$ are continuous functions on $X$. Thus, for every point $x \\in X$, $e(x)$ is a strictly idempotent matrix of real numbers, representing a projection operator acting on $\\mathbb{R}^n$.</p>
 <p>We define the fiber of our vector bundle at point $x$ to be the image of the projection matrix $e(x)$:
 <br>$$E_x = \\text{im}(e(x)) \\subset \\mathbb{R}^n$$
@@ -21484,7 +20959,6 @@ univalg: `
 <br>Since any algebra satisfying the equations of $K$ is trapped within $K$, the class $K$ is exactly equal to the Variety defined by those equations. $\\blacksquare$</p>
 </div>
 `,
-
 alg: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Algebraic Structures</h3>
 <p>Abstract Algebra is the study of mathematical symmetry and structure. The foundation lies in abstracting arithmetic operations into formal <b>Algebraic Structures</b>: sets equipped with binary operations that strictly satisfy designated axioms (e.g., associativity, identity, invertibility, distributivity).</p>
@@ -21809,10 +21283,9 @@ galois: `
 <br>Since a general formula would apply to all quintic polynomials, no general formula can exist. $\\blacksquare$</p>
 </div>
 `,
-
 padic: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Ostrowski's Theorem</h3>
-<p>In standard analysis, we measure the "distance" between two rational numbers using the standard absolute value. Ostrowski's Theorem rigorously proved that there is only <i>one</i> other mathematically valid way to measure distance: the <b>p-adic absolute value</b> $|\\cdot|_p$.</p>
+<p>In standard analysis, we measure the "distance" between two rational numbers using the standard absolute value. Ostrowski's Theorem rigorously proved that this is very nearly the only option: up to equivalence, every non-trivial absolute value on $\\mathbb{Q}$ is either the familiar one or a <b>p-adic absolute value</b> $|\\cdot|_p$ &mdash; one for each prime $p$, and nothing else exists.</p>
 <p>For any prime $p$, any rational number can be factored as $x = p^k \\frac{a}{b}$ (where $a$ and $b$ are coprime to $p$). The $p$-adic absolute value is defined strictly as $|x|_p = p^{-k}$. Under this metric, numbers highly divisible by $p$ are considered extremely "small" (close to zero).</p>
 </div>
 
@@ -21953,7 +21426,7 @@ modular: `
 <br>Integrating $\\frac{k}{\\tau} d\\tau$ along the circular arc in the complex plane yields exactly $\\frac{k}{12}$.</p>
 <p>The small detours around the symmetric points $i$ and $\\rho$ contribute exactly $-\\frac{1}{2}v_i(f)$ and $-\\frac{1}{3}v_\\rho(f)$ due to the fractional angles of the corners of the fundamental domain.
 <br>Summing all contributions and applying the Argument Principle yields the strict equality: $\\sum v_p = k/12$. $\\blacksquare$</p>
-<p><i>Corollary:</i> Since orders of zeros cannot be negative, if $k < 12$ (except for specific values like $k=4, 6, 8, 10$), no modular forms can possibly exist, forcing the vector spaces to be empty.</p>
+<p><i>Corollary:</i> Every term on the left is a non-negative multiple of $1$, $\\tfrac12$ or $\\tfrac13$, so $k/12$ must be expressible that way. This immediately kills most small weights: for $k$ odd, for $k = 2$, and for $k \\lt 0$, no non-zero form exists and $M_k$ is the trivial space $\\{0\\}$. The small weights that do survive are $k = 0$ (the constants) and $k = 4, 6, 8, 10$, each giving a one-dimensional space spanned by an Eisenstein series.</p>
 </div>
 `,
 langlands: `
@@ -21980,7 +21453,7 @@ langlands: `
 <br>$$E: y^2 = x(x - a^p)(x + b^p)$$
 <br>This is the Frey Curve.</p>
 <p>Step 2: Calculate the properties of the Frey Curve.
-<br>The discriminant of this curve is $\\Delta = (a^p b^p c^p)^2$. 
+<br>The discriminant of this curve is $\\Delta = 16(a^p b^p c^p)^2 = 16(abc)^{2p}$ (after the standard change of variables the <i>minimal</i> discriminant is $2^{-8}(abc)^{2p}$).
 <br>The minimal conductor of the curve $N$ (a measure of its bad reduction) is essentially the product of the primes dividing $abc$.
 <br>Because the discriminant is an extreme $p$-th power, while the conductor remains square-free, the Galois representation associated with the $p$-torsion points of this curve, $\\overline{\\rho}_{E, p}$, possesses impossibly bizarre ramification properties. It is "too smooth" at the prime $p$.</p>
 <p>Step 3: Ribet's Theorem (Level Lowering).
@@ -22051,7 +21524,6 @@ transc: `
 <p><i>Corollary:</i> By defining Liouville's Constant $L = \\sum_{n=1}^\\infty 10^{-n!}$, one can easily find rational approximations (by truncating the sum) that approach $L$ faster than $1/q^d$ for <i>any</i> $d$. Thus, $L$ breaks the algebraic speed limit and must be transcendental, proving their existence.</p>
 </div>
 `,
-
 rh: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Critical Strip</h3>
 <p>The Riemann Hypothesis (RH) is arguably the most important unsolved problem in mathematics. It concerns the complex roots of the Riemann Zeta function $\\zeta(s)$. By the functional equation, $\\zeta(s)$ has trivial zeros at the negative even integers ($-2, -4, -6 \\dots$). All other zeros (the non-trivial zeros) are proven to lie strictly within the <b>Critical Strip</b>: the open region of the complex plane where $0 < \\Re(s) < 1$.</p>
@@ -22068,7 +21540,7 @@ rh: `
 </div>
 
 <div class="msec"><h3>4. Capstone Proof: Helge von Koch's Theorem</h3>
-<p><b>Theorem (1901):</b> The Riemann Hypothesis is mathematically equivalent to the statement that the error term in the Prime Number Theorem is bounded by $O(\\sqrt{x} \\ln x)$. Specifically, RH is true if and only if $\\pi(x) = \\text{Li}(x) + O(\\sqrt{x} \\ln x)$ for all $x \\ge 2657$.</p>
+<p><b>Theorem (1901):</b> The Riemann Hypothesis is mathematically equivalent to the statement that the error term in the Prime Number Theorem is bounded by $O(\\sqrt{x} \\ln x)$. Specifically, RH is true if and only if $\\pi(x) = \\text{Li}(x) + O(\\sqrt{x} \\ln x)$. (Schoenfeld later made this fully explicit: RH is equivalent to $|\\pi(x) - \\text{Li}(x)| \\le \\frac{\\sqrt{x}\\ln x}{8\\pi}$ for every $x \\ge 2657$.)</p>
 <p><b>Proof (Sketch of the forward implication):</b> 
 <br>Assume the Riemann Hypothesis is true. Therefore, all non-trivial zeros $\\rho = \\beta + i\\gamma$ have a real part exactly equal to $\\beta = \\frac{1}{2}$.</p>
 <p>We analyze the error in counting primes using the explicit formula for the Chebyshev function $\\psi(x)$:
@@ -22098,7 +21570,7 @@ euler: `
 
 <div class="msec"><h3>3. Core Theorems of Euler in Number Theory</h3>
 <p><b>Gauss's Theorem for $\\phi$:</b> The sum of the totient function over all strictly positive divisors of $n$ is exactly $n$ itself: $\\sum_{d \\mid n} \\phi(d) = n$.</p>
-<p><b>Euler's Criterion:</b> An integer $a$ is a quadratic residue modulo an odd prime $p$ if and only if $a^{(p-1)/2} \\equiv 1 \\pmod p$.</p>
+<p><b>Euler's Criterion:</b> For an integer $a$ <i>not divisible by</i> an odd prime $p$, $a$ is a quadratic residue modulo $p$ if and only if $a^{(p-1)/2} \\equiv 1 \\pmod p$ &mdash; and a non-residue exactly when that power is $\\equiv -1$.</p>
 </div>
 
 <div class="msec"><h3>4. Capstone Proof: Euler's Theorem via Group Theory</h3>
@@ -22309,7 +21781,6 @@ algnt: `
 <br>Therefore, the Class Group is strictly finite. $\\blacksquare$</p>
 </div>
 `,
-
 nt: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Ring of Integers</h3>
 <p>Number Theory is the study of the integers $\\mathbb{Z}$, formalized as an integral domain (a commutative ring with no zero divisors). The foundational axiom separating $\\mathbb{Z}$ from fields like $\\mathbb{Q}$ or $\\mathbb{R}$ is the <b>Well-Ordering Principle</b>: Every non-empty subset of positive integers contains a strictly least element.</p>
@@ -22494,7 +21965,6 @@ zeta: `
 <br>This holds rigorously because the Fundamental Theorem of Arithmetic guarantees that every integer factors into a unique combination of primes, meaning every fraction $\\frac{1}{n^s}$ appears exactly once when the infinite product is expanded back into a sum. $\\blacksquare$</p>
 </div>
 `,
-
 found: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Formal Systems</h3>
 <p>Mathematics relies on establishing absolute truth without appealing to physical reality. To do this, we construct a <b>Formal System</b> consisting of three strictly defined components:</p>
@@ -22545,7 +22015,7 @@ prooftheory: `
 </div>
 
 <div class="msec"><h3>3. Core Theorems of Proof Theory</h3>
-<p><b>Gentzen's Hauptsatz (Cut-Elimination Theorem):</b> Any sequent that can be proved in the sequent calculus using the Cut rule can be proved <i>without</i> using the Cut rule. This means lemmas are never strictly necessary in mathematics; they are merely shortcuts.</p>
+<p><b>Gentzen's Hauptsatz (Cut-Elimination Theorem):</b> Any sequent that can be proved in the sequent calculus using the Cut rule can be proved <i>without</i> using the Cut rule. So lemmas are never logically <i>necessary</i> &mdash; though calling them mere shortcuts undersells them badly: eliminating the cuts can blow a proof's length up hyper-exponentially, which is precisely why working mathematicians reach for lemmas in the first place.</p>
 <p><b>Consistency of Arithmetic:</b> Using proof theory and transfinite induction up to the ordinal $\\varepsilon_0$, Gentzen rigorously proved the consistency of Peano Arithmetic (bypassing Gödel's incompleteness by using methods strictly outside arithmetic).</p>
 </div>
 
@@ -22670,7 +22140,6 @@ set: `
 <br>Since there is no surjection from $A$ to $\\mathcal{P}(A)$, the power set is strictly larger. $\\blacksquare$</p>
 </div>
 `,
-
 vectors: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Vector Spaces</h3>
 <p>Vectors are not "arrows with magnitude and direction." A <b>Vector Space</b> $V$ over a field $\\mathbb{F}$ is defined abstractly as an abelian group under addition, equipped with a scalar multiplication mapping $\\mathbb{F} \\times V \\to V$.</p>
@@ -22683,7 +22152,7 @@ vectors: `
 <p><b>Dimension:</b> The cardinality of a basis. The fact that all bases for a given vector space have the exact same cardinality requires proof (the Dimension Theorem).</p>
 </div>
 
-<div class="msec"><h3>3. Core Theorems of Linear Algebra</h3>
+<div class="msec"><h3>3. Core Theorems of Vector Spaces</h3>
 <p><b>Theorem (Existence of Bases):</b> Assuming the Axiom of Choice (specifically Zorn's Lemma), every vector space possesses a basis.</p>
 <p><b>The Rank-Nullity Theorem:</b> For any linear transformation $T: V \\to W$ between finite-dimensional vector spaces, $\\dim(\\ker T) + \\dim(\\text{im } T) = \\dim(V)$.</p>
 </div>
@@ -22892,29 +22361,28 @@ descset: `
 <p><b>The Perfect Set Property:</b> Every uncountable analytic set contains a perfect subset (a non-empty closed set with no isolated points). Because every perfect set in a Polish space has cardinality $2^{\\aleph_0}$, the Continuum Hypothesis holds strictly true for all analytic sets.</p>
 </div>
 
-<div class="msec"><h3>4. Capstone Proof: Baire Category Theorem</h3>
-<p><b>Theorem:</b> In a complete metric space $(X, d)$, the countable intersection of any sequence of dense open sets is itself dense in $X$. (Consequently, a complete metric space cannot be written as a countable union of nowhere dense sets).</p>
-<p><b>Proof:</b> 
-<br>Let $X$ be a complete metric space. Let $\\{U_n\\}_{n=1}^\\infty$ be a countable sequence of dense open subsets of $X$.
-<br>Let $W = \\bigcap_{n=1}^\\infty U_n$. To prove $W$ is dense, we must show that for any arbitrary non-empty open set $V \\subseteq X$, the intersection $W \\cap V$ is non-empty.</p>
-<p>Because $U_1$ is dense, its intersection with the open set $V$ is non-empty and open. We can choose a point $x_1$ and a radius $r_1$ such that the closed ball $\\overline{B}(x_1, r_1)$ is fully contained within $U_1 \\cap V$, and we ensure $r_1 < 1$.</p>
-<p>Because $U_2$ is dense, its intersection with the open ball $B(x_1, r_1)$ is non-empty and open. We can choose a point $x_2$ and a radius $r_2$ such that the closed ball $\\overline{B}(x_2, r_2)$ is fully contained within $U_2 \\cap B(x_1, r_1)$, ensuring $r_2 < \\frac{1}{2}$.</p>
-<p>We proceed by mathematical induction. At step $n$, because $U_n$ is dense, we choose a closed ball $\\overline{B}(x_n, r_n)$ contained within $U_n \\cap B(x_{n-1}, r_{n-1})$, ensuring the radius $r_n < \\frac{1}{n}$.</p>
-<p>This process generates a nested sequence of closed balls:
-<br>$$\\overline{B}(x_1, r_1) \\supset \\overline{B}(x_2, r_2) \\supset \\dots \\supset \\overline{B}(x_n, r_n) \\supset \\dots$$</p>
-<p>Consider the sequence of their centers $(x_n)_{n=1}^\\infty$.
-<br>For any $m > n$, the point $x_m$ is inside $\\overline{B}(x_n, r_n)$. Therefore, the distance $d(x_n, x_m) \\le r_n < \\frac{1}{n}$.
-<br>As $n \\to \\infty$, the distance between terms shrinks to $0$. This formally defines $(x_n)$ as a Cauchy sequence.</p>
-<p>By the axiomatic foundation of our space, $(X, d)$ is a <i>complete</i> metric space. The strict definition of completeness dictates that every Cauchy sequence must converge to a limit point within the space.
-<br>Let $x = \\lim_{n \\to \\infty} x_n$.</p>
-<p>Because the sequence of balls is nested and closed, the limit point $x$ must belong to every single closed ball $\\overline{B}(x_n, r_n)$ for all $n \\ge 1$.
-<br>By our construction, $\\overline{B}(x_n, r_n) \\subseteq U_n$. Therefore, $x \\in U_n$ for every $n$.
-<br>Since $x$ is in every $U_n$, it is in their intersection: $x \\in W$.
-<br>Also by construction, $\\overline{B}(x_1, r_1) \\subseteq V$. Since $x \\in \\overline{B}(x_1, r_1)$, it follows that $x \\in V$.</p>
-<p>We have found a point $x$ such that $x \\in W \\cap V$. Because $V$ was an arbitrary open set, the intersection $W$ meets every open set. Thus, $W$ is dense in $X$. $\\blacksquare$</p>
+<div class="msec"><h3>4. Capstone Proof: The Cantor&ndash;Bendixson Theorem</h3>
+<p><b>Theorem (Cantor, Bendixson, 1883):</b> Every closed subset $F$ of a Polish space splits uniquely as
+<br>$$F = P \\ \\cup \\ C$$
+<br>where $P$ is <b>perfect</b> (closed with no isolated points) and $C$ is <b>countable</b>. The immediate consequence is the Perfect Set Property for closed sets: an uncountable closed set always contains a perfect set, hence has cardinality exactly $2^{\\aleph_0}$ &mdash; so the Continuum Hypothesis is <i>provably true</i> for closed sets, with no extra axioms needed.</p>
+<p><b>Proof (Via the Transfinite Derivative):</b>
+<br>The engine is the <b>Cantor&ndash;Bendixson derivative</b>. For a closed set $A$, define $A'$ to be the set of limit points of $A$ &mdash; that is, $A$ with all of its isolated points stripped away. Since removing isolated points leaves a closed set, $A'$ is closed and $A' \\subseteq A$.</p>
+<p>Step 1: Iterate transfinitely.
+<br>One application is not enough: stripping isolated points can expose brand-new isolated points. So we iterate, and we must iterate past $\\omega$:
+<br>$$F^{0} = F, \\qquad F^{\\alpha+1} = \\left(F^{\\alpha}\\right)', \\qquad F^{\\lambda} = \\bigcap_{\\alpha \\lt \\lambda} F^{\\alpha} \\ \\ (\\lambda \\text{ a limit ordinal})$$
+<br>This produces a decreasing transfinite chain of closed sets $F^{0} \\supseteq F^{1} \\supseteq F^{2} \\supseteq \\dots$</p>
+<p>Step 2: The chain must stop, and stop countably soon.
+<br>A Polish space is second countable: fix a countable basis $\\{B_n\\}$. Every time the chain strictly drops at stage $\\alpha$, some point is isolated in $F^{\\alpha}$, which means some basic open set $B_n$ meets $F^{\\alpha}$ in exactly that one point &mdash; and that particular $B_n$ can never serve again at a later stage, because the point is gone from every subsequent set.
+<br>So each strict drop consumes a distinct member of a countable basis. There can therefore be only countably many strict drops, and the chain stabilises at some countable ordinal $\\alpha_0 \\lt \\omega_1$.</p>
+<p>Step 3: Read off the two pieces.
+<br>Let $P = F^{\\alpha_0}$. Stabilisation means exactly $P' = P$: $P$ is closed and has no isolated points, so $P$ is perfect (possibly empty).
+<br>Let $C = F \\setminus P$. This is the union over stages of the discarded layers $F^{\\alpha} \\setminus F^{\\alpha+1}$. Each layer consists of points isolated in $F^{\\alpha}$, and by the basis argument of Step 2 each layer is countable; there are countably many stages. A countable union of countable sets is countable, so $C$ is countable.</p>
+<p>Step 4: The Perfect Set Property.
+<br>Now suppose $F$ is uncountable. If $P$ were empty we would have $F = C$, a countable set &mdash; contradiction. So $P$ is a non-empty perfect set.
+<br>A non-empty perfect set in a Polish space contains a homeomorphic copy of the Cantor set: repeatedly split each surviving piece into two disjoint closed balls of shrinking radius, which is always possible because no point is isolated, and take the intersection down the resulting binary tree. That embeds $2^{\\mathbb{N}}$, giving $|F| \\ge 2^{\\aleph_0}$; and $|F| \\le 2^{\\aleph_0}$ since the whole space is separable metric.
+<br>Hence $|F| = 2^{\\aleph_0}$ exactly. No closed set can be an intermediate-sized counterexample to the Continuum Hypothesis &mdash; and Suslin's work pushes the same conclusion all the way up to the analytic sets. $\\blacksquare$</p>
 </div>
 `,
-
 precalc: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Real-Valued Functions</h3>
 <p>Precalculus formally transitions from discrete algebra to the continuous analysis of real-valued functions $f: D \\to \\mathbb{R}$, where $D \\subseteq \\mathbb{R}$.</p>
@@ -23114,18 +22582,20 @@ statsbasics: `
 <p>For scalar multiplication, $E[aX] = \\sum_x (ax) p(x)$. By factoring out the constant $a$ from the summation, $E[aX] = a \\sum_x x \\cdot p(x) = aE[X]$. $\\blacksquare$</p>
 </div>
 `,
-
 areavol: `
-<div class="msec"><h3>1. The Axiomatic Foundation: Measure Theory</h3>
-<p>In rigorous mathematics, "area" and "volume" are formalized as specific instances of a <b>Measure</b>. In Euclidean space $\\mathbb{R}^n$, we define the Lebesgue measure $\\mu$, a function that assigns a non-negative real number to subsets of $\\mathbb{R}^n$.</p>
-<p>The measure must satisfy:
-<br>1. <b>Non-negativity:</b> $\\mu(E) \\ge 0$.
-<br>2. <b>Translation Invariance:</b> $\\mu(E + x) = \\mu(E)$ (moving a shape does not change its volume).
-<br>3. <b>Countable Additivity:</b> For disjoint sets $E_1, E_2, \\dots$, the measure of their union is the sum of their measures.</p>
+<div class="msec"><h3>1. The Axiomatic Foundation: What "Area" Is Allowed To Mean</h3>
+<p>Every area formula you have ever used &mdash; triangle, circle, cylinder &mdash; is a <i>theorem</i>, not a definition. They are all forced by a short list of rules about what the word "area" may mean. A function $\\mu$ assigning a size to shapes in $\\mathbb{R}^n$ counts as an area (or volume) if it satisfies:</p>
+<ul>
+<li><b>Non-negativity:</b> $\\mu(E) \\ge 0$. No shape has negative size.</li>
+<li><b>Normalization:</b> the unit square (or unit cube) has $\\mu = 1$. This is what fixes the scale &mdash; without it, the function that assigns $0$ to absolutely everything would satisfy all the other rules.</li>
+<li><b>Rigid invariance:</b> $\\mu(E + x) = \\mu(E)$, and congruent shapes have equal size. Sliding, rotating or reflecting a shape does not change its area.</li>
+<li><b>Additivity:</b> if $E_1, E_2, \\dots$ are pairwise disjoint, then $\\mu(E_1 \\cup E_2 \\cup \\cdots) = \\mu(E_1) + \\mu(E_2) + \\cdots$. Cutting a shape into non-overlapping pieces and adding the pieces returns the whole.</li>
+</ul>
+<p>For polygons, additivity over <i>finitely</i> many pieces is enough. Allowing <i>countably</i> many pieces is what makes the theory strong enough to handle curves and limiting processes; the resulting $\\mu$ on $\\mathbb{R}^n$ is called <b>Lebesgue measure</b>. Everything below follows from these four rules alone.</p>
 </div>
 
 <div class="msec"><h3>2. Formal Definitions: The Base Measure</h3>
-<p>We fix the base measure by defining the volume of an $n$-dimensional hyperrectangle $R = [a_1, b_1] \\times \\cdots \\times [a_n, b_n]$ as the product of its side lengths:
+<p>Normalization plus additivity already force the size of an $n$-dimensional box $R = [a_1, b_1] \\times \\cdots \\times [a_n, b_n]$ to be the product of its side lengths (tile it with copies of a small cube and count):
 <br>$$\\mu(R) = \\prod_{i=1}^n (b_i - a_i)$$</p>
 <p>All other areas and volumes for curved shapes are formally defined via the supremum of inscribed rectangles and the infimum of circumscribed rectangles (which leads directly to the Riemann integral).</p>
 </div>
@@ -23345,7 +22815,6 @@ coord: `
 <p>Thus, the condition for orthogonality reduces exactly to the product of the slopes being $-1$. $\\blacksquare$</p>
 </div>
 `,
-
 lineq: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Ordered Fields</h3>
 <p>Linear equations operate over a standard algebraic Field $\\mathbb{F}$. However, to discuss <i>inequalities</i>, we must restrict ourselves to an <b>Ordered Field</b> (such as the real numbers, $\\mathbb{R}$).</p>
@@ -23360,7 +22829,7 @@ lineq: `
 <p><b>Negative Elements:</b> An element $x$ is strictly negative if $x < 0$. Its additive inverse, $-x$, is strictly positive ($-x > 0$).</p>
 </div>
 
-<div class="msec"><h3>3. Core Theorems of Linear Algebra</h3>
+<div class="msec"><h3>3. Core Theorems of Linear Equations</h3>
 <p><b>Theorem (Existence and Uniqueness):</b> Over any field $\\mathbb{F}$, the linear equation $ax + b = 0$ (with $a \\neq 0$) has exactly one unique solution, given by $x = -ba^{-1}$.</p>
 <p><b>Theorem (Inequality Reversal):</b> If $x < y$ and $c < 0$, then $cx > cy$. (Multiplying an inequality by a negative strictly reverses the order).</p>
 </div>
@@ -23449,7 +22918,7 @@ funcgraph: `
 <p><b>Part 1: Prove $h$ is injective.</b>
 <br>Let $a, b \\in X$ and assume $h(a) = h(b)$. By the definition of composition, this means:
 <br>$$g(f(a)) = g(f(b))$$
-<br>Because $g$ is bijective, it is injective. By the formal definition of injectivity, $g(input_1) = g(input_2) \\implies input_1 = input_2$. Therefore:
+<br>Because $g$ is bijective, it is injective. By the formal definition of injectivity, $g(u) = g(v) \\implies u = v$ for any $u, v$ in its domain. Therefore:
 <br>$$f(a) = f(b)$$
 <br>Because $f$ is also bijective, it is injective. By the same logic:
 <br>$$a = b$$
@@ -23484,39 +22953,23 @@ geobasics: `
 <p><b>Theorem (Interior Angles):</b> The sum of the interior angles of any triangle in Euclidean geometry is strictly equivalent to two right angles ($\\pi$ radians or $180^\\circ$). This theorem fails instantly if the Parallel Postulate is removed (e.g., in spherical geometry).</p>
 </div>
 
-<div class="msec"><h3>4. Capstone Proof: The Pythagorean Theorem</h3>
-<p><b>Theorem:</b> In a right-angled triangle with legs $a$ and $b$, and hypotenuse $c$, the relation $a^2 + b^2 = c^2$ holds.</p>
-<p><b>Proof:</b> 
-<br>Let $\\triangle ABC$ be a right triangle with the right angle at vertex $C$. Let the sides opposite to vertices $A, B, C$ be denoted $a, b, c$ respectively (so $c$ is the hypotenuse).</p>
-<p>Construct a point $D$ on the hypotenuse $AB$ such that the line segment $CD$ is strictly perpendicular to $AB$. The segment $CD$ is the altitude to the hypotenuse. Let the length of $AD = x$ and $DB = y$. Therefore, the total hypotenuse $c = x + y$.</p>
-<p>This altitude divides the original right triangle into two smaller right triangles: $\\triangle ACD$ and $\\triangle CBD$.</p>
-<p>Consider $\\triangle ABC$ and $\\triangle ACD$. 
-<br>- Both possess a right angle ($\\angle C$ in the large triangle, $\\angle D$ in the small one).
-<br>- Both share the angle $\\angle A$.
-<br>Because the sum of angles is fixed at $180^\\circ$, their third angles must also be equal. By the AA (Angle-Angle) similarity criterion, $\\triangle ABC \\sim \\triangle ACD$.</p>
-<p>By the definition of similar triangles, the ratio of their corresponding sides is perfectly equal. Comparing the hypotenuses and the legs adjacent to $\\angle A$:
-<br>$$\\frac{c}{b} = \\frac{b}{x}$$
-<br>Cross-multiplying yields:
-<br>$$b^2 = cx$$</p>
-<p>Now consider $\\triangle ABC$ and the other small triangle, $\\triangle CBD$.
-<br>- Both possess a right angle.
-<br>- Both share the angle $\\angle B$.
-<br>By the AA criterion, $\\triangle ABC \\sim \\triangle CBD$.</p>
-<p>Comparing their hypotenuses and the legs adjacent to $\\angle B$:
-<br>$$\\frac{c}{a} = \\frac{a}{y}$$
-<br>Cross-multiplying yields:
-<br>$$a^2 = cy$$</p>
-<p>We now have two equations: $a^2 = cy$ and $b^2 = cx$. Add these two equations together:
-<br>$$a^2 + b^2 = cy + cx$$</p>
-<p>Factor out the common term $c$ on the right side:
-<br>$$a^2 + b^2 = c(y + x)$$</p>
-<p>Recall our initial construction that $x + y = c$, the full length of the hypotenuse. Substitute $c$ into the equation:
-<br>$$a^2 + b^2 = c(c)$$
-<br>$$a^2 + b^2 = c^2$$</p>
-<p>The theorem is rigorously established using only the properties of similar triangles and algebraic substitution. $\\blacksquare$</p>
+<div class="msec"><h3>4. Capstone Proof: The Angle Sum of a Triangle</h3>
+<p><b>Theorem:</b> In Euclidean geometry the three interior angles of any triangle sum to exactly two right angles, $180^\\circ$.</p>
+<p><b>Proof (Via the Parallel Postulate):</b>
+<br>Let $\\triangle ABC$ be any triangle, with interior angle $\\alpha$ at $A$, $\\beta$ at $B$, and $\\gamma$ at $C$.</p>
+<p>Step 1: Invoke the parallel axiom &mdash; once, and visibly.
+<br>By Playfair's Axiom there is exactly one line $L$ through the vertex $A$ that never meets the line $BC$. Draw it.
+<br>This is the <i>only</i> step in the whole argument that uses the Parallel Postulate, and it is worth marking, because it is exactly the step that fails on a sphere or in the hyperbolic plane &mdash; which is precisely why the theorem fails there too.</p>
+<p>Step 2: Harvest the alternate angles.
+<br>The side $AB$ is a transversal cutting the two parallel lines $L$ and $BC$. By the Alternate Interior Angles theorem, the angle that $L$ makes with $AB$ on one side of $A$ is equal to the interior angle $\\beta$ at $B$.
+<br>Equally, the side $AC$ is a transversal cutting those same two parallels, so the angle $L$ makes with $AC$ on the other side of $A$ is equal to the interior angle $\\gamma$ at $C$.</p>
+<p>Step 3: Read off the straight line.
+<br>Now look only at the point $A$. Ranged along the straight line $L$, on one side of it, sit exactly three angles placed edge to edge with no gaps and no overlaps: the copy of $\\beta$ harvested from $AB$, then the triangle's own angle $\\alpha$, then the copy of $\\gamma$ harvested from $AC$.
+<br>Together they fill one side of a straight line, and a straight line is two right angles. Therefore:
+<br>$$\\alpha + \\beta + \\gamma = 180^\\circ$$</p>
+<p>So the angle sum is not really a fact about triangles at all &mdash; it is the Parallel Postulate wearing a disguise. Withdraw that single axiom and the sum immediately drifts: strictly more than $180^\\circ$ on the sphere, strictly less in the hyperbolic plane. $\\blacksquare$</p>
 </div>
 `,
-
 percent: `
 <div class="msec"><h3>1. The Axiomatic Foundation: A Notational Isomorphism</h3>
 <p>From a formal perspective, "percentages" do not introduce any new mathematical objects. They are strictly a notational isomorphism—a rescaling of the real numbers $\\mathbb{R}$. We define the percentage mapping $P: \\mathbb{R} \\to \\mathbb{R}$ by $P(x) = 100x$. The symbol $\\%$ simply denotes the inverse operation, multiplication by $\\frac{1}{100}$.</p>
@@ -23679,7 +23132,6 @@ elemalg: `
 <br>Therefore, the remainder is identically zero, and $P(x) = (x-c)Q(x)$, proving that $(x-c)$ perfectly divides $P(x)$. $\\blacksquare$</p>
 </div>
 `,
-
 arith: `
 <div class="msec"><h3>1. The Axiomatic Foundation: The Peano Axioms</h3>
 <p>Arithmetic is formally built on the natural numbers $\\mathbb{N} = \\{0, 1, 2, \\dots\\}$, defined by the <b>Peano Axioms</b>:</p>
@@ -23719,10 +23171,17 @@ arith: `
 <p><b>Inductive step:</b> Assume $a + k = k + a$ for some $k$. We must show $a + S(k) = S(k) + a$.
 <br>By definition of addition, $a + S(k) = S(a + k)$.
 <br>By the inductive hypothesis, $S(a + k) = S(k + a)$.
-<br>By definition of addition again, $S(k + a) = k + S(a)$.
-<br>We need a second lemma (omitted for brevity, proven by a sub-induction) that $k + S(a) = S(k) + a$.
-<br>Applying this, we get $a + S(k) = S(k) + a$. 
-<br>By the Axiom of Induction, $a + b = b + a$ for all natural numbers. $\\blacksquare$</p>
+<br>It remains to turn $S(k + a)$ into $S(k) + a$. That needs a second lemma &mdash; and rather than assume it, we prove it.</p>
+<p><b>Lemma 2:</b> $S(m) + n = S(m + n)$ for all $m, n$. <i>Proof by induction on $n$.</i>
+<br><i>Base case ($n = 0$):</i> $S(m) + 0 = S(m)$ by the first rule of addition; and $S(m + 0) = S(m)$ by that same rule applied inside the successor. The two sides agree.
+<br><i>Inductive step:</i> assume $S(m) + n = S(m + n)$. Then
+<br>$S(m) + S(n) = S\\big(S(m) + n\\big)$ by the second rule of addition,
+<br>$= S\\big(S(m + n)\\big)$ by the inductive hypothesis,
+<br>$= S\\big(m + S(n)\\big)$ because $m + S(n) = S(m + n)$, again by the second rule.
+<br>By the Axiom of Induction the lemma holds for every $n$. $\\blacksquare$</p>
+<p>Applying Lemma 2 with $m = k$ and $n = a$ gives exactly $S(k + a) = S(k) + a$. Chaining our three equalities:
+<br>$$a + S(k) = S(a + k) = S(k + a) = S(k) + a$$
+<br>which is precisely the statement $P(S(k))$. By the Axiom of Induction, $a + b = b + a$ for all natural numbers. $\\blacksquare$</p>
 </div>
 `,
 negnum: `
@@ -23803,7 +23262,6 @@ A rational number is an equivalence class $[(a, b)]$.</p>
 <br>Therefore, our assumption that $\\sqrt{2}$ can be written as a rational fraction must be false. $\\sqrt{2} \\notin \\mathbb{Q}$. $\\blacksquare$</p>
 </div>
 `,
-
 logic: `
 <div class="msec"><h3>1. The Axiomatic Foundation: Syntax and Semantics</h3>
 <p>Mathematical logic separates the <i>symbols</i> we write (syntax) from their <i>meaning</i> (semantics).</p>
@@ -38285,7 +37743,7 @@ math: {qs:[
       return {text:'You have threads half-woven. Finish what you started — that is how knowledge settles in.', recs:learning.slice(0,3)};
     }
     if(!ids.some(function(id){ return st(id)==='got'; })){
-      return {text:'Then we begin at the first stone. Everything above grows out of plain counting — start here, and mark what you learn as <i>got</i> so I can follow your trail.', recs:['arith']};
+      return {text:'Then we begin at the first stone. Everything above grows out of plain counting — start here, and mark what you learn as <i>learned</i> so I can follow your trail.', recs:['arith']};
     }
     var want=ids.filter(function(id){ return st(id)==='want'; });
     want.sort(function(a,b){ return D[a]-D[b]; });
@@ -38343,7 +37801,7 @@ math: {qs:[
     buttons(opts);
   }
   DLG.whynext={
-    say:'Because paths matter more than stones. I read your marks — <i>got</i>, <i>learning</i>, <i>want</i> — and point at the nearest stone that stands on ground you already hold. You may skip ahead, of course; I will not stop you. But gaps below have a way of becoming walls above.',
+    say:'Because paths matter more than stones. I read your marks — <i>learned</i>, <i>learning</i>, <i>want to learn</i> — and point at the nearest stone that stands on ground you already hold. You may skip ahead, of course; I will not stop you. But gaps below have a way of becoming walls above.',
     opts:[
       ['How do you keep track of me?','tracking'],
       ['What if I want to wander instead?','wander'],
@@ -38351,11 +37809,11 @@ math: {qs:[
     ], back:'ROOT'
   };
   DLG.tracking={
-    say:'Your marks are footprints, and I am a good tracker. Every stone you mark as <i>got</i> tells me where the ground is solid; every <i>learning</i> tells me where you are digging; every <i>want</i> is a flag on a hill you mean to climb. The scroll behind the little flame up top keeps the full ledger — streaks, regions, all of it. I only read it. You write it.',
+    say:'Your marks are footprints, and I am a good tracker. Every stone you mark as <i>learned</i> tells me where the ground is solid; every <i>learning</i> tells me where you are digging; every <i>want to learn</i> is a flag on a hill you mean to climb. The scroll behind the little flame up top keeps the full ledger — streaks, regions, all of it. I only read it. You write it.',
     opts:[['What if I mark something wrongly?','wrongmark'],['Read my map right now','__readmap']], back:'ROOT'
   };
   DLG.wrongmark={
-    say:'Then tap the mark again and it lifts clean off — no harm done. Honest marks serve you better than proud ones, though. A stone marked <i>got</i> that is not truly got will wobble under you three stones later. I have watched it happen. The stones keep accounts.',
+    say:'Then tap the mark again and it lifts clean off — no harm done. Honest marks serve you better than proud ones, though. A stone marked <i>learned</i> that is not truly got will wobble under you three stones later. I have watched it happen. The stones keep accounts.',
     back:'ROOT'
   };
   DLG.wander={
@@ -38548,7 +38006,7 @@ math: {qs:[
      follow:['And the newest stone?','s_newest']},
     {tell:'In the lost lands there was a library in a drowning city. I waded in as the water rose and fished theorems out with both hands — soggy lemmas, a whole shelf of trigonometry floating past. I dried them page by page in front of this very fire. Some of the Analysis stones still smell faintly of salt. I consider it character.',
      follow:['What could you not save?','s_lostbooks']},
-    {tell:'One winter a creature came and stayed the whole season. Said nothing. Marked every stone of the school ladder <i>got</i>, one per day, like laying bricks. On the first day of spring it left without a word, and its crest is still on my shield. Sometimes I think it will come back. You look a little taller than you did. Hm.',
+    {tell:'One winter a creature came and stayed the whole season. Said nothing. Marked every stone of the school ladder <i>learned</i>, one per day, like laying bricks. On the first day of spring it left without a word, and its crest is still on my shield. Sometimes I think it will come back. You look a little taller than you did. Hm.',
      follow:['Was that creature... me?','s_wasme']},
     {tell:'The Algebra and Geometry regions argued for a century over who owns the Coordinate stone. Algebra said "it is equations." Geometry said "it is shapes." A creature named Descartes settled it by gluing the two together so tightly nobody could tell anymore where one ended. They both still claim custody. The stone itself refuses to comment.',
      follow:['Do the regions argue often?','s_argue']},
@@ -38914,7 +38372,7 @@ math: {qs:[
     say:function(){
       var pr=progressMap(); var got=0;
       for(var k in pr){ if(pr[k]&&pr[k].status==='got') got++; }
-      if(got===0) return 'At this moment? It waits for yours. Every crest up there will be something <i>you</i> conquered. Go mark your first stone <i>got</i> and come back — I will have the polish ready.';
+      if(got===0) return 'At this moment? It waits for yours. Every crest up there will be something <i>you</i> conquered. Go mark your first stone as <i>learned</i> and come back — I will have the polish ready.';
       return 'Yours, fellow creature — '+got+' stone'+(got===1?'':'s')+' of the map already carried. I remember each one clicking into place. The shield fills from the bottom, like all good things.';
     },
     back:'homeMenu'
@@ -39004,7 +38462,7 @@ math: {qs:[
     back:'mapMenu'
   };
   DLG.useIt={
-    say:'Click a stone and read its Math section — that is the knowledge itself, and at the end of each you will find a small green box of what to keep. Mark stones as <i>want</i>, <i>learning</i>, or <i>got</i>, and I will remember your trail and point you onward. The search box up top finds anything: names, ideas, even formulas.',
+    say:'Click a stone and read its Math section — that is the knowledge itself, and at the end of each you will find a small green box of what to keep. Mark stones as <i>want to learn</i>, <i>learning</i>, or <i>learned</i>, and I will remember your trail and point you onward. The search box up top finds anything: names, ideas, even formulas.',
     opts:[
       ['What do the marks mean?','marks'],
       ['What do the colors mean?','colors'],
@@ -39012,7 +38470,7 @@ math: {qs:[
     ], back:'mapMenu'
   };
   DLG.marks={
-    say:'My three inks. Blue — <i>want to learn</i> — a flag on a hill you mean to climb. Amber — <i>learning</i> — a stone you are digging into now; finish these first, half-dug holes collect rain. Green — <i>got</i> — solid ground, yours forever. I read your inks every time you ask me what is next. Write them honestly and I will guide you well.',
+    say:'My three inks. Blue — <i>want to learn</i> — a flag on a hill you mean to climb. Amber — <i>learning</i> — a stone you are digging into now; finish these first, half-dug holes collect rain. Green — <i>learned</i> — solid ground, yours forever. I read your inks every time you ask me what is next. Write them honestly and I will guide you well.',
     opts:[['Read my map right now','__readmap']], back:'mapMenu'
   };
   DLG.colors={
@@ -39325,7 +38783,7 @@ math: {qs:[
     'If you ever meet Gauss, Euler, or Riemann on your travels, bring coffee. They will do the rest.',
     'I once beat the Game Theory stone at its own game. It insists we both won. Typical.',
     'Rainy days are for the Analysis region. Everything flows there anyway.',
-    'When you mark a stone as <i>got</i>, I hear a small click, like a lock opening. Best sound on the map.',
+    'When you mark a stone as <i>learned</i>, I hear a small click, like a lock opening. Best sound on the map.',
     'Do not fear the Foundations region. It only looks like it is questioning your existence. It is, but gently.',
     'The trick to long proofs is the trick to long journeys: do not stare at the whole staircase.',
     'Visitors ask if the map is finished. It is not. Neither is mathematics. Neither are you. This is the good news.',
