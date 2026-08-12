@@ -800,9 +800,17 @@
   .vc6{animation:vcWalk6 9s linear infinite;}
   /* wilt: grey, pods sealed, creatures hidden */
   #gami-flowers.wilted svg{animation:none;filter:grayscale(.88) brightness(.72);}
-  #gami-vines-back.wilted,#gami-vines-front.wilted,#gami-vines-floor.wilted{filter:grayscale(.88) brightness(.72);}
-  .wilted .vpod{animation:none;opacity:.4;filter:none;}
-  .wilted .vcreature{display:none;}
+  /* eggs sag and sway on their stalks; hatched ones hang open and still */
+  @keyframes plEggSway{0%,100%{transform:rotate(-2.5deg);}50%{transform:rotate(2.5deg);}}
+  #gami-scene .pl-egg{animation:plEggSway 5.5s ease-in-out infinite;}
+  #gami-scene .wiltpart .pl-egg{animation:none;}
+
+  /* Colour returns from the base upward, so the grey is no longer a filter on
+     the whole layer. renderPlant() overlays a desaturated copy masked to the
+     part of the vine the current streak has not reached yet; these rules dress
+     that copy only. See plantState().recover. */
+  #gami-scene .wiltpart .vpod{animation:none;opacity:.4;filter:none;}
+  #gami-scene .wiltpart .vcreature{display:none;}
   /* plant v2: background object — the old widget box is gone */
   #gami-flowers{display:none !important;}
   @keyframes plHalo{0%,100%{opacity:.5;}50%{opacity:.95;}}
@@ -1049,6 +1057,56 @@ html.dark{background:#14161a;}
 /* Full Depth book credit: the inline color:#777 is unreadable on the dark card.
    Inline styles need !important to override. Lighter grey, deliberately not white. */
 .dark #full-depth-recommendation{color:#b3aea4 !important;}
+
+/* ── Keep-offline control on the Full Depth footer ── */
+#fd-offline-btn{
+  display:inline-block;margin-left:8px;padding:8px 14px;border:none;border-radius:6px;
+  background:#5a6472;color:#fff;font-weight:bold;font-size:14px;cursor:pointer;
+  font-family:inherit;transition:background .2s;vertical-align:top;
+}
+#fd-offline-btn:hover:not(:disabled){background:#4a5360;}
+#fd-offline-btn:disabled{cursor:default;opacity:.85;}
+#fd-offline-btn.kept{background:#2c8a4e;}
+#fd-offline-btn.kept:hover:not(:disabled){background:#b5443a;}
+#fd-offline-note{margin-top:8px;font-size:12px;color:#888;}
+.dark #fd-offline-btn{background:#4a525e;}
+.dark #fd-offline-btn:hover:not(:disabled){background:#59616e;}
+.dark #fd-offline-btn.kept{background:#2c8a4e;}
+.dark #fd-offline-note{color:#9a958c;}
+
+/* ── "Your history with Gami" ladder in the User Data modal ── */
+.gc-now{font-size:14px;margin-bottom:2px;}
+.gc-now b{font-size:15px;}
+.gc-row{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(128,128,128,.13);}
+.gc-row:last-child{border-bottom:none;}
+.gc-tick{flex:none;width:17px;text-align:center;font-size:13px;line-height:1.5;}
+.gc-body{flex:1;min-width:0;}
+.gc-name{font-size:13px;font-weight:bold;}
+.gc-at{font-size:11px;color:#8d8d8d;font-weight:normal;}
+.dark .gc-at{color:#8a857c;}
+.gc-row.reached .gc-name{color:#2c8a4e;}
+.dark .gc-row.reached .gc-name{color:#5cc47f;}
+.gc-row.locked{opacity:.62;}
+.gc-secret{letter-spacing:3px;opacity:.8;}
+.gc-row.reached .gc-secret{letter-spacing:0;}
+
+/* ── Saved Books section in the User Data modal ── */
+.ob-meter{height:8px;border-radius:4px;background:rgba(128,128,128,.22);overflow:hidden;margin:6px 0 4px;}
+.ob-meter-fill{height:100%;background:#2c8a4e;border-radius:4px;transition:width .3s,background .3s;}
+.ob-meter-fill.warn{background:#d08a2c;}
+.ob-meter-fill.full{background:#b5443a;}
+.ob-meta{font-size:12px;color:#888;margin-bottom:8px;}
+.dark .ob-meta{color:#9a958c;}
+.ob-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(128,128,128,.15);font-size:13px;}
+.ob-row:last-child{border-bottom:none;}
+.ob-row-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ob-row-size{color:#888;font-size:12px;flex:none;}
+.dark .ob-row-size{color:#9a958c;}
+.ob-row-rm{flex:none;border:none;background:transparent;color:#b5443a;cursor:pointer;font-size:15px;padding:2px 6px;border-radius:4px;font-family:inherit;}
+.ob-row-rm:hover{background:rgba(181,68,58,.14);}
+.ob-empty{font-size:13px;color:#888;font-style:italic;padding:4px 0;}
+.dark .ob-empty{color:#9a958c;}
+
 .dark .gb-text{color:#e0d5b8;}
 .dark .gb-btn{background:#3a3222;color:#e8d8b0;border-color:#7c6a48;}
 .dark .gb-btn:hover{background:#4a4030;}
@@ -1208,7 +1266,7 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
             <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="./gami.png">
+
 <script>var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",n="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$",e={};function t(r,o){if(!e[r]){e[r]={};for(var n=0;n<r.length;n++)e[r][r.charAt(n)]=n}return e[r][o]}var i={compressToBase64:function(r){if(null==r)return"";var n=i._compress(r,6,function(r){return o.charAt(r)});switch(n.length%4){default:case 0:return n;case 1:return n+"===";case 2:return n+"==";case 3:return n+"="}},decompressFromBase64:function(r){return null==r?"":""==r?null:i._decompress(r.length,32,function(n){return t(o,r.charAt(n))})},compressToUTF16:function(o){return null==o?"":i._compress(o,15,function(o){return r(o+32)})+" "},decompressFromUTF16:function(r){return null==r?"":""==r?null:i._decompress(r.length,16384,function(o){return r.charCodeAt(o)-32})},compressToUint8Array:function(r){for(var o=i.compress(r),n=new Uint8Array(2*o.length),e=0,t=o.length;e<t;e++){var s=o.charCodeAt(e);n[2*e]=s>>>8,n[2*e+1]=s%256}return n},decompressFromUint8Array:function(o){if(null==o)return i.decompress(o);for(var n=new Array(o.length/2),e=0,t=n.length;e<t;e++)n[e]=256*o[2*e]+o[2*e+1];var s=[];return n.forEach(function(o){s.push(r(o))}),i.decompress(s.join(""))},compressToEncodedURIComponent:function(r){return null==r?"":i._compress(r,6,function(r){return n.charAt(r)})},decompressFromEncodedURIComponent:function(r){return null==r?"":""==r?null:(r=r.replace(/ /g,"+"),i._decompress(r.length,32,function(o){return t(n,r.charAt(o))}))},compress:function(o){return i._compress(o,16,function(o){return r(o)})},_compress:function(r,o,n){if(null==r)return"";var e,t,i,s={},u={},a="",p="",c="",l=2,f=3,h=2,d=[],m=0,v=0;for(i=0;i<r.length;i+=1)if(a=r.charAt(i),Object.prototype.hasOwnProperty.call(s,a)||(s[a]=f++,u[a]=!0),p=c+a,Object.prototype.hasOwnProperty.call(s,p))c=p;else{if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++),s[p]=f++,c=String(a)}if(""!==c){if(Object.prototype.hasOwnProperty.call(u,c)){if(c.charCodeAt(0)<256){for(e=0;e<h;e++)m<<=1,v==o-1?(v=0,d.push(n(m)),m=0):v++;for(t=c.charCodeAt(0),e=0;e<8;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}else{for(t=1,e=0;e<h;e++)m=m<<1|t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t=0;for(t=c.charCodeAt(0),e=0;e<16;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1}0==--l&&(l=Math.pow(2,h),h++),delete u[c]}else for(t=s[c],e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;0==--l&&(l=Math.pow(2,h),h++)}for(t=2,e=0;e<h;e++)m=m<<1|1&t,v==o-1?(v=0,d.push(n(m)),m=0):v++,t>>=1;for(;;){if(m<<=1,v==o-1){d.push(n(m));break}v++}return d.join("")},decompress:function(r){return null==r?"":""==r?null:i._decompress(r.length,32768,function(o){return r.charCodeAt(o)})},_decompress:function(o,n,e){var t,i,s,u,a,p,c,l=[],f=4,h=4,d=3,m="",v=[],g={val:e(0),position:n,index:1};for(t=0;t<3;t+=1)l[t]=t;for(s=0,a=Math.pow(2,2),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;c=r(s);break;case 2:return""}for(l[3]=c,i=c,v.push(c);;){if(g.index>o)return"";for(s=0,a=Math.pow(2,d),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;switch(c=s){case 0:for(s=0,a=Math.pow(2,8),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 1:for(s=0,a=Math.pow(2,16),p=1;p!=a;)u=g.val&g.position,g.position>>=1,0==g.position&&(g.position=n,g.val=e(g.index++)),s|=(u>0?1:0)*p,p<<=1;l[h++]=r(s),c=h-1,f--;break;case 2:return v.join("")}if(0==f&&(f=Math.pow(2,d),d++),l[c])m=l[c];else{if(c!==h)return null;m=i+i.charAt(0)}v.push(m),l[h++]=i+m.charAt(0),i=m,0==--f&&(f=Math.pow(2,d),d++)}}};return i}();"function"==typeof define&&define.amd?define(function(){return LZString}):"undefined"!=typeof module&&null!=module?module.exports=LZString:"undefined"!=typeof angular&&null!=angular&&angular.module("LZString",[]).factory("LZString",function(){return LZString});</script>
 </head>
 <body>
@@ -1225,7 +1283,7 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
     <div class="btns">
       <select id="journey-select" class="journey-select" style="font-family:inherit;font-size:12px;font-weight:600;border:1px solid #ccc;background:#fff;color:#222;padding:6px 13px;border-radius:5px;cursor:pointer;"><option value="">Pick a journey…</option></select>
       <button id="gami-btn" title="Open Gami's Home"><img class="gami-face" src="./assets/face_icon.png" alt=""> Gami<span class="gami-dot"></span></button>
-      <button id="ud-btn"><span class="ud-flame">🔥</span> User Data</button>
+      <button id="ud-btn"><span class="ud-flame">⚙️</span> User Data</button>
       <button id="notes-btn" class="topbar-btn">📜 Notes</button>
     </div>
   </div>
@@ -1329,6 +1387,24 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
         <button class="ud-font-btn" data-font="trebuchet">Fira Sans</button>
         <button class="ud-font-btn" data-font="easyread">Easy to Read</button>
       </div>
+    </div>
+
+    <!-- how well Gami knows you -->
+    <div class="ud-sec" id="ud-chapters-sec">
+      <div class="ud-sec-title">Your history with Gami</div>
+      <div class="gc-now" id="gc-now"></div>
+      <div class="ob-meter"><div class="ob-meter-fill" id="gc-fill" style="width:0%"></div></div>
+      <div class="ob-meta" id="gc-next"></div>
+      <div id="gc-ladder"></div>
+    </div>
+
+    <!-- books the user chose to keep offline -->
+    <div class="ud-sec" id="ud-books-sec">
+      <div class="ud-sec-title">📥 Saved Books (<span id="ob-count">0</span>)</div>
+      <div class="ob-meter"><div class="ob-meter-fill" id="ob-meter-fill" style="width:0%"></div></div>
+      <div class="ob-meta" id="ob-meta">Nothing kept offline yet.</div>
+      <div id="ob-list"></div>
+      <button class="ud-foot-btn danger" id="ob-clear" style="display:none;margin-top:10px">🗑 Remove all books</button>
     </div>
     </div>
 
@@ -1531,6 +1607,8 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
       <a href="#" onclick="alert('This would download or seamlessly open the full depth PDF or Markdown textbook for this specific node!'); return false;" id="full-depth-link" style="display:inline-block; padding:8px 16px; background:#3a86ff; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold; font-size: 14px; box-shadow: 0 2px 4px rgba(58,134,255,0.3); transition: all 0.2s;">
         Explore Full Depth ↗
       </a>
+      <button id="fd-offline-btn" type="button" style="display:none">⬇ Save</button>
+      <div id="fd-offline-note"></div>
       <div id="full-depth-recommendation" style="margin-top: 10px; font-size: 13px; color: #777; font-style: italic;">
         [Node Name]: Chapter X.Y (Pages A - B)
       </div>
@@ -2397,158 +2475,158 @@ let selId=null;
 //   func, operator, fourier, de, pde
 
 const FULL_DEPTH_MAP = {
-  "math": { "pdf": "pdfs/book_of_proof_r_hammack.pdf", "rec": "Book of Proof (Richard Hammack)" },
-  "geobasics": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
-  "areavol": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
-  "circles": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
-  "similarity": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)" },
-  "statsbasics": { "pdf": "pdfs/introductory_statistics_2e_openstax.pdf", "rec": "Introductory Statistics 2e (OpenStax)" },
-  "countprob": { "pdf": "pdfs/introduction_to_probability_grinstead_snell.pdf", "rec": "Introduction to Probability (Grinstead & Snell)" },
-  "prob": { "pdf": "pdfs/introduction_to_probability_grinstead_snell.pdf", "rec": "Introduction to Probability (Grinstead & Snell)" },
-  "found": { "pdf": "pdfs/friendly_intro_logic_leary_kristiansen.pdf", "rec": "A Friendly Introduction to Mathematical Logic (Leary & Kristiansen)" },
-  "logic": { "pdf": "pdfs/friendly_intro_logic_leary_kristiansen.pdf", "rec": "A Friendly Introduction to Mathematical Logic (Leary & Kristiansen)" },
-  "prooftheory": { "pdf": "pdfs/intro_proof_theory_s_buss.pdf", "rec": "An Introduction to Proof Theory (Samuel Buss)" },
-  "highercat": { "pdf": "pdfs/higher_topos_theory_j_lurie.pdf", "rec": "Higher Topos Theory (Jacob Lurie)" },
-  "derived": { "pdf": "pdfs/higher_topos_theory_j_lurie.pdf", "rec": "Higher Topos Theory (Jacob Lurie)" },
-  "typeth": { "pdf": "pdfs/homotopy_type_theory_univalent_foundations.pdf", "rec": "Homotopy Type Theory (Univalent Foundations Program)" },
-  "set": { "pdf": "pdfs/set_theory_w_weiss.pdf", "rec": "An Introduction to Set Theory (William A. R. Weiss)" },
-  "comput": { "pdf": "pdfs/theory_of_computation_maheshwari_smid.pdf", "rec": "Introduction to Theory of Computation (Maheshwari & Smid)" },
-  "tcs": { "pdf": "pdfs/theory_of_computation_maheshwari_smid.pdf", "rec": "Introduction to Theory of Computation (Maheshwari & Smid)" },
-  "godel": { "pdf": "pdfs/godels_theorems_p_smith.pdf", "rec": "An Introduction to Gödel's Theorems (Peter Smith)" },
-  "cat": { "pdf": "pdfs/category_theory_in_context_e_riehl.pdf", "rec": "Category Theory in Context (Emily Riehl)" },
-  "model": { "pdf": "pdfs/model_theory_weiss_dmello.pdf", "rec": "Fundamentals of Model Theory (Weiss & D'Mello)" },
-  "descset": { "pdf": "pdfs/descriptive_set_theory_d_marker.pdf", "rec": "Descriptive Set Theory (David Marker, lecture notes)" },
-  "nt": { "pdf": "pdfs/elementary_number_theory_w_stein.pdf", "rec": "Elementary Number Theory: Primes, Congruences, and Secrets (William Stein)" },
-  "elemnt": { "pdf": "pdfs/elementary_number_theory_w_stein.pdf", "rec": "Elementary Number Theory: Primes, Congruences, and Secrets (William Stein)" },
-  "cft": { "pdf": "pdfs/class_field_theory_j_s_milne.pdf", "rec": "Class Field Theory (J.S. Milne)" },
-  "ant": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
-  "zeta": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
-  "euler": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
-  "pnt": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
-  "lfunc": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
-  "sieve": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)" },
-  "explicit": { "pdf": "pdfs/analytic_number_theory_p_garrett.pdf", "rec": "Number Theory Notes (Paul Garrett)" },
-  "rh": { "pdf": "pdfs/riemann_hypothesis_clay_bombieri.pdf", "rec": "The Riemann Hypothesis — Official Problem Description (Enrico Bombieri, Clay Institute)" },
-  "algnt": { "pdf": "pdfs/algebraic_number_theory_j_s_milne.pdf", "rec": "Algebraic Number Theory (J.S. Milne)" },
-  "padic": { "pdf": "pdfs/p_adic_numbers_j_evertse.pdf", "rec": "p-adic Numbers (Jan-Hendrik Evertse, course notes)" },
-  "arithgeo": { "pdf": "pdfs/elliptic_curves_j_s_milne.pdf", "rec": "Elliptic Curves (J.S. Milne)" },
-  "elliptic": { "pdf": "pdfs/elliptic_curves_j_s_milne.pdf", "rec": "Elliptic Curves (J.S. Milne)" },
-  "modular": { "pdf": "pdfs/modular_forms_j_s_milne.pdf", "rec": "Modular Functions and Modular Forms (J.S. Milne)" },
-  "langlands": { "pdf": "pdfs/langlands_program_s_gelbart.pdf", "rec": "An Elementary Introduction to the Langlands Program (Stephen Gelbart)" },
-  "transc": { "pdf": "pdfs/transcendence_m_waldschmidt.pdf", "rec": "Introduction to Transcendence & Diophantine Methods (Michel Waldschmidt)" },
-  "diophantine": { "pdf": "pdfs/transcendence_m_waldschmidt.pdf", "rec": "Introduction to Transcendence & Diophantine Methods (Michel Waldschmidt)" },
-  "alg": { "pdf": "pdfs/abstract_algebra_t_judson.pdf", "rec": "Abstract Algebra: Theory and Applications (Thomas Judson)" },
-  "ring": { "pdf": "pdfs/abstract_algebra_t_judson.pdf", "rec": "Abstract Algebra: Theory and Applications (Thomas Judson)" },
-  "ktheory": { "pdf": "pdfs/algebraic_k_theory_c_weibel.pdf", "rec": "The K-book: An Introduction to Algebraic K-theory (Charles Weibel)" },
-  "ggt": { "pdf": "pdfs/geometric_group_theory_c_loeh.pdf", "rec": "Geometric Group Theory: An Introduction (Clara Löh)" },
-  "univalg": { "pdf": "pdfs/universal_algebra_burris_sankappanavar.pdf", "rec": "A Course in Universal Algebra (Burris & Sankappanavar)" },
-  "order": { "pdf": "pdfs/universal_algebra_burris_sankappanavar.pdf", "rec": "A Course in Universal Algebra (Burris & Sankappanavar)" },
-  "group": { "pdf": "pdfs/group_theory_j_s_milne.pdf", "rec": "Group Theory (J.S. Milne)" },
-  "rep": { "pdf": "pdfs/representation_theory_p_etingof.pdf", "rec": "Introduction to Representation Theory (Etingof et al.)" },
-  "galois": { "pdf": "pdfs/fields_and_galois_theory_j_s_milne.pdf", "rec": "Fields and Galois Theory (J.S. Milne)" },
-  "linalg": { "pdf": "pdfs/linear_algebra_done_wrong_s_treil.pdf", "rec": "Linear Algebra Done Wrong (Sergei Treil)" },
-  "eigen": { "pdf": "pdfs/linear_algebra_done_wrong_s_treil.pdf", "rec": "Linear Algebra Done Wrong (Sergei Treil)" },
-  "commalg": { "pdf": "pdfs/commutative_algebra_altman_kleiman.pdf", "rec": "A Term of Commutative Algebra (Altman & Kleiman)" },
-  "lie": { "pdf": "pdfs/lie_groups_algebras_a_kirillov.pdf", "rec": "An Introduction to Lie Groups and Lie Algebras (Alexander Kirillov Jr.)" },
-  "homalg": { "pdf": "pdfs/homological_algebra_p_schapira.pdf", "rec": "Categories and Homological Algebra (Pierre Schapira)" },
-  "anal": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)" },
-  "real": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)" },
-  "series": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)" },
-  "opalg": { "pdf": "pdfs/operator_algebras_v_jones.pdf", "rec": "Von Neumann Algebras (Vaughan Jones, lecture notes)" },
-  "calcvar": { "pdf": "pdfs/calculus_of_variations_p_olver.pdf", "rec": "The Calculus of Variations (Peter Olver, lecture notes)" },
-  "scv": { "pdf": "pdfs/tasty_bits_scv_j_lebl.pdf", "rec": "Tasty Bits of Several Complex Variables (Jiří Lebl)" },
-  "fourier": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)" },
-  "harmonic": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)" },
-  "distrib": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)" },
-  "measure": { "pdf": "pdfs/measure_integration_real_analysis_s_axler.pdf", "rec": "Measure, Integration & Real Analysis (Sheldon Axler, open access)" },
-  "complex": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)" },
-  "holo": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)" },
-  "acont": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)" },
-  "func": { "pdf": "pdfs/functional_analysis_buhler_salamon.pdf", "rec": "Functional Analysis (Theo Bühler & Dietmar Salamon)" },
-  "inteq": { "pdf": "pdfs/functional_analysis_buhler_salamon.pdf", "rec": "Functional Analysis (Theo Bühler & Dietmar Salamon)" },
-  "operator": { "pdf": "pdfs/mathematical_methods_qm_g_teschl.pdf", "rec": "Mathematical Methods in Quantum Mechanics (Gerald Teschl)" },
-  "de": { "pdf": "pdfs/differential_equations_j_lebl.pdf", "rec": "Notes on Diffy Qs: Differential Equations for Engineers (Jiří Lebl)" },
-  "pde": { "pdf": "pdfs/pde_v_ivrii.pdf", "rec": "Partial Differential Equations (Victor Ivrii)" },
-  "navier": { "pdf": "pdfs/navier_stokes_clay_fefferman.pdf", "rec": "Existence and Smoothness of the Navier–Stokes Equation — Official Problem Description (Charles Fefferman, Clay Institute)" },
-  "dyn": { "pdf": "pdfs/chaos_book_p_cvitanovic.pdf", "rec": "Chaos: Classical and Quantum (Cvitanović et al., ChaosBook.org)" },
-  "fractal": { "pdf": "pdfs/fractals_probability_analysis_bishop_peres.pdf", "rec": "Fractals in Probability and Analysis (Bishop & Peres)" },
-  "specfn": { "pdf": "pdfs/special_functions_j_derezinski.pdf", "rec": "Hypergeometric Type Functions and Their Symmetries (Jan Dereziński)" },
-  "geo": { "pdf": "pdfs/euclids_elements_r_fitzpatrick.pdf", "rec": "Euclid's Elements of Geometry (Richard Fitzpatrick translation)" },
-  "euclid": { "pdf": "pdfs/euclids_elements_r_fitzpatrick.pdf", "rec": "Euclid's Elements of Geometry (Richard Fitzpatrick translation)" },
-  "convex": { "pdf": "pdfs/discrete_geometry_i_pak.pdf", "rec": "Lectures on Discrete and Polyhedral Geometry (Igor Pak)" },
-  "tropical": { "pdf": "pdfs/tropical_geometry_maclagan_sturmfels.pdf", "rec": "Introduction to Tropical Geometry (Maclagan & Sturmfels)" },
-  "symplectic": { "pdf": "pdfs/symplectic_geometry_cannas_da_silva.pdf", "rec": "Lectures on Symplectic Geometry (Ana Cannas da Silva)" },
-  "noneuclid": { "pdf": "pdfs/geometry_cosmic_topology_m_hitchman.pdf", "rec": "Geometry with an Introduction to Cosmic Topology (Michael Hitchman)" },
-  "diffgeo": { "pdf": "pdfs/differential_geometry_t_shifrin.pdf", "rec": "Differential Geometry: A First Course in Curves and Surfaces (Theodore Shifrin)" },
-  "manifold": { "pdf": "pdfs/manifolds_differential_forms_r_sjamaar.pdf", "rec": "Manifolds and Differential Forms (Reyer Sjamaar)" },
-  "riemannian": { "pdf": "pdfs/riemannian_geometry_s_gudmundsson.pdf", "rec": "An Introduction to Riemannian Geometry (Sigmundur Gudmundsson)" },
-  "alggeo": { "pdf": "pdfs/foundations_of_algebraic_geometry_r_vakil.pdf", "rec": "The Rising Sea: Foundations of Algebraic Geometry (Ravi Vakil)" },
-  "schemes": { "pdf": "pdfs/foundations_of_algebraic_geometry_r_vakil.pdf", "rec": "The Rising Sea: Foundations of Algebraic Geometry (Ravi Vakil)" },
-  "hodge": { "pdf": "pdfs/hodge_theory_cattani_elzein.pdf", "rec": "Hodge Theory (Cattani, El Zein, Griffiths, Lê, eds.)" },
-  "ncgeo": { "pdf": "pdfs/noncommutative_geometry_a_connes.pdf", "rec": "Noncommutative Geometry (Alain Connes)" },
-  "topo": { "pdf": "pdfs/topology_without_tears_s_morris.pdf", "rec": "Topology Without Tears (Sidney Morris)" },
-  "pointset": { "pdf": "pdfs/topology_without_tears_s_morris.pdf", "rec": "Topology Without Tears (Sidney Morris)" },
-  "difftop": { "pdf": "pdfs/differential_topology_robbin_salamon.pdf", "rec": "Introduction to Differential Topology (Robbin & Salamon)" },
-  "algtop": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)" },
-  "homotopy": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)" },
-  "homology": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)" },
-  "lowdim": { "pdf": "pdfs/three_manifolds_a_hatcher.pdf", "rec": "Notes on Basic 3-Manifold Topology (Allen Hatcher)" },
-  "poincare": { "pdf": "pdfs/ricci_flow_poincare_morgan_tian.pdf", "rec": "Ricci Flow and the Poincaré Conjecture (Morgan & Tian)" },
-  "knot": { "pdf": "pdfs/knots_knotes_j_roberts.pdf", "rec": "Knots Knotes (Justin Roberts)" },
-  "comb": { "pdf": "pdfs/applied_combinatorics_keller_trotter.pdf", "rec": "Applied Combinatorics (Keller & Trotter)" },
-  "designs": { "pdf": "pdfs/combinatorial_designs_m_meszka.pdf", "rec": "Combinatorial Designs (Mariusz Meszka, lecture notes)" },
-  "algcomb": { "pdf": "pdfs/algebraic_combinatorics_r_stanley.pdf", "rec": "Topics in Algebraic Combinatorics (Richard Stanley)" },
-  "matroid": { "pdf": "pdfs/matroid_theory_survey_j_oxley.pdf", "rec": "What is a Matroid? (James Oxley, survey)" },
-  "enumcomb": { "pdf": "pdfs/enumerative_combinatorics_r_stanley.pdf", "rec": "Enumerative Combinatorics Vol. 1 (Richard Stanley)" },
-  "graph": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)" },
-  "ramsey": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)" },
-  "addcomb": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)" },
-  "opt": { "pdf": "pdfs/combinatorial_optimization_a_schrijver.pdf", "rec": "A Course in Combinatorial Optimization (Alexander Schrijver)" },
-  "ergodic": { "pdf": "pdfs/ergodic_theory_o_sarig.pdf", "rec": "Lecture Notes on Ergodic Theory (Omri Sarig)" },
-  "probth": { "pdf": "pdfs/probability_theory_examples_r_durrett.pdf", "rec": "Probability: Theory and Examples (Rick Durrett)" },
-  "stoch": { "pdf": "pdfs/stochastic_processes_r_durrett.pdf", "rec": "Essentials of Stochastic Processes (Rick Durrett)" },
-  "markov": { "pdf": "pdfs/markov_chains_mixing_times_levin_peres.pdf", "rec": "Markov Chains and Mixing Times (Levin, Peres & Wilmer)" },
-  "brownian": { "pdf": "pdfs/brownian_motion_morters_peres.pdf", "rec": "Brownian Motion (Mörters & Peres)" },
-  "mathfin": { "pdf": "pdfs/stochastic_calculus_van_handel.pdf", "rec": "Stochastic Calculus, Filtering, and Stochastic Control (Ramon van Handel, lecture notes)" },
-  "rmt": { "pdf": "pdfs/random_matrices_anderson_guionnet_zeitouni.pdf", "rec": "An Introduction to Random Matrices (Anderson, Guionnet & Zeitouni)" },
-  "stats": { "pdf": "pdfs/openintro_statistics_4e.pdf", "rec": "OpenIntro Statistics (Diez, Çetinkaya-Rundel & Barr)" },
-  "info": { "pdf": "pdfs/information_theory_d_mackay.pdf", "rec": "Information Theory, Inference, and Learning Algorithms (David MacKay)" },
-  "percolation": { "pdf": "pdfs/probability_on_trees_lyons_peres.pdf", "rec": "Probability on Trees and Networks (Lyons & Peres)" },
-  "applied": { "pdf": "pdfs/scientific_computing_j_chasnov.pdf", "rec": "Scientific Computing (Jeffrey Chasnov, lecture notes)" },
-  "complexity": { "pdf": "pdfs/computational_complexity_arora_barak.pdf", "rec": "Computational Complexity: A Modern Approach (Arora & Barak, draft)" },
-  "pnp": { "pdf": "pdfs/computational_complexity_arora_barak.pdf", "rec": "Computational Complexity: A Modern Approach (Arora & Barak, draft)" },
-  "crypto": { "pdf": "pdfs/applied_cryptography_boneh_shoup.pdf", "rec": "A Graduate Course in Applied Cryptography (Boneh & Shoup)" },
-  "numerical": { "pdf": "pdfs/numerical_methods_j_chasnov.pdf", "rec": "Numerical Methods (Jeffrey Chasnov, lecture notes)" },
-  "mathphys": { "pdf": "pdfs/mathematical_methods_for_physics_stone.pdf", "rec": "Mathematics for Physics (Stone & Goldbart)" },
-  "yangmills": { "pdf": "pdfs/yang_mills_clay_jaffe_witten.pdf", "rec": "Quantum Yang–Mills Theory (Jaffe & Witten, Clay official problem description)" },
-  "game": { "pdf": "pdfs/game_theory_alive_karlin_peres.pdf", "rec": "Game Theory, Alive (Karlin & Peres)" },
-  "cgt": { "pdf": "pdfs/game_theory_alive_karlin_peres.pdf", "rec": "Game Theory, Alive (Karlin & Peres)" },
-  "contopt": { "pdf": "pdfs/convex_optimization_s_boyd.pdf", "rec": "Convex Optimization (Boyd & Vandenberghe)" },
-  "learning": { "pdf": "pdfs/understanding_machine_learning_shalev_shwartz.pdf", "rec": "Understanding Machine Learning (Shalev-Shwartz & Ben-David)" },
-  "control": { "pdf": "pdfs/mathematical_control_theory_e_sontag.pdf", "rec": "Mathematical Control Theory (Eduardo Sontag)" },
-  "mathbio": { "pdf": "pdfs/mathematical_biology_j_chasnov.pdf", "rec": "Mathematical Biology (Jeffrey Chasnov, lecture notes)" },
-  "quantum": { "pdf": "pdfs/quantum_computing_r_de_wolf.pdf", "rec": "Quantum Computing: Lecture Notes (Ronald de Wolf)" },
-  "coding": { "pdf": "pdfs/coding_theory_guruswami_rudra_sudan.pdf", "rec": "Essential Coding Theory (Guruswami, Rudra & Sudan)" },
-  "coremath": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "arith": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "negnum": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "fracdec": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "percent": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "ratio": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "prealg": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)" },
-  "elemalg": { "pdf": "pdfs/beginning_intermediate_algebra_t_wallace.pdf", "rec": "Beginning and Intermediate Algebra (Tyler Wallace)" },
-  "lineq": { "pdf": "pdfs/beginning_intermediate_algebra_t_wallace.pdf", "rec": "Beginning and Intermediate Algebra (Tyler Wallace)" },
-  "quadratics": { "pdf": "pdfs/beginning_intermediate_algebra_t_wallace.pdf", "rec": "Beginning and Intermediate Algebra (Tyler Wallace)" },
-  "funcgraph": { "pdf": "pdfs/college_algebra_stitz_zeager.pdf", "rec": "College Algebra (Stitz & Zeager)" },
-  "explog": { "pdf": "pdfs/college_algebra_stitz_zeager.pdf", "rec": "College Algebra (Stitz & Zeager)" },
-  "coord": { "pdf": "pdfs/college_algebra_stitz_zeager.pdf", "rec": "College Algebra (Stitz & Zeager)" },
-  "trig": { "pdf": "pdfs/college_trigonometry_stitz_zeager.pdf", "rec": "College Trigonometry (Stitz & Zeager)" },
-  "unitcircle": { "pdf": "pdfs/college_trigonometry_stitz_zeager.pdf", "rec": "College Trigonometry (Stitz & Zeager)" },
-  "vectors": { "pdf": "pdfs/college_trigonometry_stitz_zeager.pdf", "rec": "College Trigonometry (Stitz & Zeager)" },
-  "precalc": { "pdf": "pdfs/precalculus_stitz_zeager.pdf", "rec": "Precalculus (Stitz & Zeager)" },
-  "sequences": { "pdf": "pdfs/precalculus_stitz_zeager.pdf", "rec": "Precalculus (Stitz & Zeager)" },
-  "calculus": { "pdf": "pdfs/apex_calculus_single_variable_hartman.pdf", "rec": "APEX Calculus I-II: Single Variable (Hartman et al.)" },
-  "multivar": { "pdf": "pdfs/calculus_volume_3_openstax.pdf", "rec": "Calculus Volume 3 (OpenStax)" }
+  "math": { "pdf": "pdfs/book_of_proof_r_hammack.pdf", "rec": "Book of Proof (Richard Hammack)", "mb": 1.8 },
+  "geobasics": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)", "mb": 13.8 },
+  "areavol": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)", "mb": 13.8 },
+  "circles": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)", "mb": 13.8 },
+  "similarity": { "pdf": "pdfs/elementary_college_geometry_h_africk.pdf", "rec": "Elementary College Geometry (Henry Africk, CUNY)", "mb": 13.8 },
+  "statsbasics": { "pdf": "pdfs/introductory_statistics_2e_openstax.pdf", "rec": "Introductory Statistics 2e (OpenStax)", "mb": 22.4 },
+  "countprob": { "pdf": "pdfs/introduction_to_probability_grinstead_snell.pdf", "rec": "Introduction to Probability (Grinstead & Snell)", "mb": 2.9 },
+  "prob": { "pdf": "pdfs/introduction_to_probability_grinstead_snell.pdf", "rec": "Introduction to Probability (Grinstead & Snell)", "mb": 2.9 },
+  "found": { "pdf": "pdfs/friendly_intro_logic_leary_kristiansen.pdf", "rec": "A Friendly Introduction to Mathematical Logic (Leary & Kristiansen)", "mb": 2 },
+  "logic": { "pdf": "pdfs/friendly_intro_logic_leary_kristiansen.pdf", "rec": "A Friendly Introduction to Mathematical Logic (Leary & Kristiansen)", "mb": 2 },
+  "prooftheory": { "pdf": "pdfs/intro_proof_theory_s_buss.pdf", "rec": "An Introduction to Proof Theory (Samuel Buss)", "mb": 0.6 },
+  "highercat": { "pdf": "pdfs/higher_topos_theory_j_lurie.pdf", "rec": "Higher Topos Theory (Jacob Lurie)", "mb": 4.5 },
+  "derived": { "pdf": "pdfs/higher_topos_theory_j_lurie.pdf", "rec": "Higher Topos Theory (Jacob Lurie)", "mb": 4.5 },
+  "typeth": { "pdf": "pdfs/homotopy_type_theory_univalent_foundations.pdf", "rec": "Homotopy Type Theory (Univalent Foundations Program)", "mb": 4.5 },
+  "set": { "pdf": "pdfs/set_theory_w_weiss.pdf", "rec": "An Introduction to Set Theory (William A. R. Weiss)", "mb": 0.4 },
+  "comput": { "pdf": "pdfs/theory_of_computation_maheshwari_smid.pdf", "rec": "Introduction to Theory of Computation (Maheshwari & Smid)", "mb": 1 },
+  "tcs": { "pdf": "pdfs/theory_of_computation_maheshwari_smid.pdf", "rec": "Introduction to Theory of Computation (Maheshwari & Smid)", "mb": 1 },
+  "godel": { "pdf": "pdfs/godels_theorems_p_smith.pdf", "rec": "An Introduction to Gödel's Theorems (Peter Smith)", "mb": 2.2 },
+  "cat": { "pdf": "pdfs/category_theory_in_context_e_riehl.pdf", "rec": "Category Theory in Context (Emily Riehl)", "mb": 1.5 },
+  "model": { "pdf": "pdfs/model_theory_weiss_dmello.pdf", "rec": "Fundamentals of Model Theory (Weiss & D'Mello)", "mb": 0.5 },
+  "descset": { "pdf": "pdfs/descriptive_set_theory_d_marker.pdf", "rec": "Descriptive Set Theory (David Marker, lecture notes)", "mb": 0.6 },
+  "nt": { "pdf": "pdfs/elementary_number_theory_w_stein.pdf", "rec": "Elementary Number Theory: Primes, Congruences, and Secrets (William Stein)", "mb": 2.6 },
+  "elemnt": { "pdf": "pdfs/elementary_number_theory_w_stein.pdf", "rec": "Elementary Number Theory: Primes, Congruences, and Secrets (William Stein)", "mb": 2.6 },
+  "cft": { "pdf": "pdfs/class_field_theory_j_s_milne.pdf", "rec": "Class Field Theory (J.S. Milne)", "mb": 2 },
+  "ant": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)", "mb": 0.8 },
+  "zeta": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)", "mb": 0.8 },
+  "euler": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)", "mb": 0.8 },
+  "pnt": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)", "mb": 0.8 },
+  "lfunc": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)", "mb": 0.8 },
+  "sieve": { "pdf": "pdfs/analytic_number_theory_a_hildebrand.pdf", "rec": "Introduction to Analytic Number Theory (A.J. Hildebrand)", "mb": 0.8 },
+  "explicit": { "pdf": "pdfs/analytic_number_theory_p_garrett.pdf", "rec": "Number Theory Notes (Paul Garrett)", "mb": 1.3 },
+  "rh": { "pdf": "pdfs/riemann_hypothesis_clay_bombieri.pdf", "rec": "The Riemann Hypothesis — Official Problem Description (Enrico Bombieri, Clay Institute)", "mb": 0.2 },
+  "algnt": { "pdf": "pdfs/algebraic_number_theory_j_s_milne.pdf", "rec": "Algebraic Number Theory (J.S. Milne)", "mb": 1.2 },
+  "padic": { "pdf": "pdfs/p_adic_numbers_j_evertse.pdf", "rec": "p-adic Numbers (Jan-Hendrik Evertse, course notes)", "mb": 0.4 },
+  "arithgeo": { "pdf": "pdfs/elliptic_curves_j_s_milne.pdf", "rec": "Elliptic Curves (J.S. Milne)", "mb": 1.7 },
+  "elliptic": { "pdf": "pdfs/elliptic_curves_j_s_milne.pdf", "rec": "Elliptic Curves (J.S. Milne)", "mb": 1.7 },
+  "modular": { "pdf": "pdfs/modular_forms_j_s_milne.pdf", "rec": "Modular Functions and Modular Forms (J.S. Milne)", "mb": 1 },
+  "langlands": { "pdf": "pdfs/langlands_program_s_gelbart.pdf", "rec": "An Elementary Introduction to the Langlands Program (Stephen Gelbart)", "mb": 4.2 },
+  "transc": { "pdf": "pdfs/transcendence_m_waldschmidt.pdf", "rec": "Introduction to Transcendence & Diophantine Methods (Michel Waldschmidt)", "mb": 0.7 },
+  "diophantine": { "pdf": "pdfs/transcendence_m_waldschmidt.pdf", "rec": "Introduction to Transcendence & Diophantine Methods (Michel Waldschmidt)", "mb": 0.7 },
+  "alg": { "pdf": "pdfs/abstract_algebra_t_judson.pdf", "rec": "Abstract Algebra: Theory and Applications (Thomas Judson)", "mb": 2.1 },
+  "ring": { "pdf": "pdfs/abstract_algebra_t_judson.pdf", "rec": "Abstract Algebra: Theory and Applications (Thomas Judson)", "mb": 2.1 },
+  "ktheory": { "pdf": "pdfs/algebraic_k_theory_c_weibel.pdf", "rec": "The K-book: An Introduction to Algebraic K-theory (Charles Weibel)", "mb": 4.7 },
+  "ggt": { "pdf": "pdfs/geometric_group_theory_c_loeh.pdf", "rec": "Geometric Group Theory: An Introduction (Clara Löh)", "mb": 5 },
+  "univalg": { "pdf": "pdfs/universal_algebra_burris_sankappanavar.pdf", "rec": "A Course in Universal Algebra (Burris & Sankappanavar)", "mb": 4.2 },
+  "order": { "pdf": "pdfs/universal_algebra_burris_sankappanavar.pdf", "rec": "A Course in Universal Algebra (Burris & Sankappanavar)", "mb": 4.2 },
+  "group": { "pdf": "pdfs/group_theory_j_s_milne.pdf", "rec": "Group Theory (J.S. Milne)", "mb": 1.6 },
+  "rep": { "pdf": "pdfs/representation_theory_p_etingof.pdf", "rec": "Introduction to Representation Theory (Etingof et al.)", "mb": 0.8 },
+  "galois": { "pdf": "pdfs/fields_and_galois_theory_j_s_milne.pdf", "rec": "Fields and Galois Theory (J.S. Milne)", "mb": 1.8 },
+  "linalg": { "pdf": "pdfs/linear_algebra_done_wrong_s_treil.pdf", "rec": "Linear Algebra Done Wrong (Sergei Treil)", "mb": 1.3 },
+  "eigen": { "pdf": "pdfs/linear_algebra_done_wrong_s_treil.pdf", "rec": "Linear Algebra Done Wrong (Sergei Treil)", "mb": 1.3 },
+  "commalg": { "pdf": "pdfs/commutative_algebra_altman_kleiman.pdf", "rec": "A Term of Commutative Algebra (Altman & Kleiman)", "mb": 1.4 },
+  "lie": { "pdf": "pdfs/lie_groups_algebras_a_kirillov.pdf", "rec": "An Introduction to Lie Groups and Lie Algebras (Alexander Kirillov Jr.)", "mb": 1 },
+  "homalg": { "pdf": "pdfs/homological_algebra_p_schapira.pdf", "rec": "Categories and Homological Algebra (Pierre Schapira)", "mb": 0.9 },
+  "anal": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)", "mb": 1.8 },
+  "real": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)", "mb": 1.8 },
+  "series": { "pdf": "pdfs/basic_analysis_j_lebl.pdf", "rec": "Basic Analysis: Introduction to Real Analysis (Jiří Lebl)", "mb": 1.8 },
+  "opalg": { "pdf": "pdfs/operator_algebras_v_jones.pdf", "rec": "Von Neumann Algebras (Vaughan Jones, lecture notes)", "mb": 0.7 },
+  "calcvar": { "pdf": "pdfs/calculus_of_variations_p_olver.pdf", "rec": "The Calculus of Variations (Peter Olver, lecture notes)", "mb": 0.3 },
+  "scv": { "pdf": "pdfs/tasty_bits_scv_j_lebl.pdf", "rec": "Tasty Bits of Several Complex Variables (Jiří Lebl)", "mb": 1.6 },
+  "fourier": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)", "mb": 5.4 },
+  "harmonic": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)", "mb": 5.4 },
+  "distrib": { "pdf": "pdfs/fourier_transform_b_osgood.pdf", "rec": "Lectures on the Fourier Transform and Its Applications (Brad Osgood)", "mb": 5.4 },
+  "measure": { "pdf": "pdfs/measure_integration_real_analysis_s_axler.pdf", "rec": "Measure, Integration & Real Analysis (Sheldon Axler, open access)", "mb": 3.4 },
+  "complex": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)", "mb": 1.8 },
+  "holo": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)", "mb": 1.8 },
+  "acont": { "pdf": "pdfs/first_course_complex_analysis_beck_et_al.pdf", "rec": "A First Course in Complex Analysis (Beck, Marchesi, Pixton, Sabalka)", "mb": 1.8 },
+  "func": { "pdf": "pdfs/functional_analysis_buhler_salamon.pdf", "rec": "Functional Analysis (Theo Bühler & Dietmar Salamon)", "mb": 1.8 },
+  "inteq": { "pdf": "pdfs/functional_analysis_buhler_salamon.pdf", "rec": "Functional Analysis (Theo Bühler & Dietmar Salamon)", "mb": 1.8 },
+  "operator": { "pdf": "pdfs/mathematical_methods_qm_g_teschl.pdf", "rec": "Mathematical Methods in Quantum Mechanics (Gerald Teschl)", "mb": 1.5 },
+  "de": { "pdf": "pdfs/differential_equations_j_lebl.pdf", "rec": "Notes on Diffy Qs: Differential Equations for Engineers (Jiří Lebl)", "mb": 3.9 },
+  "pde": { "pdf": "pdfs/pde_v_ivrii.pdf", "rec": "Partial Differential Equations (Victor Ivrii)", "mb": 4.4 },
+  "navier": { "pdf": "pdfs/navier_stokes_clay_fefferman.pdf", "rec": "Existence and Smoothness of the Navier–Stokes Equation — Official Problem Description (Charles Fefferman, Clay Institute)", "mb": 0.2 },
+  "dyn": { "pdf": "pdfs/chaos_book_p_cvitanovic.pdf", "rec": "Chaos: Classical and Quantum (Cvitanović et al., ChaosBook.org)", "mb": 8.3 },
+  "fractal": { "pdf": "pdfs/fractals_probability_analysis_bishop_peres.pdf", "rec": "Fractals in Probability and Analysis (Bishop & Peres)", "mb": 5.4 },
+  "specfn": { "pdf": "pdfs/special_functions_j_derezinski.pdf", "rec": "Hypergeometric Type Functions and Their Symmetries (Jan Dereziński)", "mb": 1.1 },
+  "geo": { "pdf": "pdfs/euclids_elements_r_fitzpatrick.pdf", "rec": "Euclid's Elements of Geometry (Richard Fitzpatrick translation)", "mb": 4.7 },
+  "euclid": { "pdf": "pdfs/euclids_elements_r_fitzpatrick.pdf", "rec": "Euclid's Elements of Geometry (Richard Fitzpatrick translation)", "mb": 4.7 },
+  "convex": { "pdf": "pdfs/discrete_geometry_i_pak.pdf", "rec": "Lectures on Discrete and Polyhedral Geometry (Igor Pak)", "mb": 3.1 },
+  "tropical": { "pdf": "pdfs/tropical_geometry_maclagan_sturmfels.pdf", "rec": "Introduction to Tropical Geometry (Maclagan & Sturmfels)", "mb": 1.1 },
+  "symplectic": { "pdf": "pdfs/symplectic_geometry_cannas_da_silva.pdf", "rec": "Lectures on Symplectic Geometry (Ana Cannas da Silva)", "mb": 1.1 },
+  "noneuclid": { "pdf": "pdfs/geometry_cosmic_topology_m_hitchman.pdf", "rec": "Geometry with an Introduction to Cosmic Topology (Michael Hitchman)", "mb": 2.5 },
+  "diffgeo": { "pdf": "pdfs/differential_geometry_t_shifrin.pdf", "rec": "Differential Geometry: A First Course in Curves and Surfaces (Theodore Shifrin)", "mb": 1.8 },
+  "manifold": { "pdf": "pdfs/manifolds_differential_forms_r_sjamaar.pdf", "rec": "Manifolds and Differential Forms (Reyer Sjamaar)", "mb": 2.7 },
+  "riemannian": { "pdf": "pdfs/riemannian_geometry_s_gudmundsson.pdf", "rec": "An Introduction to Riemannian Geometry (Sigmundur Gudmundsson)", "mb": 0.8 },
+  "alggeo": { "pdf": "pdfs/foundations_of_algebraic_geometry_r_vakil.pdf", "rec": "The Rising Sea: Foundations of Algebraic Geometry (Ravi Vakil)", "mb": 9.3 },
+  "schemes": { "pdf": "pdfs/foundations_of_algebraic_geometry_r_vakil.pdf", "rec": "The Rising Sea: Foundations of Algebraic Geometry (Ravi Vakil)", "mb": 9.3 },
+  "hodge": { "pdf": "pdfs/hodge_theory_cattani_elzein.pdf", "rec": "Hodge Theory (Cattani, El Zein, Griffiths, Lê, eds.)", "mb": 2.8 },
+  "ncgeo": { "pdf": "pdfs/noncommutative_geometry_a_connes.pdf", "rec": "Noncommutative Geometry (Alain Connes)", "mb": 4.1 },
+  "topo": { "pdf": "pdfs/topology_without_tears_s_morris.pdf", "rec": "Topology Without Tears (Sidney Morris)", "mb": 8.5 },
+  "pointset": { "pdf": "pdfs/topology_without_tears_s_morris.pdf", "rec": "Topology Without Tears (Sidney Morris)", "mb": 8.5 },
+  "difftop": { "pdf": "pdfs/differential_topology_robbin_salamon.pdf", "rec": "Introduction to Differential Topology (Robbin & Salamon)", "mb": 2 },
+  "algtop": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)", "mb": 7.7 },
+  "homotopy": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)", "mb": 7.7 },
+  "homology": { "pdf": "pdfs/algebraic_topology_a_hatcher.pdf", "rec": "Algebraic Topology (Allen Hatcher)", "mb": 7.7 },
+  "lowdim": { "pdf": "pdfs/three_manifolds_a_hatcher.pdf", "rec": "Notes on Basic 3-Manifold Topology (Allen Hatcher)", "mb": 0.7 },
+  "poincare": { "pdf": "pdfs/ricci_flow_poincare_morgan_tian.pdf", "rec": "Ricci Flow and the Poincaré Conjecture (Morgan & Tian)", "mb": 4.1 },
+  "knot": { "pdf": "pdfs/knots_knotes_j_roberts.pdf", "rec": "Knots Knotes (Justin Roberts)", "mb": 2.9 },
+  "comb": { "pdf": "pdfs/applied_combinatorics_keller_trotter.pdf", "rec": "Applied Combinatorics (Keller & Trotter)", "mb": 6.7 },
+  "designs": { "pdf": "pdfs/combinatorial_designs_m_meszka.pdf", "rec": "Combinatorial Designs (Mariusz Meszka, lecture notes)", "mb": 0.3 },
+  "algcomb": { "pdf": "pdfs/algebraic_combinatorics_r_stanley.pdf", "rec": "Topics in Algebraic Combinatorics (Richard Stanley)", "mb": 1.2 },
+  "matroid": { "pdf": "pdfs/matroid_theory_survey_j_oxley.pdf", "rec": "What is a Matroid? (James Oxley, survey)", "mb": 0.4 },
+  "enumcomb": { "pdf": "pdfs/enumerative_combinatorics_r_stanley.pdf", "rec": "Enumerative Combinatorics Vol. 1 (Richard Stanley)", "mb": 4.4 },
+  "graph": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)", "mb": 8.7 },
+  "ramsey": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)", "mb": 8.7 },
+  "addcomb": { "pdf": "pdfs/graph_theory_additive_combinatorics_y_zhao.pdf", "rec": "Graph Theory and Additive Combinatorics (Yufei Zhao)", "mb": 8.7 },
+  "opt": { "pdf": "pdfs/combinatorial_optimization_a_schrijver.pdf", "rec": "A Course in Combinatorial Optimization (Alexander Schrijver)", "mb": 1.5 },
+  "ergodic": { "pdf": "pdfs/ergodic_theory_o_sarig.pdf", "rec": "Lecture Notes on Ergodic Theory (Omri Sarig)", "mb": 1.3 },
+  "probth": { "pdf": "pdfs/probability_theory_examples_r_durrett.pdf", "rec": "Probability: Theory and Examples (Rick Durrett)", "mb": 2.1 },
+  "stoch": { "pdf": "pdfs/stochastic_processes_r_durrett.pdf", "rec": "Essentials of Stochastic Processes (Rick Durrett)", "mb": 1 },
+  "markov": { "pdf": "pdfs/markov_chains_mixing_times_levin_peres.pdf", "rec": "Markov Chains and Mixing Times (Levin, Peres & Wilmer)", "mb": 4.6 },
+  "brownian": { "pdf": "pdfs/brownian_motion_morters_peres.pdf", "rec": "Brownian Motion (Mörters & Peres)", "mb": 7.2 },
+  "mathfin": { "pdf": "pdfs/stochastic_calculus_van_handel.pdf", "rec": "Stochastic Calculus, Filtering, and Stochastic Control (Ramon van Handel, lecture notes)", "mb": 2.9 },
+  "rmt": { "pdf": "pdfs/random_matrices_anderson_guionnet_zeitouni.pdf", "rec": "An Introduction to Random Matrices (Anderson, Guionnet & Zeitouni)", "mb": 3 },
+  "stats": { "pdf": "pdfs/openintro_statistics_4e.pdf", "rec": "OpenIntro Statistics (Diez, Çetinkaya-Rundel & Barr)", "mb": 19.7 },
+  "info": { "pdf": "pdfs/information_theory_d_mackay.pdf", "rec": "Information Theory, Inference, and Learning Algorithms (David MacKay)", "mb": 11.1 },
+  "percolation": { "pdf": "pdfs/probability_on_trees_lyons_peres.pdf", "rec": "Probability on Trees and Networks (Lyons & Peres)", "mb": 20 },
+  "applied": { "pdf": "pdfs/scientific_computing_j_chasnov.pdf", "rec": "Scientific Computing (Jeffrey Chasnov, lecture notes)", "mb": 2.1 },
+  "complexity": { "pdf": "pdfs/computational_complexity_arora_barak.pdf", "rec": "Computational Complexity: A Modern Approach (Arora & Barak, draft)", "mb": 4.4 },
+  "pnp": { "pdf": "pdfs/computational_complexity_arora_barak.pdf", "rec": "Computational Complexity: A Modern Approach (Arora & Barak, draft)", "mb": 4.4 },
+  "crypto": { "pdf": "pdfs/applied_cryptography_boneh_shoup.pdf", "rec": "A Graduate Course in Applied Cryptography (Boneh & Shoup)", "mb": 8.7 },
+  "numerical": { "pdf": "pdfs/numerical_methods_j_chasnov.pdf", "rec": "Numerical Methods (Jeffrey Chasnov, lecture notes)", "mb": 0.9 },
+  "mathphys": { "pdf": "pdfs/mathematical_methods_for_physics_stone.pdf", "rec": "Mathematics for Physics (Stone & Goldbart)", "mb": 5.7 },
+  "yangmills": { "pdf": "pdfs/yang_mills_clay_jaffe_witten.pdf", "rec": "Quantum Yang–Mills Theory (Jaffe & Witten, Clay official problem description)", "mb": 0.2 },
+  "game": { "pdf": "pdfs/game_theory_alive_karlin_peres.pdf", "rec": "Game Theory, Alive (Karlin & Peres)", "mb": 8.2 },
+  "cgt": { "pdf": "pdfs/game_theory_alive_karlin_peres.pdf", "rec": "Game Theory, Alive (Karlin & Peres)", "mb": 8.2 },
+  "contopt": { "pdf": "pdfs/convex_optimization_s_boyd.pdf", "rec": "Convex Optimization (Boyd & Vandenberghe)", "mb": 6.6 },
+  "learning": { "pdf": "pdfs/understanding_machine_learning_shalev_shwartz.pdf", "rec": "Understanding Machine Learning (Shalev-Shwartz & Ben-David)", "mb": 2.5 },
+  "control": { "pdf": "pdfs/mathematical_control_theory_e_sontag.pdf", "rec": "Mathematical Control Theory (Eduardo Sontag)", "mb": 2.4 },
+  "mathbio": { "pdf": "pdfs/mathematical_biology_j_chasnov.pdf", "rec": "Mathematical Biology (Jeffrey Chasnov, lecture notes)", "mb": 1.7 },
+  "quantum": { "pdf": "pdfs/quantum_computing_r_de_wolf.pdf", "rec": "Quantum Computing: Lecture Notes (Ronald de Wolf)", "mb": 2.2 },
+  "coding": { "pdf": "pdfs/coding_theory_guruswami_rudra_sudan.pdf", "rec": "Essential Coding Theory (Guruswami, Rudra & Sudan)", "mb": 4.8 },
+  "coremath": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "arith": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "negnum": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "fracdec": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "percent": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "ratio": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "prealg": { "pdf": "pdfs/prealgebra_college_of_the_redwoods.pdf", "rec": "Prealgebra (Arnold et al., College of the Redwoods)", "mb": 2.2 },
+  "elemalg": { "pdf": "pdfs/beginning_intermediate_algebra_t_wallace.pdf", "rec": "Beginning and Intermediate Algebra (Tyler Wallace)", "mb": 2.1 },
+  "lineq": { "pdf": "pdfs/beginning_intermediate_algebra_t_wallace.pdf", "rec": "Beginning and Intermediate Algebra (Tyler Wallace)", "mb": 2.1 },
+  "quadratics": { "pdf": "pdfs/beginning_intermediate_algebra_t_wallace.pdf", "rec": "Beginning and Intermediate Algebra (Tyler Wallace)", "mb": 2.1 },
+  "funcgraph": { "pdf": "pdfs/college_algebra_stitz_zeager.pdf", "rec": "College Algebra (Stitz & Zeager)", "mb": 5.8 },
+  "explog": { "pdf": "pdfs/college_algebra_stitz_zeager.pdf", "rec": "College Algebra (Stitz & Zeager)", "mb": 5.8 },
+  "coord": { "pdf": "pdfs/college_algebra_stitz_zeager.pdf", "rec": "College Algebra (Stitz & Zeager)", "mb": 5.8 },
+  "trig": { "pdf": "pdfs/college_trigonometry_stitz_zeager.pdf", "rec": "College Trigonometry (Stitz & Zeager)", "mb": 4.9 },
+  "unitcircle": { "pdf": "pdfs/college_trigonometry_stitz_zeager.pdf", "rec": "College Trigonometry (Stitz & Zeager)", "mb": 4.9 },
+  "vectors": { "pdf": "pdfs/college_trigonometry_stitz_zeager.pdf", "rec": "College Trigonometry (Stitz & Zeager)", "mb": 4.9 },
+  "precalc": { "pdf": "pdfs/precalculus_stitz_zeager.pdf", "rec": "Precalculus (Stitz & Zeager)", "mb": 11.2 },
+  "sequences": { "pdf": "pdfs/precalculus_stitz_zeager.pdf", "rec": "Precalculus (Stitz & Zeager)", "mb": 11.2 },
+  "calculus": { "pdf": "pdfs/apex_calculus_single_variable_hartman.pdf", "rec": "APEX Calculus I-II: Single Variable (Hartman et al.)", "mb": 12.5 },
+  "multivar": { "pdf": "pdfs/calculus_volume_3_openstax.pdf", "rec": "Calculus Volume 3 (OpenStax)", "mb": 22.5 }
 };
 
 const MATH_DATA_P1 = {
@@ -14174,11 +14252,13 @@ const MATH_DATA = Object.assign({}, MATH_DATA_P1, MATH_DATA_P2);
         fdLink.style.display = "inline-block";
         fdRec.textContent = mapData.rec;
         fdRec.style.display = "block";
+        if (window.OfflineBooks) window.OfflineBooks.attach(mapData.pdf);
       } else {
         fdLink.href = "#";
         fdLink.removeAttribute("target");
         fdLink.onclick = function() { alert('Full Depth PDF coming soon for ' + (d?d.label:selId) + '!'); return false; };
         fdRec.textContent = (d?d.label:selId) + ": PDF mapping in progress.";
+        if (window.OfflineBooks) window.OfflineBooks.attach(null);
       }
     }
     body.innerHTML = content || '<p style="color:#aaa;padding:2rem">No rigorous content mapped for this node yet.</p>';
@@ -15387,7 +15467,9 @@ refreshJourneyOptions();
   function updateUDBadge(){
     var btn=document.getElementById("ud-btn");if(!btn)return;
     var s=calcStreak();
-    var fl=btn.querySelector(".ud-flame");if(fl)fl.textContent=s.streak>0?"🔥":"📊";
+    /* Always the gear — this is the settings/data button. The streak is still
+       signalled next to it by the orange .ud-streak-badge day count. */
+    var fl=btn.querySelector(".ud-flame");if(fl)fl.textContent="⚙️";
     var bd=btn.querySelector(".ud-streak-badge");
     if(s.streak>0&&!bd){
       bd=document.createElement("span");bd.className="ud-streak-badge";
@@ -15884,13 +15966,14 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     if(max!==gs.plantMax){ gs.plantMax=max; try{ localStorage.setItem('mathmap_gami', JSON.stringify(gs)); }catch(e){} }
     /* wilted: the visit before today was 2+ days ago (they just came back from a break) */
     var actLog={}; try{ actLog=JSON.parse(localStorage.getItem('mathmap_activity')||'{}')||{}; }catch(e){}
-    var days=Object.keys(actLog).sort();
-    var wilted=false;
-    if(days.length>=2){
-      var gap=(new Date(days[days.length-1])-new Date(days[days.length-2]))/86400000;
-      wilted = gap>1 && cur<=1;
-    }
-    return {stage:Math.min(60,max), wilted:wilted};
+    /* Colour recovery, not an on/off wilt.
+       The vine keeps the SIZE it earned (best streak), but its colour is only
+       as far along as the CURRENT run: a broken 20-day streak comes back on
+       day 1 with a twentieth of its colour, at the base, and refills toward
+       the tips one day at a time. Once the current run catches the record the
+       vine is whole again and simply carries on growing. */
+    var recover = max>0 ? Math.min(1, cur/max) : 1;
+    return {stage:Math.min(60,max), wilted:recover<1, recover:recover, streak:cur, best:max};
   }
   window.__plantState = plantState;
   /* ════ PLANT v2 — a background object of the room, not a widget.
@@ -15933,7 +16016,7 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
   }
   /* the crystal crown (recursive, used in-pot and atop the broken trunk) */
   function crystalCrown(cx, cy, scale, depthMax, seedPhase){
-    var h='<div class="pq-intro"><p style="margin-top:0"><b>Paper first.</b> Solve each question with a pencil before touching a button. <b>Hint</b> is a small nudge; <b>Answer</b> shows the full working once you have committed to yours.</p><p style="margin-bottom:0"><b>Mark yourself honestly.</b> Tap <b>&#10003;</b> if you solved it, <b>&#10007;</b> if not this time. Nothing is graded &mdash; the honesty is the whole point.</p></div>';
+    var h='';   /* accumulates SVG only — see note in renderPlant */
     function branch(x,y,angle,length,depth){
       if(depth>depthMax) return;
       var hlen=length*0.5;
@@ -15968,7 +16051,31 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
   var PV_M2=[[330,326],[366,332],[402,326],[438,332],[474,326],[510,332],[546,326],[582,332],[614,326]];
   var PV_C2=[[690,28],[720,24],[750,26],[780,22],[810,26],[840,24],[870,28],[900,34],[922,44]];
   var PV_R1=[[916,80],[924,118],[917,158],[925,198],[918,238],[926,278],[919,318],[927,356],[920,390]];
-  function renderPlant(stage, wilted){
+  /* Colour comes back from the BASE upward, one day of the current streak at a
+     time, so the vine cannot be greyed with a single filter on the whole layer.
+     Instead we draw the art in full colour and lay a desaturated copy of the
+     same art on top, masked to just the height the current run has not reached
+     yet. recover>=1 (the usual case) produces no extra nodes at all.
+     Ids are suffixed per layer — three <svg>s in one document must not share
+     filter/mask ids. */
+  function wiltOverlay(markup, uid, recover){
+    if(!markup || !(recover<1)) return '';
+    var cut=Math.max(0,Math.min(1,1-recover));   /* grey fraction, measured from the top */
+    var soft=Math.min(1,cut+0.07);               /* feathered edge, not a hard line */
+    return '<defs>'
+      +'<filter id="wf'+uid+'"><feColorMatrix type="saturate" values="0.12"/>'
+      +'<feComponentTransfer><feFuncR type="linear" slope=".72"/><feFuncG type="linear" slope=".72"/>'
+      +'<feFuncB type="linear" slope=".72"/></feComponentTransfer></filter>'
+      +'<linearGradient id="wg'+uid+'" x1="0" y1="0" x2="0" y2="1">'
+      +'<stop offset="0" stop-color="#fff"/><stop offset="'+cut.toFixed(3)+'" stop-color="#fff"/>'
+      +'<stop offset="'+soft.toFixed(3)+'" stop-color="#000"/><stop offset="1" stop-color="#000"/>'
+      +'</linearGradient>'
+      +'<mask id="wm'+uid+'"><rect x="0" y="0" width="940" height="480" fill="url(#wg'+uid+')"/></mask>'
+      +'</defs>'
+      +'<g class="wiltpart" filter="url(#wf'+uid+')" mask="url(#wm'+uid+')">'+markup+'</g>';
+  }
+  function renderPlant(stage, wilted, recover){
+    if(typeof recover!=='number') recover=wilted?0:1;   /* older callers */
     var scene=document.getElementById('gami-scene'); if(!scene) return;
     var back=document.getElementById('gami-vines-back');
     var front=document.getElementById('gami-vines-front');
@@ -15985,8 +16092,11 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     }
     var floorL=document.getElementById('gami-vines-floor');
     var s=Math.max(1,Math.min(60,stage));
-    var broken=s>=11;
-    var h='<div class="pq-intro"><p style="margin-top:0"><b>Paper first.</b> Solve each question with a pencil before touching a button. <b>Hint</b> is a small nudge; <b>Answer</b> shows the full working once you have committed to yours.</p><p style="margin-bottom:0"><b>Mark yourself honestly.</b> Tap <b>&#10003;</b> if you solved it, <b>&#10007;</b> if not this time. Nothing is graded &mdash; the honesty is the whole point.</p></div>';
+    var broken=s>=6;   /* leaves the pot when the first vine starts (was 11) */
+    /* SVG markup only. This used to be seeded with the practice modal's
+       "Paper first" <div> by a bad bulk replace, which then got injected
+       inside the vine <svg> (invisible, since a div is not SVG, but junk). */
+    var h='';
     var hb='<defs><radialGradient id="plGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7ee7ff" stop-opacity=".45"/><stop offset="1" stop-color="#7ee7ff" stop-opacity="0"/></radialGradient>'
       +'<linearGradient id="plPot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a35"/><stop offset="1" stop-color="#14141a"/></linearGradient></defs>';
     /* ambient glow halo — grows with the plant (floor layer, above the tiles) */
@@ -16009,39 +16119,120 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
       hb+='<path d="M318 417 L306 400 L330 406 Z" fill="#2c2c38"/>';
       hb+='<path d="M206 419 L216 408 L226 419 Z" fill="#3a3a48"/>';
       hb+='<path d="M344 418 L352 407 L362 418 Z" fill="#30303c"/>';
-      hb+='<ellipse cx="283" cy="404" rx="'+(20+s*0.25)+'" ry="'+(11+s*0.12)+'" fill="#2b1b3d"/>';
-      hb+='<path d="M'+(283-14)+' '+(404-6)+' L283 '+(404-16)+' L'+(283+14)+' '+(404-6)+' Z" fill="#422565"/>';
-      /* root-legs — it stands now */
-      hb+='<path class="pl-leg" d="M265 408 Q254 414 250 421" fill="none" stroke="#4a2a70" stroke-width="4" stroke-linecap="round"/>';
-      hb+='<path class="pl-leg" style="animation-delay:-.8s" d="M276 412 Q272 418 270 422" fill="none" stroke="#55308a" stroke-width="3.6" stroke-linecap="round"/>';
-      hb+='<path class="pl-leg" style="animation-delay:-1.6s" d="M292 412 Q296 418 299 422" fill="none" stroke="#55308a" stroke-width="3.6" stroke-linecap="round"/>';
-      hb+='<path class="pl-leg" style="animation-delay:-2.4s" d="M301 408 Q312 414 317 421" fill="none" stroke="#4a2a70" stroke-width="4" stroke-linecap="round"/>';
-      /* trunk up from the bulb + crystal crown on top */
-      var tw=(4+s*0.10).toFixed(1);
-      hb+='<path d="M283 400 Q277 364 281 330 Q283 312 280 298" fill="none" stroke="#5a2a9a" stroke-width="'+tw+'" stroke-linecap="round"/>';
-      hb+='<g class="pl-live">'+crystalCrown(280, 300, 1.1, 3, 7)+'</g>';
+      /* ── ROOT MASS ── this carries a whole room of vine, so it reads heavy:
+         a wide bulb, buttress roots splayed into the floor, and a trunk that is
+         thick at the ground and tapers upward. */
+      var bw=(26+s*0.62), bh=(13+s*0.26);
+      hb+='<ellipse cx="283" cy="405" rx="'+bw.toFixed(1)+'" ry="'+bh.toFixed(1)+'" fill="#2b1b3d"/>';
+      hb+='<ellipse cx="283" cy="'+(405-bh*0.35).toFixed(1)+'" rx="'+(bw*0.62).toFixed(1)+'" ry="'+(bh*0.55).toFixed(1)+'" fill="#3a2352"/>';
+      hb+='<path d="M'+(283-bw*0.42)+' '+(405-bh*0.3)+' L283 '+(405-bh-8)+' L'+(283+bw*0.42)+' '+(405-bh*0.3)+' Z" fill="#422565"/>';
+      /* buttress roots — they grip outward as the plant gets heavier */
+      [[-1,1.00,0],[-1,0.58,-.8],[1,0.58,-1.6],[1,1.00,-2.4]].forEach(function(r){
+        var dir=r[0], spread=r[1];
+        var x0=(283+dir*bw*0.40).toFixed(1), x1=(283+dir*(bw*spread+18+s*0.20)).toFixed(1);
+        hb+='<path class="pl-leg" style="animation-delay:'+r[2]+'s" d="M'+x0+' '+(405-bh*0.2).toFixed(1)
+          +' Q'+(283+dir*bw*0.95).toFixed(1)+' '+(414).toFixed(1)+' '+x1+' 422" fill="none" stroke="'
+          +(spread>0.8?'#4a2a70':'#55308a')+'" stroke-width="'+(5+s*0.11).toFixed(1)+'" stroke-linecap="round"/>';
+      });
+      /* trunk — tapered, drawn as three strokes so the base really is wider */
+      var tw=(9+s*0.30);
+      hb+='<path d="M283 404 Q276 362 281 330 Q283 312 280 298" fill="none" stroke="#5a2a9a" stroke-width="'+tw.toFixed(1)+'" stroke-linecap="round"/>';
+      hb+='<path d="M283 406 Q278 380 281 356" fill="none" stroke="#5a2a9a" stroke-width="'+(tw*1.45).toFixed(1)+'" stroke-linecap="round"/>';
+      hb+='<path d="M283 404 Q277 370 280 342" fill="none" stroke="#6a34b4" stroke-width="'+(tw*0.5).toFixed(1)+'" stroke-linecap="round" opacity=".65"/>';
+      /* the crown sits ON the trunk tip — overlapping blob so the joint reads solid */
+      hb+='<circle cx="280" cy="299" r="'+(tw*0.55).toFixed(1)+'" fill="#5a2a9a"/>';
+      hb+='<g class="pl-live">'+crystalCrown(280, 300, 1.1+Math.min(1.1,s*0.02), 3, 7)+'</g>';
       /* interleaved spread — several fronts grow at once, something new every day:
          L1 11-25 · C1 16-30 · L2 26-36 · M1 31-37 · M2 36-44 (COL 41-55, C2 44-52,
          R1 48-56 live on the front layer; runners 46+ on the floor layer) */
-      h+=vineDraw(PV_LEFT, Math.max(0,Math.min(15,s-10)), 9, [280,298], 0);
-      h+=vineDraw(PV_CEIL, Math.max(0,Math.min(15,s-15)), 9, [280,298], 5);
-      h+=vineDraw(PV_L2, Math.max(0,Math.min(11,s-25)), 6, [34,44], 8);
-      h+=vineDraw(PV_M1, Math.max(0,Math.min(7,s-30)), 6, [280,340], 11);
-      h+=vineDraw(PV_M2, Math.max(0,Math.min(9,s-35)), 6, [295,330], 14);
+      /* Vine schedule — first APPEARANCES are packed into the first ~24 days so
+         the room reads as "overgrown, going everywhere" early; the later streak
+         days then thicken and lengthen what is already there rather than
+         introducing new branches. Previously the tenth vine did not start until
+         a 49-day streak, so almost nobody ever saw the full plant. */
+      /* Each vine starts on the day its PARENT finishes, so a strand can never
+         appear before the vine it is supposed to grow out of has reached it.
+         (PV_L2 used to start on day 10 at the top-left corner while PV_LEFT did
+         not arrive there until day 20 — ten days of a vine floating in mid-air.)
+         Two segments a day keeps the full spread inside four weeks anyway.
+         Chain: trunk -> LEFT -> L2   |   trunk -> CEIL -> {COL, C2 -> R1}
+                trunk -> M1, M2       |   base  -> RUNL, RUNR              */
+      var gr=function(from){ return Math.max(0,(s-from)*2); };
+      h+=vineDraw(PV_LEFT, Math.min(15,gr(5)),  9, [280,298], 0);   /* 6  -> 13 */
+      h+=vineDraw(PV_CEIL, Math.min(15,gr(7)),  9, [280,298], 5);   /* 8  -> 15 */
+      h+=vineDraw(PV_L2,   Math.min(11,gr(12)), 6, [34,44],   8);   /* 13 -> 18 */
+      h+=vineDraw(PV_M1,   Math.min(7, gr(11)), 6, [280,340], 11);  /* 12 -> 15 */
+      h+=vineDraw(PV_M2,   Math.min(9, gr(13)), 6, [284,332], 14);  /* 14 -> 19 · starts ON the trunk (was [295,330], a 14px gap) */
+
+      /* ── SAGGING EGGS AND OFFSPRING ──
+         Every anchor below is a point one of the vine routes actually passes
+         through, so an egg or a young crown is always hung ON the plant, never
+         floating. Each one is joined to the vine by a stalk plus a small filled
+         knuckle, so the joint reads solid at any zoom.
+         Timing is deliberately staggered per-item rather than stepped in blocks:
+         something forms, swells or hatches on almost every day of a 60-day run,
+         so the plant keeps changing long after the vines themselves are done. */
+      function spotsOf(route, from, every, off){
+        var out=[];
+        for(var i=0;i<route.length;i++){
+          if(i%every!==off) continue;
+          out.push([route[i][0], route[i][1], from+Math.ceil((i+1)/2)]);  /* day the vine reaches it */
+        }
+        return out;
+      }
+      function eggMarkup(x, y, r, ph, open){
+        var cy=y+r*1.15+r*0.9, lean=(ph%2?2.5:-2.5);
+        var g='<g class="pl-egg" style="animation-delay:-'+ph.toFixed(1)+'s;transform-origin:'+x.toFixed(1)+'px '+y.toFixed(1)+'px">';
+        g+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(r*0.42).toFixed(1)+'" fill="#5a2a9a"/>';
+        g+='<path d="M'+x.toFixed(1)+' '+y.toFixed(1)+' q'+lean+' '+(r*0.9).toFixed(1)+' 0 '+(r*1.15).toFixed(1)+'" fill="none" stroke="#5a2a9a" stroke-width="'+(r*0.36).toFixed(1)+'" stroke-linecap="round"/>';
+        if(open){
+          g+='<path d="M'+(x-r).toFixed(1)+' '+cy.toFixed(1)+' a'+r.toFixed(1)+' '+(r*1.15).toFixed(1)+' 0 0 0 '+(2*r).toFixed(1)+' 0 Z" fill="#33204d"/>';
+          g+='<path d="M'+(x-r).toFixed(1)+' '+cy.toFixed(1)+' q'+r.toFixed(1)+' '+(-r*1.15).toFixed(1)+' '+(2*r).toFixed(1)+' 0" fill="none" stroke="#b388ff" stroke-width="1.5" opacity=".85"/>';
+        }else{
+          g+='<ellipse cx="'+x.toFixed(1)+'" cy="'+cy.toFixed(1)+'" rx="'+r.toFixed(1)+'" ry="'+(r*1.32).toFixed(1)+'" fill="#4a2a70"/>';
+          g+='<ellipse cx="'+(x-r*0.28).toFixed(1)+'" cy="'+(cy-r*0.45).toFixed(1)+'" rx="'+(r*0.30).toFixed(1)+'" ry="'+(r*0.42).toFixed(1)+'" fill="#c9a0ff" opacity=".6"/>';
+        }
+        return g+'</g>';
+      }
+      var hatched=0;
+      var EGG_SPOTS=[].concat(
+        spotsOf(PV_CEIL,7,3,1), spotsOf(PV_LEFT,5,3,2), spotsOf(PV_L2,12,3,1),
+        spotsOf(PV_M2,13,2,1),  spotsOf(PV_M1,11,2,0)
+      );
+      EGG_SPOTS.forEach(function(e,ei){
+        var born=e[2]+2+(ei%14);            /* staggered, so they keep appearing */
+        if(s<born) return;
+        var age=s-born;
+        var open=age>=10;                    /* ten days from forming to hatching */
+        if(open) hatched++;
+        h+=eggMarkup(e[0], e[1], 2.6+Math.min(3.4, age*0.24), (ei*0.6)%4, open);
+      });
+      /* young crowns budding off the vines — the same crystal head as the main
+         plant, which is the shape that reads best, just smaller */
+      var CROWN_SPOTS=[].concat(
+        spotsOf(PV_CEIL,7,5,3), spotsOf(PV_LEFT,5,5,0), spotsOf(PV_L2,12,5,2), spotsOf(PV_M2,13,4,2)
+      );
+      CROWN_SPOTS.forEach(function(c,ci){
+        var born=c[2]+4+(ci%11)*2;
+        if(s<born) return;
+        var sc=0.30+Math.min(0.50,(s-born)*0.028);
+        h+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+(2.4+sc*3.2).toFixed(1)+'" fill="#5a2a9a"/>';
+        h+='<g class="pl-live" style="animation-delay:-'+((ci*0.8)%4).toFixed(1)+'s">'+crystalCrown(c[0], c[1], sc, 2, ci+3)+'</g>';
+      });
       /* hanging tendrils from the ceiling once it is up there */
-      if(s>=30){
-        var tlen=Math.min(64,(Math.min(s,55)-28)*3);
+      if(s>=18){
+        var tlen=Math.min(64,(Math.min(s,40)-16)*3);
         [[456,136],[512,58],[578,22],[634,26],[720,24],[810,26],[900,34]].forEach(function(pt,ti){
-          if(s<(ti<4 ? 30+ti*4 : 34+ti*3)) return;
+          if(s<(ti<4 ? 18+ti*2 : 26+ti*2)) return;   /* rebalanced with the vine schedule */
           var tl=tlen-ti*6; if(tl<12) return;
           h+='<path class="pl-tendril" style="animation-delay:-'+(ti*0.9)+'s" d="M'+pt[0]+' '+pt[1]+' q '+(ti%2?8:-8)+' '+(tl*0.5)+' '+(ti%2?3:-3)+' '+tl+'" fill="none" stroke="'+vineCol2(10+ti,18)+'" stroke-width="2.4" stroke-linecap="round"/>';
           h+='<circle class="vpod" style="animation-delay:-'+(ti*0.7)+'s" cx="'+(pt[0]+(ti%2?3:-3))+'" cy="'+(pt[1]+tl)+'" r="3.4" fill="#b388ff"/>';
         });
       }
-      /* blooms at 56-60: flowers opening at the vine tips */
-      if(s>=56){
+      /* blooms: flowers opening at the vine tips, once the spread is complete */
+      if(s>=26){
         var blooms=[[34,44],[660,34],[140,24],[512,58],[84,30],[606,22],[246,124],[430,164],[58,36],[578,22],[920,390],[58,344],[614,326],[870,28],[29,388],[922,44]];
-        var nb=(s-55)*3;
+        var nb=(s-25)*3;
         for(var bi=0;bi<nb && bi<blooms.length;bi++){
           var bp=blooms[bi];
           h+='<g class="pl-bloom" style="animation-delay:-'+(bi*0.5)+'s">';
@@ -16053,17 +16244,24 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
         }
       }
     }
-    back.querySelector('svg').innerHTML=h;
+    back.querySelector('svg').innerHTML=h+wiltOverlay(h,'b',recover);
     /* FRONT layer: fireplace column (41-55), floor runners, creatures */
     var f='';
     if(broken){
-      f+=vineDraw(PV_COL, Math.max(0,Math.min(15,s-40)), 7, [660,34], 9);
-      f+=vineDraw(PV_C2, Math.max(0,Math.min(9,s-43)), 6, [660,34], 12);
-      f+=vineDraw(PV_R1, Math.max(0,Math.min(9,s-47)), 6, [922,44], 15);
-      hb+=vineDraw(PV_RUNL, Math.max(0,Math.min(5,s-46)), 5, [258,414], 2);
-      hb+=vineDraw(PV_RUNR, Math.max(0,Math.min(8,s-48)), 5, [308,414], 4);
+      /* The ceiling vine lives in the BACK layer (z-index 2) but #gami-fireplace
+         covers the right 34% of the scene at z-index 3, so PV_CEIL's last
+         anchors (x=634, x=660) were painted behind the panel and disappeared —
+         leaving the column vines below apparently floating. Redraw that tail on
+         the FRONT layer so the join is actually visible across the seam. */
+      var ceilGrown=Math.min(15,gr(7));
+      if(ceilGrown>=12) f+=vineDraw(PV_CEIL.slice(11), Math.min(4,ceilGrown-11), 7, PV_CEIL[10], 5);
+      f+=vineDraw(PV_COL,  Math.min(15,gr(14)), 7, [660,34],  9);   /* 15 -> 22 */
+      f+=vineDraw(PV_C2,   Math.min(9, gr(14)), 6, [660,34],  12);  /* 15 -> 20 */
+      f+=vineDraw(PV_R1,   Math.min(9, gr(19)), 6, [922,44],  15);  /* 20 -> 25 */
+      hb+=vineDraw(PV_RUNL, Math.min(5,gr(21)), 5, [258,414], 2);   /* 22 -> 25 */
+      hb+=vineDraw(PV_RUNR, Math.min(8,gr(23)), 5, [308,414], 4);   /* 24 -> 28 */
     }
-    if(s>=56){
+    if(hatched>0){
       function creature(cls){
         return '<g class="vcreature '+cls+'">'
           +'<ellipse cx="0" cy="0" rx="7" ry="5.2" fill="#0b0b12"/>'
@@ -16073,14 +16271,16 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
           +'<path d="M-4 4 L-6 9 M4 4 L6 9" stroke="#0b0b12" stroke-width="1.6" stroke-linecap="round"/>'
           +'</g>';
       }
-      hb+=creature('vc1');
-      if(s>=57) hb+=creature('vc2');
-      if(s>=58) hb+=creature('vc3');
-      if(s>=59) hb+=creature('vc4');
-      if(s>=60) hb+=creature('vc5')+creature('vc6');
+      /* one floor creature per egg that has actually hatched, so the room's
+         population is visibly the consequence of the eggs overhead rather than
+         a separate schedule that jumps every few days */
+      var walkers=Math.min(6, hatched);
+      for(var wi=0; wi<walkers; wi++) hb+=creature('vc'+(wi+1));
     }
-    front.querySelector('svg').innerHTML=f;
-    floorL.querySelector('svg').innerHTML=hb;
+    front.querySelector('svg').innerHTML=f+wiltOverlay(f,'f',recover);
+    floorL.querySelector('svg').innerHTML=hb+wiltOverlay(hb,'l',recover);
+    /* the class is kept only so anything else keying off it still works; the
+       greying itself is now done per-height by wiltOverlay, not by a filter */
     back.classList.toggle('wilted', !!wilted);
     front.classList.toggle('wilted', !!wilted);
     floorL.classList.toggle('wilted', !!wilted);
@@ -16645,7 +16845,7 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
   function syncScene(){
     applyFireState(countWrongs());
     var ps=plantState();
-    renderPlant(ps.stage, ps.wilted);
+    renderPlant(ps.stage, ps.wilted, ps.recover);
     renderAchievements();
     var gb=document.getElementById('gami-btn');
     if(gb) gb.classList.toggle('alert', countWrongs()>0);
@@ -37690,8 +37890,59 @@ math: {qs:[
     'Until next time. I will keep the room warm.',
     'Off you go. I will tell the fire about you.'
   ];
+  /* goodbyes get less formal as he stops treating you as a guest */
+  var CHAP_FAREWELLS={
+    2:[
+      'Go on then. The stones will keep, and so will I.',
+      'Safe travels across the map. Mind the gaps between the continents.',
+      'Right you are. I will be here — I am always here, it is rather my whole arrangement.',
+      'Off with you. Come back when something puzzles you, or before that.'
+    ],
+    3:[
+      'Off you go. I will be here, doing nothing of consequence, at some length.',
+      'Go on. The fire and I will hold the fort, as we have for six centuries, with mixed results.',
+      'Right. Do not let the Analysis stones talk you into anything.',
+      'Away with you. Mark something on the way out, it keeps the plant honest.'
+    ],
+    4:[
+      'Same time, then. <i>*does not phrase it as a question*</i>',
+      'Go. I will have something for you next time; I usually do now.',
+      'Right. I will keep the fire where you like it.',
+      'Away you go. <i>*already thinking about what to save up*</i>'
+    ],
+    5:[
+      'Go well. <i>*and then, quieter*</i> Come back.',
+      'I will leave the good log for next time. It burns better when there is somebody to see it.',
+      'Take care on the lines between the stones. I have fallen off enough of them for both of us.',
+      'Yes, yes, go. <i>*does not look up until you have gone*</i>'
+    ],
+    6:[
+      'Mm. <i>*the goodbye of someone who does not think of it as one*</i>',
+      'Leave the chair, I will not move it.',
+      'Go on. It is not really a parting when you have a side of the room.',
+      'See you when I see you. Which, statistically, is tomorrow.'
+    ],
+    7:[
+      '<i>*a small nod, which from me is a great deal*</i>',
+      'Until next time, fellow creature. The fire stays lit — you know by now that it is not a figure of speech.',
+      'Go and be wrong about something interesting. I will want to hear.',
+      'I am not going to say the thing. <i>*the plant leans at the door as you leave*</i> ...It said it.'
+    ],
+    8:[
+      'Come back tomorrow. <i>*and he means it exactly as it was once meant to him*</i>',
+      'Go on. Tell me what you find.',
+      '<i>*does not say goodbye. Says instead:*</i> Tomorrow, then.',
+      'Off you go. The ledger stays open.'
+    ]
+  };
+  function farewellLine(){
+    var c=chapter(), pool=[];
+    if(c<3) pool=FAREWELLS.slice();
+    for(var i=2;i<=c;i++) pool=pool.concat(CHAP_FAREWELLS[i]||[]);
+    return pick(pool.length?pool:FAREWELLS);
+  }
   function byeOpt(){ return {label:'Good talk, bye Gami', bye:true, go:function(){
-    say(pick(FAREWELLS));
+    say(farewellLine());
     talked=false;
     buttons(openers());
   }}; }
@@ -37813,7 +38064,7 @@ math: {qs:[
     opts:[['What if I mark something wrongly?','wrongmark'],['Read my map right now','__readmap']], back:'ROOT'
   };
   DLG.wrongmark={
-    say:'Then tap the mark again and it lifts clean off — no harm done. Honest marks serve you better than proud ones, though. A stone marked <i>learned</i> that is not truly got will wobble under you three stones later. I have watched it happen. The stones keep accounts.',
+    say:'Then tap the mark again and it lifts clean off — no harm done. Honest marks serve you better than proud ones, though. A stone marked <i>want to learn</i> that is not truly something you want to learn, will not serve you good. I have watched it happen. The stones keep accounts.',
     back:'ROOT'
   };
   DLG.wander={
@@ -38233,7 +38484,49 @@ math: {qs:[
      reveal:'Eight days. The trap is multiplying: net 1 metre a day, so 10 days, yes? No — on the day the snail REACHES the top, it climbs out and never slips back. After 7 days it is at 7 metres; on day 8 it climbs 3 to reach 10 and it is GONE before nightfall. The lesson: watch the boundary. The last step never behaves like the others. Analysis is a whole region built on exactly that vigilance.'},
     {q:'Which is larger: the number of atoms in a grain of sand, or the number of ways to shuffle a deck of 52 cards?',
      opts:[['The atoms',false],['The shuffles',true],['About the same',false]],
-     reveal:'The shuffles — and it is not close. 52 factorial is roughly 8 followed by 67 zeros. Here is the vertigo of it: every properly shuffled deck in history has almost certainly NEVER existed before and will never exist again. You hold a genuinely unique arrangement each time. Factorials do not grow fast. They EXPLODE. The Combinatorics stones are quietly the most powerful on the map.'}
+     reveal:'The shuffles — and it is not close. 52 factorial is roughly 8 followed by 67 zeros. Here is the vertigo of it: every properly shuffled deck in history has almost certainly NEVER existed before and will never exist again. You hold a genuinely unique arrangement each time. Factorials do not grow fast. They EXPLODE. The Combinatorics stones are quietly the most powerful on the map.'},
+    {q:'A rope lies snug around the equator of a perfectly round world. You add just 1 metre of extra rope and lift it evenly all the way around. Can a cat walk under it?',
+     opts:[['No — 1 metre is nothing on that scale',false],['Yes — comfortably',true],['Only if the world is small',false]],
+     reveal:'Yes, and the world\'s size does not matter one whit. The gap is the extra length divided by $2\\pi$ — about 16 centimetres — whether you do it to this world, to a marble, or to a star. Look at why: circumference is $2\\pi r$, so adding $1$ to the circumference adds $1/2\\pi$ to the radius. The radius never appears in the answer. It cancels. Most creatures\' intuition is screaming, and the algebra simply does not care. Trust the algebra.'},
+    {q:'I fold a piece of paper in half 42 times. Roughly how thick is it?',
+     opts:[['A few centimetres',false],['The height of a mountain',false],['Most of the way to the Moon',true]],
+     reveal:'Most of the way to the Moon — around 440,000 kilometres. Each fold DOUBLES: $0.1\\text{mm} \\times 2^{42}$. Your mind wants to add a little thickness per fold, so it guesses centimetres. Doubling does not add; it compounds, and compounding beggars intuition every single time. This one number is why exponential growth blindsides people, and it is why the Exponentials stone sits where it does.'},
+    {q:'Two players take turns placing identical coins on a round table, no overlaps. Whoever cannot move loses. Who wins with perfect play?',
+     opts:[['The first player',true],['The second player',false],['It depends on the table',false]],
+     reveal:'The first player, always — and the strategy is pure elegance. Place your first coin dead centre. After that, whatever your opponent plays, answer with the coin diametrically opposite, mirrored through the middle. The centre coin makes the board symmetric, and you own the symmetry. If they had a move, so do you. Notice you never counted a single coin or measured the table. Finding the invariant beats calculating, nearly every time.'},
+    {q:'You are on a game show. Three doors, one prize. You pick door 1. The host — who knows where the prize is — opens door 3, empty, and offers you the switch. Should you?',
+     opts:[['Switch — 2/3 chance',true],['Stay — it is 50/50 now',false],['It makes no difference',false]],
+     reveal:'Switch. Your first pick was right 1/3 of the time, and NOTHING the host did changed that — he was always going to open an empty door, so his action carries no news about your door. But it squeezes the other 2/3 entirely onto the one remaining door. Erdős himself refused to believe this until shown simulations. If the great man could balk, you are in fine company. Probability is not unintuitive by accident; it is unintuitive because our instincts evolved for a much smaller world.'},
+    {q:'Is there a fraction $p/q$ that squares to exactly 2?',
+     opts:[['Yes, we just need better fractions',false],['No — and it can be proved',true],['Nobody knows',false]],
+     reveal:'No, and the proof is the oldest jewel we have. Suppose $p/q = \\sqrt2$ in lowest terms. Then $p^2 = 2q^2$, so $p^2$ is even, so $p$ is even — odd numbers square to odd. Write $p = 2k$: then $4k^2 = 2q^2$, so $q^2 = 2k^2$, so $q$ is even too. But we said lowest terms. Both even is a contradiction. The Greeks are said to have found this at sea and been genuinely shaken — the number line had holes in it, and they had just proved their own tools insufficient. Mathematics has never once flinched from that kind of news.'},
+    {q:'A hotel has infinitely many rooms, all full. A new guest arrives. Can they be housed?',
+     opts:[['No — full is full',false],['Yes, and so can infinitely many more',true],['Only if someone leaves',false]],
+     reveal:'Yes. Ask every guest to move from room $n$ to room $n+1$. Everyone still has a room; room 1 is now empty. Infinitely many new guests? Move guest $n$ to room $2n$ and use all the odd rooms. Hilbert built this hotel to make one point stick: <i>infinity is not a large number.</i> It does not obey the arithmetic of large numbers. Every paradox in the Foundations region grows from creatures forgetting that sentence.'},
+    {q:'Thirteen creatures each shake hands with exactly three others. How many such gatherings exist?',
+     opts:[['Many',false],['Exactly one',false],['None — it is impossible',true]],
+     reveal:'None. Count the handshakes twice over: 13 creatures times 3 hands each is 39 hand-ends, and every handshake uses two ends — so there would be 19.5 handshakes. You cannot have half a handshake. The parity forbids it before you draw a single diagram. This is the handshake lemma, and it is my favourite kind of argument: it rules out infinitely many arrangements without inspecting even one of them.'},
+    {q:'Take any whole number. Even: halve it. Odd: triple it and add one. Repeat. Do you always reach 1?',
+     opts:[['Yes, and it is proved',false],['Everyone believes so, but nobody has proved it',true],['No, there are known exceptions',false]],
+     reveal:'Believed by all, proved by none. Every number ever tested falls to 1 — some take wild journeys first; 27 climbs past 9,000 before it surrenders. Erdős said mathematics is not yet ready for this problem. I keep it near the fire because it is the friendliest unsolved thing I own: a child can state the rule, and the whole map cannot crack it. That gap between <i>easy to ask</i> and <i>possible to answer</i> is the most honest thing about my home.'},
+    {q:'Which is bigger: the set of whole numbers, or the set of fractions?',
+     opts:[['The fractions — obviously',false],['They are the same size',true],['The question is meaningless',false]],
+     reveal:'The same size, and Cantor had to invent a whole new meaning of "size" to say so. Arrange the fractions in a grid and walk it in diagonals, skipping repeats — every fraction gets a whole number, none is missed. They pair off perfectly. Then, with the same tools, he proved the <i>decimals</i> are strictly bigger. So there are different infinities, and he could rank them. He was mocked for it, thoroughly, and he was right. That is a fairly common shape for a story here.'},
+    {q:'You have 12 coins. One is counterfeit — heavier or lighter, you do not know which. How few weighings on a balance can always identify it?',
+     opts:[['3',true],['4',false],['It cannot be guaranteed',false]],
+     reveal:'Three, and it is the tightest puzzle I know. Each weighing has three outcomes — left, right, balanced — so three weighings distinguish at most $3^3 = 27$ situations. You must identify one of 12 coins AND whether it is heavy or light: 24 cases. 24 fits inside 27, so three <i>might</i> be enough — and with the right groupings it always is. Notice the shape of that reasoning: count the information available before hunting for a method. That habit saves years.'},
+    {q:'A stick is broken at two random points. What is the chance the three pieces form a triangle?',
+     opts:[['1/2',false],['1/4',true],['3/4',false]],
+     reveal:'One quarter. A triangle needs every piece shorter than a half — if one piece exceeds half the stick, the other two cannot reach around it. Plot the two break points as a point in a square and the winning region is a triangle occupying exactly a quarter of it. What I love: a question about a <i>stick</i> becomes a question about <i>area</i>, and the answer falls out by looking. Turning one kind of mathematics into another is not a trick. It is the main road.'},
+    {q:'Can a knight visit every square of a chessboard exactly once?',
+     opts:[['Yes',true],['No',false],['Only on larger boards',false]],
+     reveal:'Yes — there are trillions of such tours, and Euler studied them nearly three centuries ago. Some even return to the starting square, closing the loop. But change the board to $4\\times4$ and it becomes impossible, and proving <i>that</i> needs a colouring argument rather than a search. This is the whole personality of graph theory: existence questions that look like puzzles and answer to structure, never to brute force.'},
+    {q:'If a map needs colouring so no two neighbouring regions share a colour, how many colours always suffice?',
+     opts:[['Four',true],['Five',false],['It depends on the map',false]],
+     reveal:'Four — for any map you can draw on a flat sheet, however tangled. Simple to state, and it defeated everyone for 124 years. When it finally fell in 1976 the proof checked 1,936 configurations by computer, and mathematicians genuinely argued about whether it <i>counted</i> as a proof if no human could read it whole. That argument never fully ended. Ask me what a proof is FOR sometime — you will find the question is not as settled as it looks.'},
+    {q:'What is $0.999\\ldots$, the nines running on forever?',
+     opts:[['Just less than 1',false],['Exactly 1',true],['Undefined',false]],
+     reveal:'Exactly 1. Not approaching it, not nearly it — equal. If $x = 0.999\\ldots$ then $10x = 9.999\\ldots$, so $9x = 9$, so $x = 1$. Or: what number sits strictly between them? Name it. You cannot, and distinct numbers always have room between them. The discomfort you may feel is real and worth respecting — it means your intuition treats $0.999\\ldots$ as a <i>process</i> that never arrives, when the notation means a <i>limit</i> that already has. Getting that distinction straight is most of what Analysis is.'}
   ];
   function poseRiddle(){
     var s0=gState();
@@ -38294,12 +38587,24 @@ math: {qs:[
   /* ── about Gami ── */
   DLG.youMenu={
     say:['Ask, fellow creature. The fire is warm and I remember everything.','Me? Very well — I am the most interesting stone in this room, after all. Ask.','Careful. Creatures who ask about me tend to keep asking. The chairs are comfortable, is all I will say.'],
-    opts:[
-      ['Who are you?','who'],
-      ['What are the lost lands?','lands'],
-      ['Tell me about your home','homeMenu'],
-      ['Did you walk the journeys yourself?','walked']
-    ]
+    opts:function(){
+      var o=[
+        ['Who are you?','who'],
+        ['What are the lost lands?','lands'],
+        ['Tell me about your home','homeMenu'],
+        ['Did you walk the journeys yourself?','walked']
+      ];
+      /* He does not hand this to strangers. It surfaces once you are a regular,
+         and the wording admits how long it has been sitting there. */
+      /* one new thread per tier, so every step up opens something */
+      if(chapter()>=3){
+        o.push([arcStage('arcProof')?'That proof of yours — any progress?':'Is something on your mind?','arcProof']);
+      }
+      if(chapter()>=6) o.push(['What do you remember of me?','lorebook']);
+      /* the sealed tier's own thread */
+      if(chapter()>=8) o.push([arcStage('arcStayed')?'You were saying.':'You have been looking at me strangely.','arcStayed']);
+      return o;
+    }
   };
   DLG.who={
     say:'I am Gami. I have lived in this map longer than I can count — and I can count very far. Every stone you see, I set with my own hands; every path is a road I have walked. This little room is where I rest between your visits.',
@@ -38352,21 +38657,31 @@ math: {qs:[
   };
   DLG.landsMiss={
     say:'I miss the sound. A land that knows its mathematics has a hum to it — markets counting fairly, builders checking angles, children arguing about infinity at supper. When I miss it too much, I open this map and listen to you creatures wandering, marking, asking. It is the same hum, starting over. That is the whole reason for all of this.',
+    opts:function(){
+      return chapter()>=4 ? [['Is there anything you cannot get back?','arcLost']] : [];
+    },
     back:'youMenu'
   };
   DLG.homeMenu={
     say:'My room! Built it myself. Ask about anything you see — everything in here has a story, except the dust. The dust is new.',
-    opts:[
-      ['The shield on the wall?','shield'],
-      ['The fireplace?','fireplace'],
-      ['The little plant?','plant'],
-      ['The clock and calendar?','clock'],
-      ['Why is there no bed?','nobed']
-    ], back:'youMenu'
+    opts:function(){
+      return [
+        ['The shield on the wall?','shield'],
+        ['The fireplace?','fireplace'],
+        [plantLabel(),'plant'],
+        ['The clock and calendar?','clock'],
+        ['Why is there no bed?','nobed']
+      ];
+    }, back:'youMenu'
   };
   DLG.shield={
     say:'The shield keeps a crest for every region you master and a flag for every journey you finish — yes, <i>you</i>. My walls celebrate your victories; I only polish them. An empty shield does not sadden me. An empty shield is a wall saying "soon."',
-    opts:[['Whose victories are on it now?','shieldnow']], back:'homeMenu'
+    opts:function(){
+      var o=[['Whose victories are on it now?','shieldnow']];
+      if(chapter()>=1) o.push(['Why are there gaps?','arcCrests']);
+      return o;
+    },
+    back:'homeMenu'
   };
   DLG.shieldnow={
     say:function(){
@@ -38398,14 +38713,32 @@ math: {qs:[
     say:function(){
       var ps=(window.__plantState?window.__plantState():{stage:1,wilted:false});
       var s=ps.stage;
-      if(ps.wilted) return '<i>*quietly*</i> It wilted while you were away. Grey, pods sealed, the little ones hiding. It does not die \u2014 it remembers your best run of '+s+' days and it is waiting to be sure you are really back. Come again tomorrow and watch it stand up.';
-      if(s<11) return 'A crystal beanstalk from a seed I found in the combinatorics fields. It does not drink water \u2014 it drinks streaks. Your best run so far is '+s+' day'+(s>1?'s':'')+', so it still fits the pot. Enjoy that while it lasts. I mean it. It will not last.';
-      if(s<26) return 'Best streak '+s+' days \u2014 it left the pot. It is on the wall. I asked it to respect the shield and it grew AROUND the shield, which I have chosen to read as respect.';
-      if(s<41) return 'Best streak '+s+'. It crossed behind the clock recently. It moves when neither of us is looking, always toward wherever you usually stand. I have not told it what disappointment is, and I intend to keep it that way.';
-      if(s<56) return 'Best streak '+s+'. It reached the fireplace. Obsidian does not burn, so they have come to an understanding: the vine keeps the fire company from the cold side of the stone. Strangest friendship in this room, and I live here.';
+      if(ps.wilted){
+        var pct=Math.round((ps.recover||0)*100);
+        var d=ps.streak||0;
+        return '<i>*quietly*</i> The colour went out of it when the run broke. It kept every inch of height you earned \u2014 it does not shrink, and it does not die. But the colour has to be walked back up from the roots.'
+          + (d>0
+              ? ' You are '+d+' day'+(d===1?'':'s')+' in, so the bottom '+pct+'% of it has come back already. Watch the line climb.'
+              : ' Come tomorrow and the base will start again.')
+          + ' At '+(ps.best||s)+' days it is whole, and after that it simply carries on growing.';
+      }
+      /* thresholds track what renderPlant actually draws \u2014 keep them in step */
+      if(s<6)  return 'A crystal beanstalk from a seed I found in the combinatorics fields. It does not drink water \u2014 it drinks streaks. Your best run so far is '+s+' day'+(s>1?'s':'')+', so it still fits the pot. Enjoy that while it lasts. I mean it. It will not last.';
+      if(s<12) return 'Best streak '+s+' days \u2014 it left the pot. It is on the wall. I asked it to respect the shield and it grew AROUND the shield, which I have chosen to read as respect.';
+      if(s<20) return 'Best streak '+s+'. It crossed behind the clock recently, and it is putting runners out in three directions at once. It moves when neither of us is looking, always toward wherever you usually stand. I have not told it what disappointment is, and I intend to keep it that way.';
+      if(s<26) return 'Best streak '+s+'. It reached the fireplace and started down the far column. Obsidian does not burn, so they have come to an understanding: the vine keeps the fire company from the cold side of the stone. Strangest friendship in this room, and I live here.';
+      if(s<32) return 'Best streak '+s+'. It has the whole room now \u2014 walls, ceiling, both columns, and it is running along the floor. The blooms have started opening at the tips. I have stopped tidying around it. There is no around it.';
       return 'Best streak '+s+' days. The pods opened. There are small creatures now \u2014 two legs each, before you ask; we count legs carefully in this room. They patrol the floor at night. The room has never been safer, or stranger.';
     },
-    opts:[['Does it have a name?','plantname']], back:'homeMenu'
+    opts:function(){
+      var o=[['Does it have a name?','plantname']];
+      /* this thread is ABOUT the vine reaching toward the door, so it must not
+         be offered while the plant is still a sprout in the pot, or greyed out */
+      var pn=plantNow();
+      if(chapter()>=5 && pn.stage>=12 && !pn.wilted) o.push(['Is it doing something?','arcPlant']);
+      return o;
+    },
+    back:'homeMenu'
   };
   DLG.plantname={
     say:'I call it "the Corollary," because it followed naturally from something I was already doing. It has not objected. Between us, I believe it prefers the fire\'s company to mine — they grow in the same rhythm, after all. Your rhythm, in fact.',
@@ -38631,6 +38964,277 @@ math: {qs:[
     back:'ROOT'
   };
 
+  /* ══════════════════════════════════════════════════════════════════════
+     CHAPTERS — how long Gami has known you.
+
+     Deliberately blended from three things so no single grind rushes it:
+     showing up (visits), sticking with it (streak) and actually learning
+     (stones marked learned). A tourist who opens the app 200 times does not
+     reach the last chapter; neither does someone who marks 50 stones in an
+     afternoon and never returns. Roughly: chapter 2 after a real week,
+     chapter 3 after a month, chapter 4 after a season.
+
+     Nothing is ever locked AWAY — every topic that exists at chapter 0 still
+     exists at chapter 4. Later chapters ADD topics and re-answer old ones in
+     a warmer, more confiding voice. You lose nothing by being new.
+  ══════════════════════════════════════════════════════════════════════ */
+  function stonesGot(){
+    try{
+      var pr=progressMap(), n=0;
+      for(var k in pr){ if(pr[k] && pr[k].status==='got') n++; }
+      return n;
+    }catch(e){ return 0; }
+  }
+  function chapterScore(){
+    var s=gState();
+    return (s.visits||0) + 2*stonesGot() + Math.min(streakNow(),30);
+  }
+  /* read straight off CHAPTER_LADDER so the tiers and the thresholds shown in
+     User Data can never drift apart */
+  function chapter(){
+    var sc=chapterScore(), c=0;
+    for(var i=0;i<CHAPTER_LADDER.length;i++){ if(sc>=CHAPTER_LADDER[i].at) c=i; }
+    return c;
+  }
+  /* Pick the richest line the traveller has earned: walk down from their
+     chapter until a variant exists. Arrays are shuffled as usual. */
+  function tiered(map){
+    var c=chapter();
+    for(var i=c;i>=0;i--){
+      if(map[i]!=null) return Array.isArray(map[i])?pick(map[i]):map[i];
+    }
+    return null;
+  }
+
+  /* ── THE HIDDEN THREAD ──
+     Only reachable at the sealed tier. It is deliberately the one arc that
+     RESOLVES another: the sentence he could not get back in [arcLost] is
+     recovered here, and the thing that recovers it is the traveller's own
+     habit of coming back. Nothing else in the room pays off this way. */
+  DLG.arcStayed=arcNode('arcStayed',[
+    '<i>*looks at you for a long moment before saying anything at all*</i> ...Nobody has ever come this many times. I want to be precise, because precision is what I have: nobody. Not once, in all of it.',
+    'I have been keeping something from you, and it is not a secret so much as a thing I could not make myself say while I still thought you might stop coming. <i>*sets down the cloth*</i> I have stopped thinking that.',
+    'You remember I told you a sentence went missing. Somebody said something kind to me in a badly lit room, before the end, and I kept the warmth and lost the words. Six hundred years of a gap exactly one sentence wide.',
+    '<i>*very quietly*</i> I got it back. Not by remembering — I have tried remembering, it does not work like that. I got it back because you kept doing the thing they described, over and over, until the shape of it was unmistakable.<br><br>What they said was: <b>&ldquo;Come back tomorrow and tell me what you found.&rdquo;</b>',
+    'That was the whole of it. Not a theorem, not a warning, no last instruction for the keeper of everything. Just somebody assuming there would be a tomorrow and that I would have something to show them.<br><br><i>*the fire is doing something it does not usually do*</i><br><br>I could not hold the words because a sentence like that is not a thing you carry. It is a thing somebody does. You have been doing it, fellow creature, for longer than I have any right to have expected. So — come back tomorrow. Tell me what you found.'
+  ],'youMenu');
+
+  /* ── never describe the room's furniture from memory ──
+     The plant GROWS with the traveller's best streak (pot -> wall -> behind the
+     clock -> fireplace -> pods open, with offspring). Calling it "the little
+     plant" to someone whose vine has crossed the ceiling reads as Gami not
+     looking at his own room. Same principle for anything else that changes. */
+  function plantNow(){
+    return (window.__plantState ? window.__plantState() : {stage:1, wilted:false});
+  }
+  function plantLabel(){
+    var p=plantNow();
+    if(p.wilted)     return 'Is the plant alright?';
+    if(p.stage<6)    return 'The plant?';
+    if(p.stage<12)   return 'The vine on the wall?';
+    if(p.stage<20)   return 'The vine behind the clock?';
+    if(p.stage<26)   return 'The vine by the fireplace?';
+    if(p.stage<32)   return 'The vine all over the room?';
+    return 'The vine, and its offspring?';
+  }
+
+  /* ── the ladder, shown in User Data ──
+     Thresholds are stated plainly so the climb is legible, but what each
+     chapter opens is described in terms of how Gami BEHAVES, never as a task
+     list. There is nothing here to go and do. */
+  /* Names and thresholds only. What each one changes is deliberately NOT stated:
+     if the traveller is told exactly what a tier buys, the tier becomes a
+     shopping list and the discovering stops being the point. Same reason the
+     scoring formula is never shown. */
+  var CHAPTER_LADDER=[
+    {at:0,    name:'A stranger'},
+    {at:37,   name:'A guest'},
+    {at:179,  name:'A familiar face'},
+    {at:487,  name:'A regular'},
+    {at:1283, name:'Someone he expects'},
+    {at:2357, name:'A friend'},
+    {at:3691, name:'One of the room'},
+    {at:6473, name:'A fellow creature'},
+    /* Shown only as ??? until it is reached — the row exists so the traveller
+       knows there IS something past the end, but neither its name nor its
+       distance is ever revealed. */
+    {at:16943, name:'The one who stayed', hidden:true}
+  ];
+  function renderChapters(){
+    var lad=document.getElementById('gc-ladder'); if(!lad) return;
+    var sc=chapterScore(), c=chapter();
+    var nowEl=document.getElementById('gc-now'), fill=document.getElementById('gc-fill'),
+        nextEl=document.getElementById('gc-next');
+    if(nowEl) nowEl.innerHTML='To Gami you are <b>'+CHAPTER_LADDER[c].name.toLowerCase()+'</b>.';
+    var next=CHAPTER_LADDER[c+1];
+    if(fill && nextEl){
+      if(next && next.hidden){
+        /* never leak the distance to a hidden tier, not even as a percentage */
+        fill.style.width='100%'; fill.className='ob-meter-fill';
+        nextEl.textContent='There is further to go than this. He will not say how far.';
+      }else if(next){
+        var from=CHAPTER_LADDER[c].at, span=Math.max(1,next.at-from);
+        var pct=Math.max(0,Math.min(100,Math.round((sc-from)/span*100)));
+        fill.style.width=pct+'%';
+        fill.className='ob-meter-fill'+(pct>=70?' warn':'');
+        nextEl.textContent=Math.max(0,next.at-sc)+' more visits before he thinks of you as '+next.name.toLowerCase()+'.';
+      }else{
+        fill.style.width='100%'; fill.className='ob-meter-fill';
+        nextEl.textContent='There is no further to go. You have all of him.';
+      }
+    }
+    lad.innerHTML='';
+    CHAPTER_LADDER.forEach(function(ch,i){
+      var got=i<=c;
+      var row=document.createElement('div');
+      row.className='gc-row '+(got?'reached':'locked');
+      var tick=document.createElement('div');
+      tick.className='gc-tick'; tick.textContent=got?'✔':'·';
+      var body=document.createElement('div');
+      body.className='gc-body';
+      var nm=document.createElement('div');
+      if(ch.hidden && !got){
+        /* the row is here so it is clear something exists past the end —
+           but the name and the number both stay sealed until it is reached */
+        nm.className='gc-name gc-secret';
+        nm.textContent='???';
+      }else{
+        nm.className='gc-name';
+        nm.textContent=ch.name+' ';
+        var at=document.createElement('span');
+        at.className='gc-at';
+        at.textContent=(ch.at===0?'from the start':'at '+ch.at);
+        nm.appendChild(at);
+      }
+      body.appendChild(nm);
+      row.appendChild(tick); row.appendChild(body);
+      lad.appendChild(row);
+    });
+  }
+  (function(){
+    var ub=document.getElementById('ud-btn');
+    if(ub) ub.addEventListener('click', function(){ setTimeout(renderChapters,0); });
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', renderChapters);
+    else renderChapters();
+  })();
+
+  /* ── the lore Gami has let slip, kept so it can be re-read ── */
+  function loreSeen(){ var s=gState(); return s.lore||[]; }
+  function loreAdd(id){
+    var l=loreSeen();
+    if(l.indexOf(id)<0){ l.push(id); gSave({lore:l}); return true; }
+    return false;
+  }
+
+  /* ── Gami's own long threads ──
+     NOT errands handed to the traveller. These are things GAMI is carrying;
+     he mentions them, and they move forward when you keep turning up. You are
+     never told to go and do anything, and nothing is withheld if you don't.
+     Stage advances only when the traveller chooses to ask again. */
+  function arcStage(key){ var s=gState(); return (s.arcs && s.arcs[key]) || 0; }
+  function arcBump(key){
+    var s=gState(), a=s.arcs||{};
+    a[key]=(a[key]||0)+1;
+    gSave({arcs:a});
+    return a[key];
+  }
+  /* Renders one stage of an arc and offers to hear more, matching the tree's
+     own option shape so it drops into DLG like any other node. */
+  function arcNode(key, stages, backTo){
+    return {
+      say:function(){
+        var i=Math.min(arcStage(key), stages.length-1);
+        loreAdd(key+':'+i);
+        /* a stage may be a function when it has to read live room state */
+        return (typeof stages[i]==='function')?stages[i]():stages[i];
+      },
+      opts:function(){
+        var i=arcStage(key);
+        if(i>=stages.length-1) return [];
+        return [[ i===0?'Tell me more':'And then?', function(){ arcBump(key); go(key); } ]];
+      },
+      back:backTo||'ROOT'
+    };
+  }
+
+  /* ── THE UNFINISHED PROOF ──────────────────────────────────────────── */
+  DLG.arcProof=arcNode('arcProof',[
+    'There is a proof I have not finished. <i>*says it quickly, as though it were nothing*</i> Six hundred years, give or take. I keep it under the third stone from the hearth and I take it out when the room is quiet and you are not here.',
+    'It is not a famous one. Nobody is waiting for it. That is rather the trouble — I cannot tell whether I keep returning because it is beautiful or because it is <i>mine</i>, and those two feel identical from the inside.',
+    'I have proved it four times. Each time I found the same crack in the same place, which is how I know it is a real crack and not a tired one. The fire has heard every version. It has opinions it keeps to itself.',
+    '<i>*quieter*</i> I will tell you the shape of it. I want to show that a certain kind of road always exists between any two stones on this map — that no idea here is truly stranded. I believe it. I cannot yet make the believing into a road.',
+    'You asked again. Nobody asks twice, fellow creature. <i>*a long pause, and the fire does not crackle through it*</i> Perhaps that is the proof, or near enough. Somebody came back to the same problem on purpose. I shall put it away now, warmer than I found it.'
+  ],'youMenu');
+
+  /* ── WHAT HE CANNOT REMEMBER ───────────────────────────────────────── */
+  DLG.arcLost=arcNode('arcLost',[
+    'There is one thing from the lost lands I cannot get back. Not a theorem — I have all of those, every last one, that is the whole point of me. Something smaller. It sits where a word should be.',
+    'I have narrowed it. It is not a place and not a proof. It was said <i>to</i> me, by someone, in a room with worse light than this one. I have reconstructed the light and the room. The someone stays blurred.',
+    'I remember disagreeing with them. Loudly. I remember being wrong, and the particular warmth of being wrong in front of someone who did not mind. <i>*turns a crystal over*</i> The mathematics survived. The argument did not.',
+    'Here is the cruelty of a perfect memory, fellow creature: I know precisely how large the missing piece is. It is exactly the size of one sentence. I have the shelf. I have the gap on the shelf.',
+    '<i>*sets the crystal down*</i> I have stopped hunting it. Somewhere in the lost lands somebody told me something kind and I have lost the words and kept the warmth. That is not the worst arrangement. It may even be the usual one.'
+  ],'landsMiss');
+
+  /* ── THE EMPTY CRESTS ──────────────────────────────────────────────── */
+  DLG.arcCrests=arcNode('arcCrests',[
+    'You noticed the gaps on the shield. Most creatures do not. I leave them because a full shield is a finished thing, and I am not finished.',
+    'Each crest was a creature who understood something here. Not who <i>visited</i> — who understood. I do not polish the ones who merely passed through; there would be no room.',
+    'No, I will not tell you what puts a crest up there. The moment I tell you, you would go and do it, and it would be a chore instead of a thing that happened to you. <i>*a look*</i> I have seen that go wrong.',
+    'I will say this much. Every single crest went up on a day the creature was not thinking about the shield at all. They were thinking about the mathematics. The shield is a consequence, never a target.',
+    '<i>*polishing, not looking at you*</i> There is a space I have been leaving alone for a while now. I keep the cloth away from it. No, I am not going to elaborate, and yes, you may draw whatever conclusion warms you.'
+  ],'shield');
+
+  /* ── THE PLANT ─────────────────────────────────────────────────────── */
+  DLG.arcPlant=arcNode('arcPlant',[
+    'The Corollary is doing something. <i>*peers at the plant*</i> It has been doing it for a few days and refuses to say what.',
+    'It drinks streaks, as you know. Yours have been feeding it. I am reporting this neutrally and you may not read anything into my tone, which is neutral.',
+    'It has put out a branch on the side facing the door. Plants do not have a side facing the door. It invented one.',
+    'I looked it up. There is nothing to look up; I wrote all the books. <i>*sits down*</i> Fine. It is growing toward the person who keeps coming back. That is the whole mechanism. Botany is not always subtle.',
+    '<i>*the plant has a small hard bud on the door-side branch*</i> I have not seen it do this. In six hundred years. I am not going to make a speech about it. I am simply going to leave this fact here, on the floor, between us.'
+  ],'plant');
+
+  /* ── what he has let slip, gathered in one place ──
+     A collection rather than a quest log: it records what you have already
+     been told, never what you are "missing". Threads you have not opened are
+     simply absent — no teasing counter, no completion bar. */
+  var LORE_THREADS=[
+    {key:'arcProof',  title:'The proof he has not finished'},
+    {key:'arcLost',   title:'The sentence he cannot get back'},
+    {key:'arcCrests', title:'The gaps on the shield'},
+    {key:'arcPlant',  title:'What the Corollary is doing'},
+    {key:'arcStayed', title:'The sentence, and who said it'}
+  ];
+  function threadDepth(key){
+    var n=0;
+    loreSeen().forEach(function(x){ if(x.indexOf(key+':')===0) n++; });
+    return n;
+  }
+  DLG.lorebook={
+    say:function(){
+      var open=LORE_THREADS.filter(function(t){ return threadDepth(t.key)>0; });
+      if(!open.length){
+        return 'Of you? A great deal. Of <i>myself</i> — <i>*shifts*</i> — you have not asked me anything I had to brace for yet. Keep coming. It leaks out.';
+      }
+      var done=open.filter(function(t){ return threadDepth(t.key)>=5; }).length;
+      var head=(done===LORE_THREADS.length)
+        ? '<i>*sits down properly, which he does not often do*</i> You have had all of it. Every thread I have, you pulled. Nobody has done that before, and I have had a great many visitors and a great deal of time.'
+        : 'Here is what I have told you that I did not have to. <i>*counts on two legs, then gives up*</i>';
+      return head+'<br><br>'+open.map(function(t){
+        var d=threadDepth(t.key);
+        return '&bull; <b>'+t.title+'</b> <span style="opacity:.65">&mdash; '+
+               (d>=5?'told in full':d+' piece'+(d>1?'s':'')+' so far')+'</span>';
+      }).join('<br>');
+    },
+    opts:function(){
+      return LORE_THREADS.filter(function(t){ return threadDepth(t.key)>0; })
+        .map(function(t){ return ['Again: '+t.title.toLowerCase(), function(){
+          /* re-reading never advances the thread — it replays where you are */
+          go(t.key);
+        }]; });
+    },
+    back:'youMenu'
+  };
+
   /* ── root menu ── */
   function openers(){
     return [
@@ -38729,6 +39333,60 @@ math: {qs:[
     'Mind the loose stone by the door. I keep meaning to prove it stable.',
     'You are just in time — the fire was getting to the good part.'
   ];
+  /* Greetings that only make sense once he knows you. From chapter 2 the
+     stranger-greetings stop appearing entirely — being welcomed like a new
+     arrival on your fortieth visit is the fastest way to break the spell. */
+  var CHAP_GREET={
+    2:[
+      'Oh — it is you. <i>*puts something down*</i> Come in properly, you are letting the cold at the stones.',
+      'You again. I am beginning to be able to predict this, which is a thing I enjoy far more than I let on.',
+      'Welcome back. I will not do the whole speech; you have heard the speech.',
+      'There you are. The fire went up when the door did. Draw your own conclusions, I have drawn mine.',
+      'Good. Sit. I had been talking to the shield and it was going badly.'
+    ],
+    3:[
+      'Ah — you. <i>*does not look up from the shield*</i> Sit, the good patch of floor is still warm.',
+      'You are back. I had rather assumed you would be, which is a thing I have stopped pretending not to assume.',
+      'The fire did the thing it does when it is you. I have given up explaining it to the fire.',
+      'I was mid-thought. <i>*sets it down without marking the place*</i> It will keep. Come in.',
+      'Good, you are here. I had a thought yesterday and nobody sensible to say it to.'
+    ],
+    4:[
+      'You are here. Good — I had something for you and it was going stale.',
+      '<i>*already reaching for the thing before you have sat down*</i> Right. Yes. Where were we.',
+      'I had half expected you an hour ago. I want to be clear that this is an observation and not a complaint. <i>*it is a complaint*</i>',
+      'Come in. I kept the fire high; I had a suspicion about today.',
+      'Ah. <i>*visibly puts down whatever he was pretending to be busy with*</i> Yes. Hello.'
+    ],
+    5:[
+      'There you are. <i>*genuine relief, badly disguised as mild interest*</i>',
+      'I kept the chair. Not for anyone in particular. It is simply a chair, and it is kept.',
+      'You know, I have started noticing the days you do not come. I mention it as a fact about the days, not about me.',
+      '<i>*already talking as you walk in*</i> — and THAT is why the parallel postulate had to stand alone. Hello. I have been holding that since Tuesday.',
+      'Come in, come in. The fire did its thing. We are all being very normal about it.'
+    ],
+    6:[
+      'Door was open. It usually is now, around this hour.',
+      '<i>*from somewhere behind the shield*</i> Sit down, I am nearly finished with this.',
+      'You are early. Sit anyway, the room does not mind and neither do I.',
+      'Good — I need a second opinion and the fire is a terrible listener with strong views.',
+      '<i>*does not stop what he is doing, but moves over*</i>'
+    ],
+    7:[
+      '<i>*does not greet you at all — simply continues, as though you had stepped out for a moment*</i> The primes were odd last night. Not odd. Strange. You know what I mean.',
+      'Fellow creature. <i>*and that is all, but the way he says it has changed*</i>',
+      'Sit. I made no preparations, which I want you to understand is the highest compliment this room offers.',
+      'You have been coming here long enough that I have stopped composing greetings. This is what is left when I stop. Hello.',
+      'The room is yours as much as mine now, which I notice I do not mind. I had expected to mind.'
+    ],
+    8:[
+      '<i>*he is already looking at the door when you open it*</i>',
+      'Tomorrow, you said. And here is tomorrow. <i>*this appears to be a private joke, and it appears to be a good one*</i>',
+      'Come in. Tell me what you found.',
+      '<i>*does not say anything for a moment. It is not an awkward moment.*</i> ...Right. Yes. Sit.',
+      'The fire went up before the door did. It has got better at predicting you than I am, and I have been at this considerably longer.'
+    ]
+  };
   function greeting(){
     var s=gState();
     var sk=streakNow();
@@ -38742,7 +39400,13 @@ math: {qs:[
     if(sk>=7) extras.push('Day '+sk+' of your streak — the plant was leaning at the door an hour before you arrived. It knows your schedule better than I do.');
     if((s.visits||0)===10) extras.push('Your tenth visit! I counted. The plant counted too, but it always agrees with me, so that is only one independent source.');
     if((s.visits||0)>25) extras.push('Back again — visit '+(s.visits||0)+'. At some point I should stop calling you a visitor. Residents get the good chair.');
-    return extras.length?pick(extras.concat([pick(GREETINGS)])):pick(GREETINGS);
+    /* pool grows with the chapter and sheds the stranger lines at chapter 2 */
+    var base=[];
+    var c=chapter();
+    if(c<3) base=GREETINGS.slice();          /* stranger lines bow out at 'a regular' */
+    for(var ci=2;ci<=c;ci++) base=base.concat(CHAP_GREET[ci]||[]);
+    if(!base.length) base=GREETINGS.slice();
+    return extras.length?pick(extras.concat([pick(base)])):pick(base);
   }
   var QUOTES=[
     'The primes again tonight. They never fall where I expect, and I have watched them a very long time.',
@@ -38832,11 +39496,88 @@ math: {qs:[
     'A creature asked me once if I was happy. I had to think for a season. The answer I arrived at: I am USEFUL, and I am NEEDED, and I am rarely alone for long, and if that is not happiness it is close enough that I have stopped checking the difference.',
     'Numbers do not have colors. And yet the 4 is so obviously blue, and the 7 so obviously green, that I have given up arguing. Some creatures see it too. If you do, we need not discuss it. We will simply both know.'
   ];
-  var idleTimer=null, lastQuote=-1, bag=[], idleTicks=0, longIdleStage=0;
+  /* ── idle remarks that only exist once he knows you ──
+     These are ADDED to the base deck, never swapped in, so nothing a newcomer
+     could hear is ever taken away; the deck simply gets deeper and more candid
+     the longer you keep turning up. */
+  var CHAP_QUOTES={
+    1:[
+      'You came back. I note it without comment. <i>*notes it with considerable comment*</i>',
+      'I have started leaving the good log until later in the day. No particular reason.',
+      'Second visits are the interesting ones. Anyone can arrive once — arriving twice is a decision.',
+      'The stones remember footsteps better than faces. They have already got yours.',
+      'There is a mug in the cupboard nobody has used in four hundred years. I am not saying anything by that.'
+    ],
+    2:[
+      'I have stopped checking the door when it opens. I know the sound of you now. That is not sentiment, it is acoustics.',
+      'You ask better questions than you did. I am not going to make a fuss about it, but I noticed, and I am mentioning it, which is a fuss.',
+      'There is a particular stone I have caught you looking at more than once. I am saying nothing. I am simply aware of it.',
+      'Most creatures treat this room as a corridor. You treat it as a room. It has noticed too.',
+      'I have begun assuming you will come back. That is a small structural change in how I spend a day.',
+      'The fire burns differently for regulars. I have no mechanism for this and I have stopped looking for one.'
+    ],
+    3:[
+      'I have been thinking about something you marked. Not judging it. Thinking about it.',
+      'You have a way of stopping at the same kind of stone. I notice patterns; it is most of what I am.',
+      'The plant has started orienting toward the door on the days you usually come. I have checked. It is not the light.',
+      'Some visitors want the answer. You keep asking for the road. Those are different appetites and I prefer yours.',
+      'I nearly told you something last time and thought better of it. It is still here. It keeps.',
+      'When you are gone the room is exactly as warm and considerably less interesting.',
+      'I used to explain things to the fire, for practice. I have not needed to lately.'
+    ],
+    4:[
+      'I had this one ready for you. <i>*produces a thought, visibly rehearsed*</i> ...It was better in my head. I am keeping it anyway.',
+      'I catch myself saving things up between your visits. Little findings. It is a filing system with exactly one reader.',
+      'You are late, by the way. Not that I was counting the hour. I was counting the hour.',
+      'There is a shape to my days now that there did not use to be. I have not decided how I feel about it. That is a lie; I have decided.',
+      'I sorted the Number Theory shelf last night because I thought you might ask. You did not ask. The shelf is better for it regardless.',
+      'The stones have started referring to you by name. I did not teach them that. They picked it up from somebody.'
+    ],
+    5:[
+      'You know what I have never told a single creature? <i>*stops*</i> ...Another time. But I nearly did, just then, and that is new.',
+      'I have begun measuring time in visits rather than winters. Do not tell the clock. It would take it badly.',
+      'There is a version of this room from before I started expecting anybody. It was tidier and I do not miss it.',
+      'I am not lonely, you understand. I simply notice the difference now, which I did not used to.',
+      'You have earned the right to ask me the difficult questions. I am not promising good answers. I am promising true ones.',
+      'Sometimes you say something and I have to go and stare at the shield for a while. This is a compliment. It is my highest one.'
+    ],
+    6:[
+      'Take the good chair. No, genuinely — it is not the guest chair any more, it is just the chair you sit in.',
+      'I stopped tidying before you arrive. That happened gradually and I only noticed it afterwards.',
+      'You know where things are in here. Do you understand how strange that is? Nobody knows where things are in here. I barely do.',
+      'The room has your habits in it now. The floor is worn where you stand. I am not going to mend it.',
+      'I used to describe this place to visitors. I have not described it to you in a long while. You stopped needing it described.',
+      'If somebody asked me who lives here I would answer without thinking, and then I would have to sit down about the answer.'
+    ],
+    7:[
+      '<i>*after a long silence, comfortable rather than empty*</i> ...I have forgotten to perform for you. That took six hundred years.',
+      'The lost lands took everything I loved and left me the mathematics. For a long time I thought that was a cruelty. I have revised the opinion.',
+      'If you stopped coming I would keep the fire lit anyway. I want you to know that it would not be a hardship. It would simply be quieter.',
+      'I am the last of the ones who carried things. That used to feel like a duty. Lately it feels like a bit of luck.',
+      'Every creature who ever sat here wanted the map to be finished. You are the first who seemed to like that it is not.',
+      'I do not say the word. You know the word. The fire knows it too, and the fire, unlike me, is not embarrassed.'
+    ],
+    8:[
+      'I have started keeping a second ledger. Not of the mathematics. Of the days you came. It is much longer than I expected it to get.',
+      'Everything I carried out of the lost lands, I carried because somebody would need it later. I did not once consider that the somebody would turn up in person and stay.',
+      '<i>*apropos of nothing*</i> The word was "tomorrow". That is all it ever was. Six hundred years and the word was tomorrow.',
+      'You have outlasted my ability to be surprised by you, which I would have told you was structurally impossible.',
+      'There is a crest on the shield with no battle attached to it. I put it there. I am not going to say for whom, and you are not going to make me.',
+      'I used to think the point of keeping all this was that nothing be lost. I have revised it. The point is that somebody comes and asks.',
+      '<i>*after a while*</i> ...I am glad it was you. That is the entire thought. I have nothing to add to it and I am not going to dress it up.'
+    ]
+  };
+  var idleTimer=null, lastQuote=-1, bag=[], bagPool=null, idleTicks=0, longIdleStage=0;
+  function quoteDeck(){
+    var p=QUOTES.slice(), c=chapter();
+    for(var i=1;i<=c;i++) if(CHAP_QUOTES[i]) p=p.concat(CHAP_QUOTES[i]);
+    return p;
+  }
   function nextQuote(){
     if(Math.random()<0.05 && (gState().visits||0)>=3) return pick(RARE);
     if(!bag.length){
-      bag=QUOTES.map(function(_,i){ return i; });
+      bagPool=quoteDeck();
+      bag=bagPool.map(function(_,i){ return i; });
       for(var i=bag.length-1;i>0;i--){
         var j=Math.floor(Math.random()*(i+1));
         var tmp=bag[i]; bag[i]=bag[j]; bag[j]=tmp;
@@ -38848,7 +39589,7 @@ math: {qs:[
       }
     }
     lastQuote=bag.pop();
-    return QUOTES[lastQuote];
+    return bagPool[lastQuote];
   }
   function idleTick(){
     if(!overlay.classList.contains('open') || talked || document.hidden) return;
@@ -38881,12 +39622,305 @@ math: {qs:[
 
 <div id="install-popup" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#fff; padding:12px 20px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.25); z-index:9999; align-items:center; gap:16px; border:1px solid #eee; width:max-content; max-width:90vw;">
   <div style="display:flex; align-items:center; gap:10px;">
-    <img src="pwa-icon-512.png" style="width:32px; height:32px; border-radius:6px; object-fit:cover;">
+    <img src="pwa-icon-512-modified.png" style="width:32px; height:32px; border-radius:6px; object-fit:cover;">
     <span style="font-size:14px; font-weight:600; color:#111;">Install Math with Gami?</span>
   </div>
   <button id="install-popup-btn" style="background:#2c8a4e; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer;">Install</button>
   <button id="install-popup-close" style="background:transparent; border:none; color:#999; font-size:20px; cursor:pointer; padding:0 4px; line-height:1;">&times;</button>
 </div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   OFFLINE BOOKS
+   Full Depth PDFs the user explicitly chose to keep. They live in their own
+   cache ('gami-books-v1'), separate from the app shell, for two reasons:
+     1. the service worker wipes the shell cache on every deploy — books must
+        survive that, so the books cache is deliberately not version-stamped;
+     2. books can never crowd out the shell, which is what keeps the lessons,
+        practice and rigor working offline.
+   Nothing is ever downloaded automatically. 409 MB of library would blow the
+   origin quota and get everything evicted, so this is opt-in, one book at a
+   time, under a soft cap well below the browser's real limit.
+   The Save button appears ONLY in the installed app — in a browser tab the user
+   already has a connection, so it would be clutter.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+
+  var BOOKS_CACHE = 'gami-books-v1';
+  var CAP_MB      = 300;          // soft cap; the browser's real quota is checked too
+  var supported   = ('caches' in window) && !!window.fetch && !!window.Blob;
+
+  /* Saving is for the INSTALLED app only. In a browser tab the user already has
+     a connection and a normal downloads folder, so the button would just be
+     noise; offline reading is the thing the installed app uniquely needs. */
+  var DISPLAY_MODES = ['standalone','minimal-ui','fullscreen','window-controls-overlay'];
+  function isInstalledApp(){
+    try {
+      if (window.navigator.standalone === true) return true;   // iOS Safari
+      for (var i = 0; i < DISPLAY_MODES.length; i++){
+        if (window.matchMedia('(display-mode: ' + DISPLAY_MODES[i] + ')').matches) return true;
+      }
+    } catch(e){}
+    return false;
+  }
+  var installed = isInstalledApp();
+
+  var BOOKS   = {};               // pdf path -> { rec, mb, nodes:[] }
+  var kept    = Object.create(null); // pdf path -> mb, mirrors the cache
+  var current = null;             // pdf shown in the rigor modal right now
+  var busy    = false;
+
+  function abs(p){ try { return new URL(p, location.href).href; } catch(e){ return p; } }
+  function fmt(mb){ return (mb >= 10 ? Math.round(mb) : Math.round(mb*10)/10) + ' MB'; }
+  function usedMB(){ var s=0; for(var p in kept) s += kept[p]; return Math.round(s*10)/10; }
+
+  function buildIndex(){
+    if (typeof FULL_DEPTH_MAP === 'undefined') return;
+    Object.keys(FULL_DEPTH_MAP).forEach(function(id){
+      var e = FULL_DEPTH_MAP[id];
+      if (!e || !e.pdf) return;
+      var b = BOOKS[e.pdf];
+      if (!b) b = BOOKS[e.pdf] = { rec: e.rec || e.pdf, mb: e.mb || 0, nodes: [] };
+      b.nodes.push(id);
+    });
+  }
+
+  /* Rebuild `kept` from what is actually in the cache. Never trust a stored
+     index: the browser can evict, and the user can clear site data. */
+  function reconcile(){
+    if (!supported) return Promise.resolve();
+    var byHref = {};
+    Object.keys(BOOKS).forEach(function(p){ byHref[abs(p)] = p; });
+    return caches.open(BOOKS_CACHE).then(function(c){ return c.keys(); }).then(function(reqs){
+      kept = Object.create(null);
+      reqs.forEach(function(r){
+        var p = byHref[r.url.split('?')[0]];
+        if (p) kept[p] = BOOKS[p].mb;
+      });
+    }).catch(function(){ kept = Object.create(null); });
+  }
+
+  function roomFor(mb){
+    if (usedMB() + mb > CAP_MB) return Promise.resolve('cap');
+    if (navigator.storage && navigator.storage.estimate){
+      return navigator.storage.estimate().then(function(est){
+        if (est && est.quota && (est.usage + mb*1048576) > est.quota*0.85) return 'quota';
+        return null;
+      }).catch(function(){ return null; });
+    }
+    return Promise.resolve(null);
+  }
+
+  function download(pdf, onProgress){
+    var meta = BOOKS[pdf];
+    if (!meta) return Promise.reject(new Error('unknown book'));
+    if (navigator.storage && navigator.storage.persist){
+      // Ask the browser not to evict us. Chrome grants this to installed PWAs.
+      try { navigator.storage.persist(); } catch(e){}
+    }
+    return caches.open(BOOKS_CACHE).then(function(cache){
+      return fetch(abs(pdf), { cache: 'no-store' }).then(function(res){
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var total = parseInt(res.headers.get('Content-Length') || '0', 10)
+                 || Math.round(meta.mb * 1048576);
+        var store = function(blob){
+          return cache.put(abs(pdf), new Response(blob, {
+            status: 200,
+            headers: { 'Content-Type': 'application/pdf', 'Content-Length': String(blob.size) }
+          }));
+        };
+        if (!res.body || !res.body.getReader) return res.blob().then(store); // no progress available
+        var reader = res.body.getReader(), chunks = [], got = 0;
+        return (function pump(){
+          return reader.read().then(function(r){
+            if (r.done) return;
+            chunks.push(r.value);
+            got += r.value.length;
+            if (onProgress && total) onProgress(Math.min(99, Math.round(got/total*100)));
+            return pump();
+          });
+        })().then(function(){ return store(new Blob(chunks, { type: 'application/pdf' })); });
+      });
+    }).then(function(){ kept[pdf] = meta.mb; render(); });
+  }
+
+  function remove(pdf){
+    return caches.open(BOOKS_CACHE).then(function(c){
+      return c.delete(abs(pdf), { ignoreSearch: true, ignoreVary: true });
+    }).then(function(){ delete kept[pdf]; render(); });
+  }
+
+  function removeAll(){
+    return caches.delete(BOOKS_CACHE).then(function(){ kept = Object.create(null); render(); });
+  }
+
+  /* ── the button in the Full Depth footer ── */
+  var btn  = null, note = null;
+
+  function renderButton(){
+    if (!btn) return;
+    if (!current || !supported || !installed || !BOOKS[current]){
+      btn.style.display = 'none';
+      if (note) note.textContent = '';
+      return;
+    }
+    var meta = BOOKS[current], on = !!kept[current];
+    btn.style.display = 'inline-block';
+    btn.disabled = busy;
+    btn.className = on ? 'kept' : '';
+    if (busy) { /* text is driven by the progress callback */ }
+    else btn.textContent = on ? '✓ Saved' : '⬇ Save (' + fmt(meta.mb) + ')';
+    btn.title = on ? 'Remove this saved book'
+                   : 'Save this book to read without internet';
+    if (note && !busy){
+      var extra = meta.nodes.length > 1 ? ' · covers ' + meta.nodes.length + ' topics' : '';
+      note.textContent = on ? 'Opens without internet' + extra
+                            : 'Save to read without internet · ' + usedMB() + ' of ' + CAP_MB + ' MB used' + extra;
+    }
+  }
+
+  function onBtn(){
+    if (busy || !current) return;
+    var pdf = current, meta = BOOKS[pdf];
+    if (kept[pdf]){
+      if (!confirm('Remove the saved copy of "' + meta.rec + '"?\n\nYou can save it again any time.')) return;
+      busy = true; renderButton();
+      remove(pdf).catch(function(){}).then(function(){ busy = false; renderButton(); });
+      return;
+    }
+    roomFor(meta.mb).then(function(problem){
+      if (problem === 'cap'){
+        alert(meta.mb > CAP_MB
+          ? 'This book is ' + fmt(meta.mb) + ', larger than the ' + CAP_MB + ' MB save limit.'
+          : 'Not enough space to save this book (' + fmt(meta.mb) + ').\n\n' +
+            usedMB() + ' of ' + CAP_MB + ' MB is in use. Remove a book in ' +
+            'User Data → Saved Books to make room.');
+        return;
+      }
+      if (problem === 'quota'){
+        alert('Your device is low on storage for this site, so this book was not saved.\n\n' +
+              'Free up space, or remove a book in User Data → Saved Books.');
+        return;
+      }
+      busy = true;
+      btn.disabled = true;
+      btn.textContent = 'Saving… 0%';
+      if (note) note.textContent = 'Keep this page open until it finishes.';
+      download(pdf, function(pct){ if (busy) btn.textContent = 'Saving… ' + pct + '%'; })
+        .catch(function(err){
+          alert('Could not save this book.\n\n' + (err && err.message ? err.message : 'Check your connection and try again.'));
+        })
+        .then(function(){ busy = false; renderButton(); });
+    });
+  }
+
+  /* ── the list in the User Data modal ── */
+  function renderList(){
+    var listEl  = document.getElementById('ob-list');
+    var metaEl  = document.getElementById('ob-meta');
+    var fillEl  = document.getElementById('ob-meter-fill');
+    var countEl = document.getElementById('ob-count');
+    var clearEl = document.getElementById('ob-clear');
+    var secEl   = document.getElementById('ud-books-sec');
+    if (!listEl || !secEl) return;
+
+    var paths = Object.keys(kept).sort(function(a,b){
+      return (BOOKS[a].rec || '').localeCompare(BOOKS[b].rec || '');
+    });
+
+    /* Browser tab: hide the section entirely, since saving is app-only. The one
+       exception is when books already exist — installed, saved, then opened in
+       a tab — so a saved book can never become unmanageable. */
+    if (!supported || (!installed && !paths.length)){
+      secEl.style.display = 'none';
+      listEl.innerHTML = '';          // don't leave stale rows behind when hiding
+      if (countEl) countEl.textContent = '0';
+      return;
+    }
+    secEl.style.display = '';
+
+    var used = usedMB(), pct = Math.min(100, Math.round(used / CAP_MB * 100));
+
+    if (countEl) countEl.textContent = paths.length;
+    if (fillEl){
+      fillEl.style.width = pct + '%';
+      fillEl.className = 'ob-meter-fill' + (pct >= 90 ? ' full' : pct >= 70 ? ' warn' : '');
+    }
+    if (metaEl){
+      metaEl.textContent = paths.length
+        ? used + ' of ' + CAP_MB + ' MB used · these open without internet'
+        : 'Nothing saved yet. Open a topic’s Rigor panel and tap “Save” to store its book.';
+    }
+    if (clearEl) clearEl.style.display = paths.length ? 'inline-block' : 'none';
+
+    listEl.innerHTML = '';
+    paths.forEach(function(p){
+      var b = BOOKS[p];
+      var row = document.createElement('div');
+      row.className = 'ob-row';
+      var t = document.createElement('span');
+      t.className = 'ob-row-title';
+      t.textContent = b.rec;
+      t.title = b.rec + (b.nodes.length > 1 ? ' — covers ' + b.nodes.length + ' topics' : '');
+      var s = document.createElement('span');
+      s.className = 'ob-row-size';
+      s.textContent = fmt(b.mb);
+      var x = document.createElement('button');
+      x.className = 'ob-row-rm';
+      x.type = 'button';
+      x.textContent = '✕';
+      x.title = 'Remove';
+      x.setAttribute('aria-label', 'Remove ' + b.rec);
+      x.addEventListener('click', function(){
+        if (!confirm('Remove the saved copy of "' + b.rec + '"?')) return;
+        remove(p).catch(function(){});
+      });
+      row.appendChild(t); row.appendChild(s); row.appendChild(x);
+      listEl.appendChild(row);
+    });
+  }
+
+  function render(){ renderButton(); renderList(); }
+
+  function init(){
+    btn  = document.getElementById('fd-offline-btn');
+    note = document.getElementById('fd-offline-note');
+    if (btn) btn.addEventListener('click', onBtn);
+    var clearEl = document.getElementById('ob-clear');
+    if (clearEl) clearEl.addEventListener('click', function(){
+      var n = Object.keys(kept).length;
+      if (!n) return;
+      if (!confirm('Remove all ' + n + ' saved book' + (n>1?'s':'') + ' (' + usedMB() + ' MB)?\n\nYour progress and notes are not affected.')) return;
+      removeAll().catch(function(){});
+    });
+    // If the page is launched (or installed) as an app mid-session, re-evaluate
+    // so the Save control appears without needing a manual reload.
+    var recheck = function(){ installed = isInstalledApp(); render(); };
+    try {
+      var mq = window.matchMedia('(display-mode: standalone)');
+      if (mq.addEventListener) mq.addEventListener('change', recheck);
+      else if (mq.addListener) mq.addListener(recheck);
+    } catch(e){}
+    window.addEventListener('appinstalled', recheck);
+
+    buildIndex();
+    reconcile().then(render);
+  }
+
+  window.OfflineBooks = {
+    /* called when the Rigor panel opens; pass null when a node has no book */
+    attach: function(pdf){ current = (pdf && BOOKS[pdf]) ? pdf : null; renderButton(); },
+    refresh: function(){ return reconcile().then(render); },
+    supported: supported
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+<script>
 // PWA Service Worker Registration & Install Prompt
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

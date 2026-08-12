@@ -1,17 +1,25 @@
 {
+  "id": "/",
   "name": "Math with Gami",
   "short_name": "Math with Gami",
-  "description": "An interactive map of mathematics.",
-  "start_url": "./index.html",
+  "description": "An interactive map of mathematics: 152 stones covering school arithmetic through the frontier, each with a lesson, paper-first practice, a rigorous treatment, and a full-depth textbook.",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
   "background_color": "#f2f2f2",
   "theme_color": "#f2f2f2",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "books", "productivity"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "./pwa-icon-512.png",
+      "src": "./pwa-icon-512-modified.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
