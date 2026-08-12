@@ -9755,7 +9755,7 @@ circles: `<div class="mintro">A circle is the simplest definition in geometry �
 <div class="msec"><h3>5. Cyclic quadrilaterals</h3>
 <p>A quadrilateral whose four corners all sit on one circle is <b>cyclic</b>, and its opposite angles always sum to $180^\\circ$. (Each pair of opposite angles inscribes the two complementary arcs of the whole circle — the inscribed-angle theorem twice.)</p>
 <div class="mwork"><span class="clbl">Worked example &middot; the missing angle</span>
-<p>A cyclic quadrilateral has angles $70^\\circ$ and $95^\\circ$ at one opposite pair — wait, opposite angles must sum to $180^\\circ$, so those two cannot be opposite. Say angle $A=70^\\circ$: then the opposite angle $C=110^\\circ$. If $B=95^\\circ$, then $D=85^\\circ$. Quick sanity check: $70+110+95+85=360^\\circ$. ✓</p></div></div>
+<p>A cyclic quadrilateral has $A=70^\\circ$ and $B=95^\\circ$ at two <i>adjacent</i> corners. Opposite angles are the ones that must pair to $180^\\circ$, so $C=180^\\circ-70^\\circ=110^\\circ$ and $D=180^\\circ-95^\\circ=85^\\circ$. Quick sanity check: $70+110+95+85=360^\\circ$. ✓</p></div></div>
 
 <div class="msec"><h3>6. The circle in coordinates</h3>
 <p>Distance from $(a,b)$ equal to $r$ — written with the distance formula — is the circle's equation:</p>
@@ -34728,7 +34728,7 @@ ergodic: {qs:[
 {tier:'c',diff:2,sec:`4 Examples that build intuition`,
  q:`The rotation $T(x)=x+1/4$ on $[0,1)$ is measure-preserving but NOT ergodic. Give evidence by exhibiting a function $f$ with $f\\circ T=f$ that is not constant.`,
  hint:`Try an exponential that has period matching the rotation.`,
- a:`<p><b>Answer.</b> Take $f(x)=e^{4\\pi i x}$. Then $f(T(x))=e^{4\\pi i(x+1/4)}=e^{4\\pi ix}\\cdot e^{\\pi i}=e^{4\\pi ix}\\cdot(-1)$. Hmm &mdash; that gives $-f$, not $f$. Instead try $f(x)=e^{8\\pi i x}$: $f(T(x))=e^{8\\pi i(x+1/4)}=e^{8\\pi ix}\\cdot e^{2\\pi i}=f(x)$. This $f$ is invariant under $T$ but not constant, so $T$ is not ergodic. The rotation has period $4$, and the invariant function detects it.</p>`},
+ a:`<p><b>Answer.</b> The natural first guess $f(x)=e^{4\\pi i x}$ falls just short: $f(T(x))=e^{4\\pi i(x+1/4)}=e^{4\\pi ix}\\cdot e^{\\pi i}=-f(x)$, which flips sign rather than returning. Doubling the frequency fixes exactly that. Take $f(x)=e^{8\\pi i x}$: $f(T(x))=e^{8\\pi i(x+1/4)}=e^{8\\pi ix}\\cdot e^{2\\pi i}=f(x)$. This $f$ is invariant under $T$ but not constant, so $T$ is not ergodic. The rotation has period $4$, and the invariant function detects it.</p>`},
 {tier:'c',diff:2,sec:`5 Mixing: a stronger kind of chaos`,
  q:`Mixing means $\\mu(T^{-n}A\\cap B)\\to\\mu(A)\\mu(B)$ for all measurable $A,B$. Explain in a sentence or two why mixing implies ergodicity but not vice versa.`,
  hint:`Set $A=B$ equal to an invariant set.`,
@@ -34901,7 +34901,7 @@ stats: {qs:[
 {tier:'c',diff:2,sec:`2 Estimation: maximum likelihood`,
  q:`Given this raw sample of $n=7$ data points: $2, 4, 4, 4, 5, 5, 7$. Compute the Sample Mean, the Sample Median, and the Sample Variance.`,
  hint:`Divide by n-1.`,
- a:`<p><b>Mean:</b> $(2+4+4+4+5+5+7) / 7 = 31 / 7 \\approx \\mathbf{4.43}$.</p><p><b>Median:</b> The middle sorted value is exactly <b>4</b>.</p><p><b>Sample Variance ($s^2$):</b> We must divide the sum of squared deviations by $n-1 = 6$.<br>Deviations from 4.43... let's use fractions. $\\sum (x_i - \\bar{x})^2 = (2-31/7)^2 + \\dots$<br>Actually, $\\sum x^2 - n\\bar{x}^2 = 131 - 7(31/7)^2 = 131 - 961/7 = (917-961)/7 = -44/7$ wait, error. $2^2+4^2+4^2+4^2+5^2+5^2+7^2 = 4+16+16+16+25+25+49 = 151$.<br>$151 - 961/7 = 151 - 137.28 = 13.71$. Divide by 6: $13.71 / 6 \\approx \\mathbf{2.28}$.</p>`},
+ a:`<p><b>Mean:</b> $(2+4+4+4+5+5+7) / 7 = 31 / 7 \\approx \\mathbf{4.43}$.</p><p><b>Median:</b> The middle sorted value is exactly <b>4</b>.</p><p><b>Sample Variance ($s^2$):</b> We must divide the sum of squared deviations by $n-1 = 6$.<br>The computing form $\\sum x^2 - n\\bar{x}^2$ is quickest. First $\\sum x^2 = 4+16+16+16+25+25+49 = 151$.<br>Then $151 - 7(31/7)^2 = 151 - 961/7 = 151 - 137.29 = 13.71$. Divide by 6: $13.71 / 6 \\approx \\mathbf{2.29}$.</p>`},
 {tier:'c',diff:2,fmt:'tf',sec:`2 Estimation: maximum likelihood`,
  q:`True or false &mdash; with the why: "When calculating sample variance, dividing by $(n-1)$ instead of $n$ is just an arbitrary historical convention with no rigorous mathematical justification."`,
  hint:`It fixes a systematic underestimation.`,
@@ -36156,7 +36156,7 @@ complexity: {qs:[
 {tier:'c',diff:2,sec:`2 Reductions: comparing hardness`,
  q:`A "Certificate" is the proof you hand to a Verifier. For the SUBSET-SUM problem, you are given the set $\\{3, 7, 12, 20\\}$ and the target $22$. What is the precise certificate? Can it be verified instantly?`,
  hint:`Provide the subset.`,
- a:`<p>The certificate is simply the subset: <b>$\\{10\\}$ (wait, 10 is not in the set). $\\{12, 10\\}$ (no). $\\{...\\}$ Wait, $\\{3, 7, 12\\}$ sums to $22$.</b> The certificate is $\\{3, 7, 12\\}$.</p><p><b>Yes.</b> The verifier just does $3+7+12 = 22$. It is verified instantly (polynomial time), even though searching for it among thousands of numbers would be very slow.</p>`},
+ a:`<p>The certificate is simply the subset that works: <b>$\\{3, 7, 12\\}$</b>, because $3+7+12 = 22$.</p><p><b>Yes.</b> The verifier just does $3+7+12 = 22$. It is verified instantly (polynomial time), even though searching for it among thousands of numbers would be very slow.</p>`},
 {tier:'c',diff:2,fmt:'spot',sec:`3 NP-completeness`,
  q:`Find the critical logic error in this student's proof: "I wanted to prove my new Problem X is easy (in P). So I built a polynomial-time reduction from 3-SAT to Problem X. Because SAT reduces to X, X is easy!"`,
  hint:`Wrong direction.`,
@@ -36344,7 +36344,7 @@ crypto: {qs:[
 {tier:'s',diff:3,sec:`2 The breakthrough: public-key cryptography`,
  q:`Construct a tiny Discrete Log table for base $g=2$ modulo $11$. The powers $2^1, 2^2 \\dots 2^{10}$ are: $2, 4, 8, 5, 10, 9, 7, 3, 6, 1$. From this table, read exactly what $\\log_2(7)$ is. Why does this table intuitively show that Discrete Log is a one-way function?`,
  hint:`The scrambled order.`,
- a:`<p><b>$\\log_2(7) = 7$</b> (because the 7th item in the list is 7; wait, let's check. $2^7 = 128 = 110 + 18 = 11 \\times 11 + 7$. Yes, $2^7 \\equiv 7$).</p><p><b>Why it's one-way:</b> Going forward (exponentiation) is easy: you just repeatedly multiply by 2. But looking at the sequence $2, 4, 8, 5, 10, 9, 7, 3, 6, 1$, the outputs bounce around completely chaotically. Given the output "7", there is no mathematical structure or slope to help you find the exponent. You are forced to search the haystack blindly (which is computationally impossible for 2048-bit numbers).</p>`},
+ a:`<p><b>$\\log_2(7) = 7$</b> &mdash; the 7th entry in the list is $7$. Check it directly: $2^7 = 128 = 11 \\times 11 + 7$, so $2^7 \\equiv 7 \\pmod{11}$.</p><p><b>Why it's one-way:</b> Going forward (exponentiation) is easy: you just repeatedly multiply by 2. But looking at the sequence $2, 4, 8, 5, 10, 9, 7, 3, 6, 1$, the outputs bounce around completely chaotically. Given the output "7", there is no mathematical structure or slope to help you find the exponent. You are forced to search the haystack blindly (which is computationally impossible for 2048-bit numbers).</p>`},
 {tier:'s',diff:3,sec:`6 The quantum threat and what comes next`,
  q:`The Quantum Threat: In 1994, Peter Shor unleashed an algorithm for quantum computers. What two specific math problems does Shor's algorithm solve in polynomial time? What current systems fall, and what mathematical structure is Post-Quantum Cryptography migrating to?`,
  hint:`Factoring, Discrete Log, Lattices.`,
@@ -36496,7 +36496,7 @@ mathphys: {qs:[
 {tier:'s',diff:3,sec:`5 Quantum mechanics as linear algebra`,
  q:`Verify energy conservation by pure differentiation. For a harmonic oscillator, $E = \\frac{1}{2}m\\dot{x}^2 + \\frac{1}{2}kx^2$. The solution is $x(t) = A\\cos(\\omega t)$, where $\\omega^2 = k/m$. Differentiate $E$ with respect to time $t$ and verify that $\\frac{dE}{dt}$ is exactly zero.`,
  hint:`Chain rule.`,
- a:`<p>1. $x = A\\cos(\\omega t) \\implies \\dot{x} = -A\\omega\\sin(\\omega t)$.</p><p>2. $\\frac{dE}{dt} = \\frac{d}{dt}[\\frac{1}{2}m(-A\\omega\\sin(\\omega t))^2 + \\frac{1}{2}k(A\\cos(\\omega t))^2]$.</p><p>Wait, it is easier to differentiate $E$ implicitly: $\\frac{dE}{dt} = m\\dot{x}\\ddot{x} + kx\\dot{x} = \\dot{x}(m\\ddot{x} + kx)$.</p><p>3. We know $x(t)$ satisfies $m\\ddot{x} = -kx$.</p><p>4. So the term in parentheses is zero. $\\frac{dE}{dt} = \\dot{x}(0) = \\mathbf{0}$. Energy is perfectly conserved!</p>`},
+ a:`<p>1. $x = A\\cos(\\omega t) \\implies \\dot{x} = -A\\omega\\sin(\\omega t)$.</p><p>2. Substituting $x(t)$ first and expanding is possible but messy. Differentiating $E$ implicitly is far shorter: $\\frac{dE}{dt} = m\\dot{x}\\ddot{x} + kx\\dot{x} = \\dot{x}(m\\ddot{x} + kx)$.</p><p>3. We know $x(t)$ satisfies $m\\ddot{x} = -kx$.</p><p>4. So the term in parentheses is zero. $\\frac{dE}{dt} = \\dot{x}(0) = \\mathbf{0}$. Energy is perfectly conserved!</p>`},
 {tier:'s',diff:3,sec:`3 The Hamiltonian picture and Poisson brackets`,
  q:`The most profound mathematical bridge in physics connects Classical and Quantum mechanics. In classical mechanics, the "Poisson bracket" of position and momentum is $\\{x, p\\} = 1$. When transitioning to quantum mechanics, what does this bracket magically turn into?`,
  hint:`The commutator.`,
