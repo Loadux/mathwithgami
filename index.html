@@ -16548,12 +16548,24 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
       var hasProg = (function(){ try{ var p=JSON.parse(progStr||'{}')||{}; return Object.keys(p).some(function(k){ var e=p[k]||{}; return !!e.status || !!(e.note && String(e.note).trim()); }); }catch(e){ return false; } })();
       var hasPrac = (function(){ try{ var p=JSON.parse(pracStr||'{}')||{}; return Object.keys(p).some(function(k){ var e=p[k]; if(!e) return false; return (typeof e==='object') ? Object.keys(e).length>0 : true; }); }catch(e){ return false; } })();
       var hasGami = (function(){ try{ var g=JSON.parse(localStorage.getItem('mathmap_gami')||'{}')||{}; return !!(g.levelKnown && g.levelKnown.length) || (+g.plantMax > 1); }catch(e){ return false; } })();
-      var isNew = !hasProg && !hasPrac && !hasGami;
-      
+      /* "New" used to be inferred purely from progress/practice/Gami state, so a
+         traveller who only ever reads — marking nothing — stayed new forever and
+         got this greeting on EVERY visit. Answering it now settles it for good. */
+      var seenIntro=false;
+      try{ seenIntro = !!localStorage.getItem('mathmap_onboarded'); }catch(e){}
+      var isNew = !hasProg && !hasPrac && !hasGami && !seenIntro;
+
       if(!isNew) return;
+      function markOnboarded(){ try{ localStorage.setItem('mathmap_onboarded','1'); }catch(e){} }
+      function answered(fn){ return function(){ markOnboarded(); if(fn) fn(); }; }
       setTimeout(function(){
         window.gamiBubble('Oh — a new traveller! I am <b>Gami</b>; I keep this map. Every stone opens when you click it. The big stone in the middle is my home — come knock whenever you are lost.',
-          {ttl:0, noClose: true, buttons:[['Can you read my math level?', function(){ if(window.startLevelCheck) window.startLevelCheck(); }], ['Take me to Gami', function(){ var gb=document.getElementById('gami-btn'); if(gb) gb.click(); }], ['I’ll wander first']]});
+          {ttl:0, noClose: true, buttons:[
+            ['Can you read my math level?', answered(function(){ if(window.startLevelCheck) window.startLevelCheck(); })],
+            ['Take me to Gami', answered(function(){ var gb=document.getElementById('gami-btn'); if(gb) gb.click(); })],
+            ['I’ll wander first', answered()],
+            ['Don’t show this again', answered()]
+          ]});
       }, 1800);
     }catch(e){}
   })();
@@ -16851,6 +16863,28 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     if(gb) gb.classList.toggle('alert', countWrongs()>0);
   }
 
+  /* ── the swipe hint stops nagging once it has been understood ──
+     A traveller who has already swiped three separate visits knows the room
+     scrolls; leaving a 5-second banner over the scene after that is just noise.
+     Credit is only given when they ACTUALLY swipe (not merely see the hint),
+     and only once per visit, so it measures learning rather than exposure.
+     Stored in mathmap_gami so it rides along with their save/export. */
+  var SWIPE_HINT_MS=[5000,3500,2000,1000];
+  function swipeLearned(){
+    try{ var g=JSON.parse(localStorage.getItem('mathmap_gami')||'{}')||{}; return +g.swipeLearned||0; }
+    catch(e){ return 0; }
+  }
+  function swipeLearnedBump(){
+    try{
+      var g=JSON.parse(localStorage.getItem('mathmap_gami')||'{}')||{};
+      g.swipeLearned=Math.min(SWIPE_HINT_MS.length-1,(+g.swipeLearned||0)+1);
+      localStorage.setItem('mathmap_gami', JSON.stringify(g));
+    }catch(e){}
+  }
+  function swipeHintMs(){
+    return SWIPE_HINT_MS[Math.min(SWIPE_HINT_MS.length-1, swipeLearned())];
+  }
+
   /* Scale the fixed-layout room to fit the current modal width. The talk
      buttons and speech box are normal elements and are never touched. */
   function fitGamiScene(isOpening){
@@ -16885,16 +16919,19 @@ var GAMI_IMG_SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAABoCAYAAAD4
     }
     
     if (hint) {
+      if (isOpening) hint._countedThisOpen = false;   /* one credit per room visit */
       if (isScrollable && !hint.classList.contains('show')) {
         if (isOpening || wrap.scrollLeft === 0) {
           hint.classList.add('show');
           if (hint._hideTimer) clearTimeout(hint._hideTimer);
           hint._hideTimer = setTimeout(function(){
             hint.classList.remove('show');
-          }, 5000);
+          }, swipeHintMs());
           setTimeout(function(){
             wrap.addEventListener('scroll', function hideHint(){
               hint.classList.remove('show');
+              /* they swiped, so they have understood it — count this visit once */
+              if (!hint._countedThisOpen) { hint._countedThisOpen = true; swipeLearnedBump(); }
               wrap.removeEventListener('scroll', hideHint);
             }, {once:true});
           }, 300);
@@ -39951,10 +39988,41 @@ window.addEventListener('beforeinstallprompt', (e) => {
     };
   }
 
+  /* Never ask over the top of something else.
+     'beforeinstallprompt' can fire at any moment — including while Gami's
+     first-visit greeting is still on screen, which is how the two ended up
+     stacked. Wait until nothing is open (greeting answered, no modal, no lost
+     popup), then give the traveller 2 quiet seconds on the map before asking.
+     If they open something during those 2 seconds, start waiting again. */
+  function somethingIsOpen(){
+    if (document.getElementById('gami-bubble')) return true;   // first-visit greeting
+    const els = document.querySelectorAll(
+      '#gami-overlay, #ud-overlay, .math-modal, .note-modal, #lost-popup, #gami-guide.open, #lvl-overlay');
+    for (let i=0;i<els.length;i++){
+      const e = els[i];
+      if (e.offsetWidth > 0 && e.offsetHeight > 0) return true;
+    }
+    return false;
+  }
+  function whenClearAndSettled(cb){
+    const POLL = 400, QUIET = 2000;
+    (function wait(){
+      if (somethingIsOpen()) { setTimeout(wait, POLL); return; }
+      setTimeout(function(){
+        if (somethingIsOpen()) { wait(); return; }   // they opened something meanwhile
+        cb();
+      }, QUIET);
+    })();
+  }
+
   if (!localStorage.getItem('dismissedInstall')) {
     const popup = document.getElementById('install-popup');
     if (popup) {
-      popup.style.display = 'flex';
+      whenClearAndSettled(function(){
+        if (localStorage.getItem('dismissedInstall')) return;   // dismissed while we waited
+        if (!deferredPrompt) return;                            // already installed/used
+        popup.style.display = 'flex';
+      });
       document.getElementById('install-popup-btn').onclick = () => {
         popup.style.display = 'none';
         deferredPrompt.prompt();
