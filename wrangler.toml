@@ -1,5 +1,17 @@
 name = "mathwithgami"
 compatibility_date = "2024-07-01"
 
+# The Worker script. It only handles /api/sync/* and hands every other
+# request straight back to the static assets below.
+main = "worker.js"
+
 [assets]
 directory = "./"
+# Required once a Worker script exists: without this binding the Worker
+# has no way to serve the site and every page 404s.
+binding = "ASSETS"
+
+# Device-pair sync records. Nothing is written here until two devices pair.
+[[kv_namespaces]]
+binding = "SYNC"
+id = "9ec2eaca8c9a4b59a91c667a16611998"

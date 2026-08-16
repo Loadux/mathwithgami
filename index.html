@@ -80,12 +80,11 @@
     .t-gami { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
     .supporter-btn { order: 3; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box; height: 26px; line-height: 13px; font-size: 11px; padding: 0 8px; white-space: nowrap; }
     .msearch { order: 4; flex: 1 1 100% !important; max-width: 100% !important; width: 100% !important; margin: 2px 0; font-size: 12px; padding: 4px 8px; }
-    #gami-btn, #ud-btn, #notes-btn { flex: 1 1 0; height: 28px; padding: 0 4px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; white-space: nowrap; margin-bottom: 2px; font-size: 11.5px; }
+    #gami-btn, #ud-btn, #journeys-btn { flex: 1 1 0; height: 28px; padding: 0 4px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; white-space: nowrap; margin-bottom: 2px; font-size: 11.5px; }
     #ud-btn .ud-flame { font-size: 13px; }
     #gami-btn { order: 5; }
-    #ud-btn { order: 6; }
-    #notes-btn { order: 7; }
-    #journey-select { order: 8; flex: 1 1 100%; max-width: 80%; margin: 4px auto 0 auto; box-sizing: border-box; height: 32px; font-size: 12px; padding: 4px 8px !important; }
+    #ud-btn { order: 7; }
+    #journeys-btn { order: 6; }
   }
   .t-w-slash { display: none; }
   @media (max-width: 380px) { .t-with { display: none; } .t-w-slash { display: inline; } }
@@ -325,8 +324,6 @@
   #jb-close{background:#d4d4d4;color:#222;border-color:#b8b8b8;font-weight:bold;}
   #jb-close:hover{background:#e0e0e0;border-color:#aaa;}
   #jb-count{font-size:12px;color:#666;min-width:46px;text-align:center;}
-  line.jlink{stroke:#e07800;stroke-width:2.2px;stroke-dasharray:none;opacity:.9;}
-  line.jlink.hot{stroke:#ff9500;stroke-width:3px;}
   #panel .connrow{margin:6px 0;}
   #panel .connrow .why{font-size:calc(12.5px * var(--txt-scale));color:#666;line-height:1.4;margin:2px 0 0 2px;}
   .prog-ui{margin-top:14px;border-top:1px solid #e8e8e8;padding-top:10px;}
@@ -511,8 +508,10 @@
     border-radius:0 0 14px 14px;flex-wrap:wrap;
   }
   .ud-footer-label{
-    width:100%;font-size:12px;font-weight:700;
-    letter-spacing:0;color:#888;margin-bottom:2px;
+    width:100%;font-size:15px;font-weight:700;line-height:1.7;
+    letter-spacing:0;color:#666;margin-bottom:10px;
+    text-decoration:underline;text-decoration-thickness:1px;
+    text-underline-offset:5px;text-decoration-color:#e2e2e2;
   }
   .ud-foot-btn{
     flex:1;min-width:max-content;padding:9px 14px;border-radius:8px;font-size:13px;
@@ -951,7 +950,7 @@
   }
   #notes-overlay.open { display: flex; }
   #notes-modal {
-    background: #fff; width: 90%; max-width: 600px; max-height: 85vh;
+    background: #fff; width: 90%; max-width: 1080px; max-height: 85vh;
     border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: var(--site-font);
   }
@@ -966,6 +965,58 @@
     display: flex; align-items: center; justify-content: center; transition: background 0.15s;
   }
   .notes-close:hover { background: #e0e0e0; color: #111; }
+
+  /* ---- device sync ------------------------------------------------ */
+  .sync-p{font-size:12.5px;color:#666;line-height:1.55;margin:0 0 10px;}
+  .sync-code{flex:1 1 0;min-width:0;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:14px;font-weight:800;letter-spacing:.12em;color:#2f6fb0;background:#f2f7fc;
+    border:1px solid #cbdaea;border-radius:8px;padding:9px 12px;user-select:all;
+    text-align:center;box-sizing:border-box;display:flex;align-items:center;justify-content:center;}
+  .sync-row{display:flex;gap:8px;align-items:stretch;width:100%;}
+  .sync-input{flex:1 1 0;min-width:0;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;
+    border:1px solid #d0d0d0;border-radius:8px;background:#fff;color:#222;box-sizing:border-box;}
+  #sync-sec{width:100%;margin-top:18px;padding-top:16px;border-top:1px solid #ececec;}
+  .dark #sync-sec{border-top-color:#2a2d33;}
+  #sync-sec .ud-foot-btn{flex:0.5 1 0;min-width:0;}
+  #sync-sec .ud-sec-title{margin-bottom:9px;}
+  #sync-live .sync-row{max-width:520px;}
+  .sync-msg{font-size:12.5px;margin-top:9px;min-height:1.2em;color:#666;}
+  .sync-msg.bad{color:#b23a3a;}
+  .sync-msg.good{color:#2c7a47;}
+  .sync-live-line{font-size:13px;color:#333;margin-bottom:10px;}
+  .sync-choice{position:fixed;inset:0;z-index:10050;display:none;align-items:center;
+    justify-content:center;background:rgba(10,14,20,.55);padding:22px;}
+  .sync-choice.open{display:flex;}
+  .sync-choice-in{width:min(440px,94vw);background:#fff;border:1.5px solid #8fa6bd;border-radius:12px;
+    padding:18px 20px;box-shadow:0 18px 50px rgba(0,0,0,.4);}
+  .sync-choice-in h3{margin:0 0 8px;font-size:16px;color:#222;}
+  .sync-choice-in p{font-size:13px;color:#555;line-height:1.55;margin:0 0 14px;}
+  .sync-opt{display:block;width:100%;text-align:left;margin-bottom:8px;padding:11px 13px;
+    border:1px solid #cbdaea;background:#f5f8fc;border-radius:8px;cursor:pointer;font-family:inherit;}
+  .sync-opt:hover{background:#e6eef7;border-color:#5b86b0;}
+  .sync-opt b{display:block;font-size:13.5px;color:#222;}
+  .sync-opt span{font-size:12px;color:#777;}
+
+  /* ---- Journeys drawn as trails ---------------------------------- */
+  #jq-body{display:block !important;}
+  .jt-card{border:1px solid #e2e2e2;border-radius:12px;background:#fff;margin-bottom:14px;overflow:hidden;flex:0 0 auto;}
+  .jt-card.done{border-color:var(--ink);}
+  .jt-head{display:flex;align-items:baseline;gap:12px;padding:12px 15px 11px;}
+  .jt-name{font-weight:800;font-size:calc(15px * var(--txt-scale));color:var(--ink);line-height:1.7;
+    text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;
+    text-decoration-color:var(--ink);
+    text-decoration-color:color-mix(in srgb, var(--ink) 34%, transparent);}
+  .jt-kind{margin-left:auto;font-size:11.5px;color:#8a8f98;white-space:nowrap;}
+  .jt-scroll{overflow-x:auto;overflow-y:hidden;padding:2px 12px 10px;}
+  .jt-svg{display:block;background:var(--ground);border-radius:10px;}
+  .jt-num{font-size:11px;font-weight:800;}
+  .jt-lbl{font-size:9.5px;font-weight:600;opacity:.85;}
+  .jt-stop[data-id]{cursor:pointer;}
+  .jt-stop[data-id]:hover circle{stroke-width:3;}
+  .jt-stop.sealed{opacity:.55;}
+
+  
   .notes-body {
     padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px;
     background: #fafafa; transform:translateZ(0); will-change:transform; overscroll-behavior:contain;
@@ -1264,6 +1315,28 @@ circle.node.lvl-known{stroke:#2c8a4e;stroke-width:2.5px;stroke-opacity:.55;}
 .dark .notes-head h2{color:#e6e3dc;}
 .dark .notes-close{color:#9a958b;}
 .dark .notes-close:hover{background:#2c3037;color:#fff;}
+.dark .ud-footer-label{color:#b4aea4;text-decoration-color:#3d454f;}
+/* every underlined section title dims the same amount in dark mode; without
+   these the light-mode #e0-#e2 greys stayed on and read as near-white */
+.dark .ud-sec-title{text-decoration-color:#3d454f;}
+.dark .math-body .msec h3{text-decoration-color:#3d454f;}
+.dark #panel .psection{text-decoration-color:#3d454f;}
+.dark .sync-p,.dark .sync-msg{color:#9a958b;}
+.dark .sync-code{background:#1a212a;border-color:#333d4b;color:#9fc0dd;}
+.dark .sync-input{background:#23262c;color:#d8d4cc;border-color:#3a3d44;}
+.dark .sync-live-line{color:#d8d4cc;}
+.dark .sync-choice-in{background:#151a21;border-color:#4a5f78;}
+.dark .sync-choice-in h3{color:#e6e3dc;}
+.dark .sync-choice-in p{color:#a9c2d8;}
+.dark .sync-opt{background:#1b222b;border-color:#333d4b;}
+.dark .sync-opt:hover{background:#242d38;border-color:#5b7590;}
+.dark .sync-opt b{color:#e6e3dc;}
+.dark .sync-opt span{color:#8fa8c0;}
+.dark .jt-card{background:#1e2126;border-color:#2a2d33;}
+.dark .jt-kind{color:#8a8f98;}
+.dark .jt-svg{background:#161a1f;}
+.dark .jt-name{filter:brightness(1.7) saturate(.9);}
+.dark .jt-svg .jt-lbl{filter:brightness(1.9) saturate(.8);}
 .dark .notes-body{background:#14161a;}
 .dark .note-item{background:#1e2126;border-color:#3a3d44;}
 .dark .note-title{color:#d8d4cc;}
@@ -1327,10 +1400,10 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
       <h1><span class="t-math">Math </span><span class="t-with">with </span><span class="t-w-slash">w/ </span><span class="t-gami">Gami</span></h1>
     </div>
     <div class="btns">
-      <select id="journey-select" class="journey-select" style="font-family:inherit;font-size:12px;font-weight:600;border:1px solid #ccc;background:#fff;color:#222;padding:6px 13px;border-radius:5px;cursor:pointer;"><option value="">Pick a journey…</option></select>
+
       <button id="gami-btn" title="Open Gami's Home"><img class="gami-face" src="./assets/face_icon.png" alt=""> Gami<span class="gami-dot"></span></button>
       <button id="ud-btn"><span class="ud-flame">⚙️</span> User Data</button>
-      <button id="notes-btn" class="topbar-btn">Notes</button>
+      <button id="journeys-btn" class="topbar-btn">Journeys</button>
     </div>
   </div>
   <svg id="svg"></svg>
@@ -1356,12 +1429,10 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
 <div id="notes-overlay">
   <div id="notes-modal" role="dialog" aria-modal="true">
     <div class="notes-head">
-      <h2>Your Notes</h2>
-      <button class="notes-close" id="notes-close" title="Close">×</button>
+      <h2 id="jq-title">Journeys</h2>
+      <button class="notes-close" id="notes-close" title="Close">&times;</button>
     </div>
-    <div class="notes-body" id="notes-list">
-      <!-- Notes will be injected here -->
-    </div>
+    <div class="notes-body" id="jq-body"></div>
   </div>
 </div>
 
@@ -1463,6 +1534,29 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
       <button class="ud-foot-btn" id="ud-load-file" title="Load progress from a JSON file">📂 File Load</button>
       <button class="ud-foot-btn danger" id="ud-reset" title="Wipe all progress and notes (cannot be undone)">🗑 Reset</button>
       <input type="file" id="ud-file-input" accept=".json" style="display:none">
+      <div id="sync-sec">
+      <div class="ud-sec-title">Sync a second device</div>
+      <div id="sync-idle">
+        <p class="sync-p">Your code for this device. Type it into the other device, and type that
+           device&rsquo;s code below. It won&rsquo;t be synced until both sides match.</p>
+        <div class="sync-row">
+          <div class="sync-code" id="sync-mycode">&mdash;</div>
+          <input id="sync-input" class="sync-input" maxlength="14" autocomplete="off"
+                 spellcheck="false" placeholder="other device&rsquo;s code">
+          <button class="ud-foot-btn" id="sync-pair">Pair</button>
+        </div>
+        <div class="sync-msg" id="sync-msg"></div>
+      </div>
+      <div id="sync-live" style="display:none">
+        <div class="sync-live-line">Paired. <span id="sync-when">never synced</span></div>
+        <div class="sync-row">
+          <button class="ud-foot-btn" id="sync-now">Sync now</button>
+          <button class="ud-foot-btn danger" id="sync-off">Unsync</button>
+          </div>
+    </div>
+
+        <div class="sync-msg" id="sync-msg2"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -14707,17 +14801,9 @@ document.getElementById("ppin").onclick=function(e){
     });
   }
 
-  document.getElementById("notes-btn").onclick = function() {
-    renderNotes();
+  document.getElementById("journeys-btn").onclick = function() {
+    if (window.renderJourneyLog) window.renderJourneyLog();
     document.getElementById("notes-overlay").classList.add("open");
-    // Trigger auto-grow for the global scroll if no height saved
-    if (!localStorage.getItem("mathmap_global_scroll_height")) {
-        const ta = document.querySelector('.global-scroll textarea');
-        if (ta) {
-           ta.style.height = 'auto';
-           ta.style.height = (ta.scrollHeight) + 'px';
-        }
-    }
   };
 
 
@@ -15198,7 +15284,7 @@ placeGami();
 // progress + notes (saved locally)
 let progress={};
 try{ progress=JSON.parse(localStorage.getItem("mathmap_progress")||"{}")||{}; }catch(e){ progress={}; }
-function saveProgress(){ try{ localStorage.setItem("mathmap_progress",JSON.stringify(progress)); }catch(e){} }
+function saveProgress(){ if(window.syncTouch) window.syncTouch(); try{ localStorage.setItem("mathmap_progress",JSON.stringify(progress)); }catch(e){} }
 function setStatus(id,st){ progress[id]=progress[id]||{}; progress[id].status=(progress[id].status===st?null:st); if(!progress[id].status && !(progress[id].note && String(progress[id].note).trim())) delete progress[id]; saveProgress(); applyProgressVisuals(); renderProgressUI(id); if(typeof refreshJourneyOptions==="function") refreshJourneyOptions(); }
 function setNote(id,txt){ progress[id]=progress[id]||{}; progress[id].note=txt; saveProgress(); }
 
@@ -15454,7 +15540,247 @@ var SEARCHBLOB={};
 
 /* ===== journey completion tracking (saved locally) ===== */
 var journeysDone={}; try{ journeysDone=JSON.parse(localStorage.getItem("mathmap_journeys")||"{}")||{}; }catch(e){ journeysDone={}; }
-function saveJourneysDone(){ try{ localStorage.setItem("mathmap_journeys",JSON.stringify(journeysDone)); }catch(e){} }
+/* ==============================================================
+   JOURNEYS - every journey drawn as its own trail, all of them on
+   one tab, no drilling in. You always see how LONG a trail is; you
+   just do not learn WHICH stone a stop is until you reach it.
+
+   Two kinds:
+     trail  an ordered road. Later stops stay unnamed silhouettes.
+     open   a collection with no required order. Everything named.
+   ============================================================== */
+(function(){
+  /* collections, not climbs: no order to walk, so nothing is hidden */
+  var OPEN = {open:1, solved:1, crossfield:1, branches:1, applied:1,
+              abstract:1, optlearn:1, methods:1};
+
+  /* Every journey gets its own country: an ink colour, a ground wash and a
+     terrain motif scattered behind the road. Same journey always draws the
+     same scenery because the scatter is seeded off the journey key. */
+  var LAND = {
+    school:      ['#3f6f45','#eaf3ea','hill'],   schoolgeo:  ['#3f6f45','#eaf3ea','hill'],
+    equations:   ['#8a5a2b','#f6eee4','dune'],   analysis:   ['#2f6fb0','#e9f1f9','wave'],
+    riemann:     ['#5a3f8a','#efeaf7','star'],   spectral:   ['#5a3f8a','#efeaf7','star'],
+    infinity:    ['#2b6f6f','#e6f2f2','wave'],   symmetry:   ['#a03a6e','#f9eaf2','crystal'],
+    space:       ['#2f5f8a','#e9eff7','star'],   impossible: ['#8a3a3a','#f8eaea','crag'],
+    randomness:  ['#3f7a5a','#e9f3ee','tree'],   crypto:     ['#4a4a5a','#eeeef2','circuit'],
+    chaos:       ['#8a5a10','#f7f0e2','crag'],   counting:   ['#a0522d','#f7ede6','dune'],
+    computer:    ['#3a6a8a','#e9f0f5','circuit'],physics:    ['#8a4a2a','#f7ece6','crag'],
+    unification: ['#6a48a8','#f0ebf8','crystal'],localglobal:['#2b7a6f','#e6f2f0','hill'],
+    discrete:    ['#7a6a2b','#f4f1e4','tree'],   duality:    ['#5a6a8a','#eef0f5','crystal'],
+    structure:   ['#6a7a2b','#f2f4e4','tree'],   smoothshape:['#8a6a3a','#f6f0e8','hill'],
+    foundproof:  ['#4a5a7a','#edf0f5','dune'],   algcount:   ['#7a3a5a','#f6eaf0','crystal'],
+    abstraction: ['#5a5a8a','#eeeef7','star'],   open:       ['#8a6a10','#f7f1e0','crag'],
+    solved:      ['#2c7a47','#e9f4ec','hill'],   crossfield: ['#3a6a8a','#e9f0f5','wave'],
+    branches:    ['#3f6f45','#eaf3ea','tree'],   applied:    ['#3a6a8a','#e9f0f5','circuit'],
+    abstract:    ['#5a5a8a','#eeeef7','crystal'],optlearn:   ['#6a48a8','#f0ebf8','circuit'],
+    methods:     ['#4a5a7a','#edf0f5','wave']
+  };
+  function land(k){ return LAND[k] || ['#4a6076','#eef2f7','hill']; }
+
+  /* deterministic scatter: the same journey always gets the same landscape */
+  function seeded(key){
+    var h = 2166136261;
+    for (var i=0;i<key.length;i++){ h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return function(){ h ^= h<<13; h ^= h>>>17; h ^= h<<5; return ((h>>>0) % 10000)/10000; };
+  }
+
+  /* the scenery itself, drawn faintly behind the road */
+  function scenery(kind, W, H, ink, rnd){
+    var g = '<g class="jt-land" fill="none" stroke="'+ink+'" stroke-opacity=".16" stroke-width="1.6" stroke-linecap="round">';
+    var n = Math.max(5, Math.round(W/95));
+    for (var i=0;i<n;i++){
+      var x = 24 + rnd()*(W-48), y = 20 + rnd()*(H-34), sc = .7 + rnd()*.8;
+      if (kind==='hill'){
+        var w=26*sc, h=15*sc;
+        g += '<path d="M'+(x-w)+','+y+' Q'+x+','+(y-h)+' '+(x+w)+','+y+'"/>';
+        g += '<path d="M'+(x-w*.3)+','+(y-h*.55)+' l'+(w*.3)+',-'+(h*.35)+' l'+(w*.3)+','+(h*.35)+'"/>';
+      } else if (kind==='wave'){
+        var w2=18*sc;
+        g += '<path d="M'+(x-w2*1.6)+','+y+' q'+(w2*.4)+',-'+(6*sc)+' '+(w2*.8)+',0 t'+(w2*.8)+',0 t'+(w2*.8)+',0"/>';
+      } else if (kind==='tree'){
+        g += '<path d="M'+x+','+y+' l0,-'+(13*sc)+'"/>';
+        g += '<path d="M'+(x-8*sc)+','+(y-9*sc)+' L'+x+','+(y-24*sc)+' L'+(x+8*sc)+','+(y-9*sc)+' Z"/>';
+      } else if (kind==='crag'){
+        g += '<path d="M'+(x-16*sc)+','+y+' L'+(x-3*sc)+','+(y-22*sc)+' L'+(x+6*sc)+','+(y-9*sc)+' L'+(x+17*sc)+','+y+' Z"/>';
+      } else if (kind==='dune'){
+        var w3=30*sc;
+        g += '<path d="M'+(x-w3)+','+y+' q'+w3+',-'+(11*sc)+' '+(w3*2)+',0"/>';
+        g += '<path d="M'+(x-w3*.5)+','+(y+6*sc)+' q'+(w3*.6)+',-'+(6*sc)+' '+(w3*1.2)+',0"/>';
+      } else if (kind==='crystal'){
+        var w4=9*sc, h4=20*sc;
+        g += '<path d="M'+x+','+(y-h4)+' L'+(x+w4)+','+(y-h4*.45)+' L'+x+','+y+' L'+(x-w4)+','+(y-h4*.45)+' Z"/>';
+      } else if (kind==='circuit'){
+        var w5=26*sc;
+        g += '<path d="M'+(x-w5)+','+y+' h'+(w5*.6)+' v-'+(9*sc)+' h'+(w5*.7)+' v'+(9*sc)+' h'+(w5*.6)+'"/>';
+        g += '<circle cx="'+(x+w5*.9)+'" cy="'+y+'" r="'+(2.2*sc)+'" fill="'+ink+'" fill-opacity=".18" stroke="none"/>';
+      } else { /* star */
+        var r5=2+rnd()*2.4;
+        g += '<circle cx="'+x+'" cy="'+y+'" r="'+r5+'" fill="'+ink+'" fill-opacity=".22" stroke="none"/>';
+        if (rnd()>.6) g += '<path d="M'+(x-r5*2.4)+','+y+' h'+(r5*4.8)+' M'+x+','+(y-r5*2.4)+' v'+(r5*4.8)+'" stroke-opacity=".12"/>';
+      }
+    }
+    return g + '</g>';
+  }
+
+  function isGot(id){ return !!(progress[id] && progress[id].status === 'got'); }
+  function labelOf(id){ return (typeof byId!=='undefined' && byId[id] && byId[id].label) || id; }
+  function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* SVG <text> does not wrap, so break the label into short lines by hand.
+     Wrapping instead of truncating means every stone stays readable. */
+  function wrapLabel(txt, maxChars){
+    var words = String(txt).split(/\s+/), lines = [], cur = '';
+    for (var i=0;i<words.length;i++){
+      var w = words[i];
+      if (!cur) { cur = w; }
+      else if ((cur + ' ' + w).length <= maxChars) { cur += ' ' + w; }
+      else { lines.push(cur); cur = w; }
+      /* a single word longer than the line: hard-split it */
+      while (cur.length > maxChars){ lines.push(cur.slice(0, maxChars)); cur = cur.slice(maxChars); }
+    }
+    if (cur) lines.push(cur);
+    return lines.slice(0, 3);   /* three lines is plenty for any node name */
+  }
+
+  /* A road that wanders. Each segment gets its own bend, pushed sideways off
+     the straight line by a random amount, plus a random kink partway along.
+     The bends are worked out ONCE per journey and stored, so the walked half
+     and the unwalked half trace exactly the same route. */
+  function bendsFor(pts, rnd){
+    var b = [];
+    for (var i=1;i<pts.length;i++){
+      var a=pts[i-1], c=pts[i];
+      var dx=c.x-a.x, dy=c.y-a.y, len=Math.sqrt(dx*dx+dy*dy) || 1;
+      var nx=-dy/len, ny=dx/len;                 /* perpendicular */
+      b.push({
+        /* where along the segment the kink sits, and how far off-line it goes */
+        t1: 0.22 + rnd()*0.20,  o1: (rnd()-0.5) * Math.min(len*0.85, 78),
+        t2: 0.60 + rnd()*0.20,  o2: (rnd()-0.5) * Math.min(len*0.85, 78),
+        nx: nx, ny: ny
+      });
+    }
+    return b;
+  }
+
+  function trailPath(pts, bends){
+    if (pts.length < 2) return '';
+    var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+    for (var i=1;i<pts.length;i++){
+      var a=pts[i-1], c=pts[i], k=bends[i-1];
+      var c1x = a.x + (c.x-a.x)*k.t1 + k.nx*k.o1,
+          c1y = a.y + (c.y-a.y)*k.t1 + k.ny*k.o1,
+          c2x = a.x + (c.x-a.x)*k.t2 + k.nx*k.o2,
+          c2y = a.y + (c.y-a.y)*k.t2 + k.ny*k.o2;
+      d += ' C' + c1x.toFixed(1) + ',' + c1y.toFixed(1)
+         + ' '  + c2x.toFixed(1) + ',' + c2y.toFixed(1)
+         + ' '  + c.x.toFixed(1) + ',' + c.y.toFixed(1);
+    }
+    return d;
+  }
+
+  function drawJourney(j){
+    var openStyle = !!OPEN[j.key];
+    var n = j.steps.length;
+    var done = 0, current = -1;
+    for (var i=0;i<n;i++){
+      if (isGot(j.steps[i].id)) done++;
+      else if (current < 0) current = i;
+    }
+    var complete = current < 0;
+    var reach = openStyle ? n-1 : (complete ? n-1 : current);
+    var t = land(j.key), ink = t[0], ground = t[1], kind = t[2];
+    var rnd = seeded(j.key);
+
+    /* balance the rows so a 13 stop trail is 5+4+4, never 6+6+1 */
+    var PAD = 62, GAP = 104, ROW = 124;
+    var rowsWanted = Math.ceil(n / 6);
+    var perRow = Math.ceil(n / rowsWanted);
+    var rows = Math.ceil(n / perRow);
+    var cols = Math.min(n, perRow);
+    var W = PAD*2 + (cols-1) * GAP;
+    var H = PAD*2 + (rows-1) * ROW + 46;   /* room for a three line label on the last row */
+    if (W < 260) W = 260;
+
+    var pts = [];
+    for (var i=0;i<n;i++){
+      var r = Math.floor(i/perRow), c = i % perRow;
+      if (r % 2) c = perRow - 1 - c;              /* snake back on odd rows */
+      /* wander: a road never runs straight, so nudge each stop off the grid */
+      pts.push({ x: PAD + c*GAP + (rnd()-0.5)*46,
+                 y: PAD + r*ROW + (rnd()-0.5)*62 });
+    }
+
+    var svg = '<svg class="jt-svg" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(j.name)+' trail">';
+    svg += scenery(kind, W, H, ink, rnd);
+
+    if (!openStyle){
+      var bends = bendsFor(pts, rnd);
+      svg += '<path d="'+trailPath(pts, bends)+'" fill="none" stroke="'+ink+'" stroke-opacity=".22" stroke-width="3.5" stroke-dasharray="7 8" stroke-linecap="round"/>';
+      if (done > 0){
+        var k = Math.min(done+1, n);
+        svg += '<path d="'+trailPath(pts.slice(0,k), bends.slice(0,k-1))+'" fill="none" stroke="'+ink+'" stroke-width="3.5" stroke-linecap="round"/>';
+      }
+    }
+
+    for (var i=0;i<n;i++){
+      var pt = pts[i], got = isGot(j.steps[i].id);
+      var known = openStyle || i <= reach;
+      var cls = got ? 'got' : ((i === current && !openStyle) ? 'now' : (known ? 'known' : 'sealed'));
+      svg += '<g class="jt-stop '+cls+'"'+(known ? ' data-id="'+esc(j.steps[i].id)+'"' : '')+'>';
+      if (i === current && !openStyle){
+        svg += '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="15" fill="none" stroke="'+ink+'" stroke-opacity=".38" stroke-width="2">'
+             + '<animate attributeName="r" values="13;19;13" dur="2.6s" repeatCount="indefinite"/></circle>';
+      }
+      svg += '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="11" fill="'+(got?ink:ground)+'" stroke="'+ink+'" stroke-width="2"'
+           + (cls==='sealed' ? ' stroke-dasharray="3 3" stroke-opacity=".45"' : '') + '/>';
+      svg += '<text class="jt-num" x="'+pt.x+'" y="'+(pt.y+4)+'" text-anchor="middle" fill="'+(got?'#fff':ink)+'">'
+           + (got ? '\u2713' : (known ? (i+1) : '?')) + '</text>';
+      svg += '<title>' + (known ? esc(labelOf(j.steps[i].id)) : 'Sealed until you walk here') + '</title>';
+      if (known){
+        var lines = wrapLabel(labelOf(j.steps[i].id), 13);
+        svg += '<text class="jt-lbl" x="'+pt.x+'" y="'+(pt.y+27)+'" text-anchor="middle" fill="'+ink+'">';
+        for (var L=0; L<lines.length; L++){
+          svg += '<tspan x="'+pt.x+'" dy="'+(L?10.5:0)+'">'+esc(lines[L])+'</tspan>';
+        }
+        svg += '</text>';
+      }
+      svg += '</g>';
+    }
+    if (complete && n){
+      var lastP = pts[n-1];
+      svg += '<g stroke="'+ink+'" stroke-width="3.4" stroke-linecap="round" opacity=".9">'
+           + '<path d="M'+(lastP.x-9)+','+(lastP.y-24)+' l18,-14"/>'
+           + '<path d="M'+(lastP.x+9)+','+(lastP.y-24)+' l-18,-14"/></g>';
+    }
+    svg += '</svg>';
+
+    return '<div class="jt-card'+(complete?' done':'')+'" style="--ink:'+ink+';--ground:'+ground+'">'
+         +   '<div class="jt-head">'
+         +     '<span class="jt-name">'+esc(j.name)+'</span>'
+         +     '<span class="jt-kind">'+(openStyle ? 'no set order'
+                 : (complete ? 'walked to its end' : done+' of '+n)) +'</span>'
+         +   '</div>'
+         +   '<div class="jt-scroll">'+svg+'</div>'
+         + '</div>';
+  }
+
+  window.renderJourneyLog = function(){
+    var el = document.getElementById('jq-body'); if(!el) return;
+    var ttl = document.getElementById('jq-title'); if(ttl) ttl.textContent = 'Journeys';
+    el.innerHTML = JOURNEYS.map(drawJourney).join('');
+    el.querySelectorAll('.jt-stop[data-id]').forEach(function(g){
+      g.onclick = function(){
+        document.getElementById('notes-overlay').classList.remove('open');
+        var id = g.getAttribute('data-id');
+        if (window.gotoNode) window.gotoNode(id);
+        else if (typeof selectNode === 'function') selectNode(id);
+      };
+    });
+  };
+})();
+
+function saveJourneysDone(){ if(window.syncTouch) window.syncTouch(); try{ localStorage.setItem("mathmap_journeys",JSON.stringify(journeysDone)); }catch(e){} }
 function refreshJourneyOptions(){
   var sel=document.getElementById("journey-select"); if(!sel) return;
   Array.prototype.forEach.call(sel.options,function(o){
@@ -40123,5 +40449,248 @@ window.addEventListener('beforeinstallprompt', (e) => {
 })();
 </script>
 
+<div class="sync-choice" id="sync-choice">
+  <div class="sync-choice-in">
+    <h3>Both devices changed</h3>
+    <p id="sync-choice-p">Pick which version to keep. The other is discarded.</p>
+    <button class="sync-opt" id="sync-take-cloud"><b>Cloud data</b><span id="sync-cloud-when"></span></button>
+    <button class="sync-opt" id="sync-take-local"><b>Local data</b><span id="sync-local-when"></span></button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   DEVICE SYNC.  Two devices, one shared record, no accounts.
+
+   Nothing reaches the network until two devices pair.  After pairing
+   there is a single dataset that both devices read and write - not a
+   "send", just the same data opened from two places.
+
+   Divergence is settled by a base snapshot: whatever was true at the
+   last successful sync.  If only one side changed a key, that change
+   is taken silently.  If both changed it, the user picks.
+   ══════════════════════════════════════════════════════════════════════ */
+(function(){
+  var API   = '/api/sync/';
+  var KEYS  = ["mathmap_progress","mathmap_activity","mathmap_journeys","mathmap_prac",
+               "mathmap_notes_order","mathmap_global_scroll","mathmap_gami"];
+               /* mathmap_pos_v7 is deliberately absent: node positions are layout,
+                  the other device recomputes its own. */
+  var LS_ME='mathmap_sync_me', LS_GROUP='mathmap_sync_group',
+      LS_BASE='mathmap_sync_base', LS_VER='mathmap_sync_ver', LS_WHEN='mathmap_sync_when';
+  var ALPHA='ABCDEFGHJKMNPQRSTUVWXYZ23456789';   /* no 0/O/1/I/L */
+
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+  function myCode(){
+    var c=get(LS_ME);
+    if(!c){
+      var b=new Uint8Array(10); (crypto||window.crypto).getRandomValues(b);
+      c=''; for(var i=0;i<10;i++) c+=ALPHA[b[i]%ALPHA.length];
+      set(LS_ME,c);
+    }
+    return c;
+  }
+  function groupId(){ return get(LS_GROUP); }
+  function paired(){ return !!groupId(); }
+
+  function snapshot(){
+    var o={}; KEYS.forEach(function(k){ var v=get(k); if(v!==null) o[k]=v; });
+    return o;
+  }
+  function applySnapshot(o){
+    KEYS.forEach(function(k){
+      if(Object.prototype.hasOwnProperty.call(o,k)) set(k,o[k]); else del(k);
+    });
+  }
+  function baseSnap(){ try{ return JSON.parse(get(LS_BASE)||'{}'); }catch(e){ return {}; } }
+
+  /* three-way merge. returns {data, conflicts:[key,...]} */
+  function merge(local, cloud, base){
+    var out={}, conflicts=[], keys={};
+    KEYS.forEach(function(k){ keys[k]=1; });
+    Object.keys(keys).forEach(function(k){
+      var l=local[k], c=cloud[k], b=base[k];
+      if(l===c){ if(l!==undefined) out[k]=l; return; }          /* agree */
+      if(l===b){ if(c!==undefined) out[k]=c; return; }          /* only cloud moved */
+      if(c===b){ if(l!==undefined) out[k]=l; return; }          /* only local moved */
+      conflicts.push(k); out[k]=l;                              /* both moved */
+    });
+    return {data:out, conflicts:conflicts};
+  }
+
+  function stamp(t){
+    if(!t) return 'never synced';
+    var d=new Date(t), n=Date.now()-t;
+    if(n<60000) return 'just now';
+    if(n<3600000) return Math.round(n/60000)+' min ago';
+    return d.toLocaleString();
+  }
+
+  function say(id,txt,cls){
+    var el=document.getElementById(id); if(!el) return;
+    el.textContent=txt||''; el.className='sync-msg'+(cls?' '+cls:'');
+  }
+
+  function refreshUI(){
+    var idle=document.getElementById('sync-idle'), live=document.getElementById('sync-live');
+    if(!idle||!live) return;
+    var mc=document.getElementById('sync-mycode'); if(mc) mc.textContent=myCode();
+    if(paired()){
+      idle.style.display='none'; live.style.display='';
+      var w=document.getElementById('sync-when');
+      if(w) w.textContent=stamp(+get(LS_WHEN)||0);
+    } else {
+      idle.style.display=''; live.style.display='none';
+    }
+  }
+
+  /* ---- network ---------------------------------------------------- */
+  function pull(){
+    return fetch(API+groupId(), {cache:'no-store'}).then(function(r){
+      if(r.status===404) return {gone:true};
+      if(!r.ok) throw new Error('read failed');
+      return r.json();
+    });
+  }
+  function push(data, version){
+    return fetch(API+groupId(), {
+      method:'PUT',
+      headers: version==null ? {'Content-Type':'application/json'}
+                             : {'Content-Type':'application/json','If-Match':String(version)},
+      body: JSON.stringify({data:data})
+    }).then(function(r){
+      if(r.status===409) return r.json().then(function(j){ return {conflict:true, current:j.current}; });
+      if(!r.ok) throw new Error('write failed');
+      return r.json();
+    });
+  }
+
+  function expired(){
+    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN);
+    refreshUI();
+    say('sync-msg','Sync expired after 30 days of inactivity. Your progress is safe on this device.','');
+  }
+
+  function commit(data, version){
+    applySnapshot(data);
+    set(LS_BASE, JSON.stringify(data));
+    if(version!=null) set(LS_VER, String(version));
+    set(LS_WHEN, String(Date.now()));
+  }
+
+  function askChoice(cloudData, cloudWhen, localWhen){
+    return new Promise(function(resolve){
+      var box=document.getElementById('sync-choice');
+      document.getElementById('sync-cloud-when').textContent='last changed '+stamp(cloudWhen);
+      document.getElementById('sync-local-when').textContent='last changed '+stamp(localWhen);
+      box.classList.add('open');
+      document.getElementById('sync-take-cloud').onclick=function(){ box.classList.remove('open'); resolve('cloud'); };
+      document.getElementById('sync-take-local').onclick=function(){ box.classList.remove('open'); resolve('local'); };
+    });
+  }
+
+  var running=false;
+  function sync(msgId){
+    if(!paired()||running) return Promise.resolve();
+    running=true;
+    say(msgId,'Syncing\u2026','');
+    return pull().then(function(rec){
+      if(rec.gone){ expired(); return; }
+      var local=snapshot(), base=baseSnap(), cloud=rec.data||{};
+      var m=merge(local, cloud, base);
+      if(!m.conflicts.length){
+        return push(m.data, rec.version).then(function(res){
+          if(res.conflict){ running=false; return sync(msgId); }
+          commit(m.data, res.version);
+          say(msgId,'Synced.','good'); refreshUI();
+        });
+      }
+      return askChoice(cloud, rec.lastModified, +get(LS_WHEN)||Date.now()).then(function(pick){
+        var chosen = pick==='cloud' ? cloud : local;
+        return push(chosen, rec.version).then(function(res){
+          if(res.conflict){ running=false; return sync(msgId); }
+          commit(chosen, res.version);
+          say(msgId, pick==='cloud'?'Kept the cloud version.':'Kept this device\u2019s version.','good');
+          refreshUI();
+          if(typeof applyProgressVisuals==='function') applyProgressVisuals();
+        });
+      });
+    }).catch(function(e){
+      say(msgId,'Could not reach sync. Your data is safe locally.','bad');
+    }).then(function(){ running=false; });
+  }
+
+  /* ---- pairing ----------------------------------------------------- */
+  function pair(theirCode){
+    theirCode=(theirCode||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+    if(theirCode.length<8) { say('sync-msg','That code looks too short.','bad'); return; }
+    if(theirCode===myCode()){ say('sync-msg','That is this device\u2019s own code.','bad'); return; }
+    /* both devices sort the pair the same way, so both compute the same id */
+    var pairSeed=[myCode(),theirCode].sort().join('');
+    var h=2166136261;
+    for(var i=0;i<pairSeed.length;i++){ h^=pairSeed.charCodeAt(i); h=Math.imul(h,16777619); }
+    var gid='g_'+pairSeed.slice(0,18)+(h>>>0).toString(36);
+    set(LS_GROUP,gid);
+    say('sync-msg','Pairing\u2026','');
+    fetch(API+gid,{cache:'no-store'}).then(function(r){
+      if(r.status===404){
+        /* first device here: this device's data becomes the shared data */
+        var d=snapshot();
+        return push(d,null).then(function(res){
+          commit(d,res.version);
+          say('sync-msg','Paired. This device\u2019s data is now the shared data.','good');
+          refreshUI();
+        });
+      }
+      return r.json().then(function(rec){
+        return askChoice(rec.data||{}, rec.lastModified, Date.now()).then(function(pick){
+          var chosen = pick==='cloud' ? (rec.data||{}) : snapshot();
+          return push(chosen, rec.version).then(function(res){
+            commit(chosen,res.version);
+            say('sync-msg','Paired.','good'); refreshUI();
+            if(typeof applyProgressVisuals==='function') applyProgressVisuals();
+          });
+        });
+      });
+    }).catch(function(){
+      del(LS_GROUP);
+      say('sync-msg','Could not reach sync. Nothing was changed.','bad');
+      refreshUI();
+    });
+  }
+
+  function unpair(){
+    var gid=groupId(); if(!gid) return;
+    fetch(API+gid,{method:'DELETE'}).catch(function(){});
+    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN);
+    refreshUI();
+    say('sync-msg','Unsynced. This device kept its data.','');
+  }
+
+  /* ---- debounce: batch writes so one study session is ~1 write ------ */
+  var timer=null;
+  window.syncTouch=function(){
+    if(!paired()) return;
+    clearTimeout(timer);
+    timer=setTimeout(function(){ sync('sync-msg2'); }, 20000);
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    refreshUI();
+    var p=document.getElementById('sync-pair');
+    if(p) p.onclick=function(){ pair(document.getElementById('sync-input').value); };
+    var n=document.getElementById('sync-now');
+    if(n) n.onclick=function(){ sync('sync-msg2'); };
+    var o=document.getElementById('sync-off');
+    if(o) o.onclick=function(){ if(confirm('Unsync this device? Both devices keep their own copy.')) unpair(); };
+    if(paired()) sync('sync-msg2');
+  });
+
+  window.__sync={pair:pair, unpair:unpair, sync:sync, myCode:myCode, merge:merge};
+})();
+</script>
 </body>
 </html>
