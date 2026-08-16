@@ -1408,8 +1408,8 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
     <div class="btns">
 
       <button id="gami-btn" title="Open Gami's Home"><img class="gami-face" src="./assets/face_icon.png" alt=""> Gami<span class="gami-dot"></span></button>
-      <button id="ud-btn"><span class="ud-flame">⚙️</span> User Data</button>
-      <button id="journeys-btn" class="topbar-btn">Journeys</button>
+      <button id="ud-btn"><span class="ud-flame">⚙</span> User Data</button>
+      <button id="journeys-btn" class="topbar-btn">✦ Journeys</button>
     </div>
   </div>
   <svg id="svg"></svg>
@@ -15935,7 +15935,7 @@ refreshJourneyOptions();
     var s=calcStreak();
     /* Always the gear — this is the settings/data button. The streak is still
        signalled next to it by the orange .ud-streak-badge day count. */
-    var fl=btn.querySelector(".ud-flame");if(fl)fl.textContent="⚙️";
+    var fl=btn.querySelector(".ud-flame");if(fl)fl.textContent="⚙";
     var bd=btn.querySelector(".ud-streak-badge");
     if(s.streak>0&&!bd){
       bd=document.createElement("span");bd.className="ud-streak-badge";
@@ -16222,7 +16222,9 @@ window.syncPracticeStatus = function(id){
 (function(){
   var btn=document.getElementById('theme-btn'); if(!btn) return;
   function isDark(){ return document.documentElement.classList.contains('dark'); }
-  function refresh(){ btn.textContent = isDark() ? '\uD83C\uDF19' : '\u2600\uFE0F'; }
+  /* text glyphs, not emoji: they inherit the button colour and font size
+     instead of rendering as a coloured tile */
+  function refresh(){ btn.textContent = isDark() ? '\u263E' : '\u2600'; }
   btn.onclick=function(){
     var dark=!isDark();
     document.documentElement.classList.toggle('dark', dark);
