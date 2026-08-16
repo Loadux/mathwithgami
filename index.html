@@ -1008,10 +1008,16 @@
     text-decoration-color:var(--ink);
     text-decoration-color:color-mix(in srgb, var(--ink) 34%, transparent);}
   .jt-kind{margin-left:auto;font-size:11.5px;color:#8a8f98;white-space:nowrap;}
+  /* centring a scrollable child with flex makes its left edge unreachable,
+     so centre with auto margins, which overflows symmetrically instead */
   .jt-scroll{overflow-x:auto;overflow-y:hidden;padding:2px 12px 10px;}
-  .jt-svg{display:block;background:var(--ground);border-radius:10px;}
-  .jt-num{font-size:11px;font-weight:800;}
-  .jt-lbl{font-size:9.5px;font-weight:600;opacity:.85;}
+  /* the global `svg{width:100%}` used by the map would squash these to
+     unreadable size, so trails keep their own dimensions and scroll */
+  .jt-svg{display:block;background:var(--ground);border-radius:10px;
+    width:auto !important;height:auto !important;max-width:none !important;margin:0 auto;}
+  .jt-num{font-weight:800;}
+  .jt-lbl{font-weight:600;opacity:.85;}
+  @media (max-width:760px){ .jt-scroll{-webkit-overflow-scrolling:touch;} }
   .jt-stop[data-id]{cursor:pointer;}
   .jt-stop[data-id]:hover circle{stroke-width:3;}
   .jt-stop.sealed{opacity:.55;}
@@ -14813,8 +14819,10 @@ document.getElementById("ppin").onclick=function(e){
   }
 
   document.getElementById("journeys-btn").onclick = function() {
-    if (window.renderJourneyLog) window.renderJourneyLog();
+    /* open first: the trails measure their container, and a hidden
+       container measures zero */
     document.getElementById("notes-overlay").classList.add("open");
+    if (window.renderJourneyLog) window.renderJourneyLog();
   };
 
 
@@ -15651,7 +15659,7 @@ var journeysDone={}; try{ journeysDone=JSON.parse(localStorage.getItem("mathmap_
       while (cur.length > maxChars){ lines.push(cur.slice(0, maxChars)); cur = cur.slice(maxChars); }
     }
     if (cur) lines.push(cur);
-    return lines.slice(0, 3);   /* three lines is plenty for any node name */
+    return lines.slice(0, 4);   /* four lines: narrow screens wrap tighter */
   }
 
   /* A road that wanders. Each segment gets its own bend, pushed sideways off
@@ -15690,7 +15698,7 @@ var journeysDone={}; try{ journeysDone=JSON.parse(localStorage.getItem("mathmap_
     return d;
   }
 
-  function drawJourney(j){
+  function drawJourney(j, avail){
     var openStyle = !!OPEN[j.key];
     var n = j.steps.length;
     var done = 0, current = -1;
@@ -15704,22 +15712,65 @@ var journeysDone={}; try{ journeysDone=JSON.parse(localStorage.getItem("mathmap_
     var rnd = seeded(j.key);
 
     /* balance the rows so a 13 stop trail is 5+4+4, never 6+6+1 */
-    var PAD = 62, GAP = 104, ROW = 124;
-    var rowsWanted = Math.ceil(n / 6);
+    /* Everything below is derived from the width the card actually has.
+       No breakpoints: the trail fills whatever space it is given, on any
+       screen, and the stop spacing sets the type size and label wrapping. */
+    function clamp(v,lo,hi){ return v<lo?lo:(v>hi?hi:v); }
+
+    var PAD  = clamp(avail * 0.085, 30, 62);
+    var span = avail - PAD*2;                  /* usable run across one row  */
+    var MIN_GAP = 74;                          /* below this stops collide   */
+
+    /* As many stops per row as the width genuinely allows. No arbitrary cap:
+       a wide card should lay a long trail out flat, a narrow one should wrap. */
+    var maxPerRow = Math.max(2, Math.floor(span / MIN_GAP) + 1);
+    var rowsWanted = Math.ceil(n / maxPerRow);
     var perRow = Math.ceil(n / rowsWanted);
+
+    /* stretch the gap so the row fills the card exactly, then cap it so a
+       two stop journey does not sprawl */
+    var GAP = perRow > 1 ? Math.max(MIN_GAP, span / (perRow - 1)) : 0;
+
+    /* A label is centred on its stop and may be almost a full gap wide, so the
+       end padding has to cover half of one or the first and last labels spill
+       out of the drawing. Recompute the gap once the padding has grown. */
+    PAD = Math.min(Math.max(PAD, GAP * 0.52 + 4), avail * 0.16);
+    span = avail - PAD*2;
+    GAP = perRow > 1 ? Math.max(MIN_GAP, span / (perRow - 1)) : 0;
+
+    /* MIN_GAP is a floor, so a crowded row can still compute wider than the
+       card. Fitting beats ideal spacing: shrink the gap the rest of the way. */
+    if (perRow > 1 && PAD*2 + (Math.min(n,perRow)-1)*GAP > avail){
+      GAP = (avail - PAD*2) / (Math.min(n,perRow) - 1);
+    }
+
+    var ROW = clamp(GAP * 1.20, 96, 150);
+
+
+    /* type and wrapping follow the spacing, so nothing ever overlaps */
+    var FS  = clamp(GAP / 8.6, 8.5, 12);       /* label size   */
+    var NFS = clamp(GAP / 7.6, 9.5, 13);       /* number size  */
+    var maxChars = Math.max(7, Math.floor((GAP * 0.90) / (FS * 0.58)));
+    var R   = clamp(GAP / 8.8, 8, 12);         /* stop radius  */
+
+    /* PAD is sized to fit a label's WIDTH, so reusing it vertically leaves a
+       tall empty band under short trails. Vertical padding only has to clear
+       the stop, its halo and the wander. Defined here: it needs R. */
+    var JY   = ROW * 0.20;
+    var PADY = R * 1.9 + JY + 6;
     var rows = Math.ceil(n / perRow);
     var cols = Math.min(n, perRow);
     var W = PAD*2 + (cols-1) * GAP;
-    var H = PAD*2 + (rows-1) * ROW + 46;   /* room for a three line label on the last row */
-    if (W < 260) W = 260;
+    var H = PADY*2 + (rows-1) * ROW + FS*4.4 + 6;   /* room for 4 wrapped lines */
+    if (W < 240) W = 240;
 
     var pts = [];
     for (var i=0;i<n;i++){
       var r = Math.floor(i/perRow), c = i % perRow;
       if (r % 2) c = perRow - 1 - c;              /* snake back on odd rows */
       /* wander: a road never runs straight, so nudge each stop off the grid */
-      pts.push({ x: PAD + c*GAP + (rnd()-0.5)*46,
-                 y: PAD + r*ROW + (rnd()-0.5)*62 });
+      pts.push({ x: PAD  + c*GAP + (rnd()-0.5)*Math.min(46, GAP*0.28),
+                 y: PADY + r*ROW + (rnd()-0.5)*JY*2 });
     }
 
     var svg = '<svg class="jt-svg" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="'+esc(j.name)+' trail">';
@@ -15740,19 +15791,19 @@ var journeysDone={}; try{ journeysDone=JSON.parse(localStorage.getItem("mathmap_
       var cls = got ? 'got' : ((i === current && !openStyle) ? 'now' : (known ? 'known' : 'sealed'));
       svg += '<g class="jt-stop '+cls+'"'+(known ? ' data-id="'+esc(j.steps[i].id)+'"' : '')+'>';
       if (i === current && !openStyle){
-        svg += '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="15" fill="none" stroke="'+ink+'" stroke-opacity=".38" stroke-width="2">'
-             + '<animate attributeName="r" values="13;19;13" dur="2.6s" repeatCount="indefinite"/></circle>';
+        svg += '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="'+(R*1.4).toFixed(1)+'" fill="none" stroke="'+ink+'" stroke-opacity=".38" stroke-width="2">'
+             + '<animate attributeName="r" values="'+(R*1.2).toFixed(1)+';'+(R*1.75).toFixed(1)+';'+(R*1.2).toFixed(1)+'" dur="2.6s" repeatCount="indefinite"/></circle>';
       }
-      svg += '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="11" fill="'+(got?ink:ground)+'" stroke="'+ink+'" stroke-width="2"'
+      svg += '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="'+R.toFixed(1)+'" fill="'+(got?ink:ground)+'" stroke="'+ink+'" stroke-width="2"'
            + (cls==='sealed' ? ' stroke-dasharray="3 3" stroke-opacity=".45"' : '') + '/>';
-      svg += '<text class="jt-num" x="'+pt.x+'" y="'+(pt.y+4)+'" text-anchor="middle" fill="'+(got?'#fff':ink)+'">'
+      svg += '<text class="jt-num" x="'+pt.x+'" y="'+(pt.y+NFS*0.35)+'" font-size="'+NFS.toFixed(1)+'" text-anchor="middle" fill="'+(got?'#fff':ink)+'">'
            + (got ? '\u2713' : (known ? (i+1) : '?')) + '</text>';
       svg += '<title>' + (known ? esc(labelOf(j.steps[i].id)) : 'Sealed until you walk here') + '</title>';
       if (known){
-        var lines = wrapLabel(labelOf(j.steps[i].id), 13);
-        svg += '<text class="jt-lbl" x="'+pt.x+'" y="'+(pt.y+27)+'" text-anchor="middle" fill="'+ink+'">';
+        var lines = wrapLabel(labelOf(j.steps[i].id), maxChars);
+        svg += '<text class="jt-lbl" x="'+pt.x+'" y="'+(pt.y+R+FS+3)+'" font-size="'+FS.toFixed(1)+'" text-anchor="middle" fill="'+ink+'">';
         for (var L=0; L<lines.length; L++){
-          svg += '<tspan x="'+pt.x+'" dy="'+(L?10.5:0)+'">'+esc(lines[L])+'</tspan>';
+          svg += '<tspan x="'+pt.x+'" dy="'+(L?(FS*1.12).toFixed(1):0)+'">'+esc(lines[L])+'</tspan>';
         }
         svg += '</text>';
       }
@@ -15776,10 +15827,38 @@ var journeysDone={}; try{ journeysDone=JSON.parse(localStorage.getItem("mathmap_
          + '</div>';
   }
 
+  window.addEventListener('resize', function(){
+    var el=document.getElementById('jq-body');
+    if(el && el.children.length && window.renderJourneyLog) window.renderJourneyLog();
+  });
   window.renderJourneyLog = function(){
     var el = document.getElementById('jq-body'); if(!el) return;
     var ttl = document.getElementById('jq-title'); if(ttl) ttl.textContent = 'Journeys';
-    el.innerHTML = JOURNEYS.map(drawJourney).join('');
+    /* Draw one empty card first and measure IT. An empty card is sized by its
+       parent, so it reports the true inner width, with no overflowing child to
+       distort it and nothing cached to go stale. Then draw for real. */
+    el.innerHTML = '<div class="jt-card"><div class="jt-scroll"></div></div>';
+    var probe = el.querySelector('.jt-scroll');
+    var pcs = getComputedStyle(probe);
+    var avail = Math.max(240,
+      probe.clientWidth - parseFloat(pcs.paddingLeft) - parseFloat(pcs.paddingRight));
+
+    el.innerHTML = JOURNEYS.map(function(j){ return drawJourney(j, avail); }).join('');
+
+    /* drawing may add a vertical scrollbar, which narrows the cards; if so,
+       re-measure once and redraw at the corrected width */
+    var after = el.querySelector('.jt-scroll');
+    if (after){
+      var acs = getComputedStyle(after);
+      var real = after.clientWidth - parseFloat(acs.paddingLeft) - parseFloat(acs.paddingRight);
+      if (real > 60 && real < avail - 2){
+        avail = Math.max(240, real);
+        el.innerHTML = JOURNEYS.map(function(j){ return drawJourney(j, avail); }).join('');
+      }
+    }
+
+
+    /* revealed stops jump to their stone on the map */
     el.querySelectorAll('.jt-stop[data-id]').forEach(function(g){
       g.onclick = function(){
         document.getElementById('notes-overlay').classList.remove('open');
@@ -40642,10 +40721,12 @@ window.addEventListener('beforeinstallprompt', (e) => {
     });
   }
 
-  function expired(){
-    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN);
+  function endPairing(reason){
+    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN); del(LS_PEND);
     refreshUI();
-    say('sync-msg','Sync expired after 30 days of inactivity. Your progress is safe on this device.','');
+    say('sync-msg', reason==='unpaired'
+      ? 'The other device unsynced. Your progress is safe on this device.'
+      : 'Sync expired after 30 days of inactivity. Your progress is safe on this device.','');
   }
 
   function commit(data, version){
@@ -40672,7 +40753,12 @@ window.addEventListener('beforeinstallprompt', (e) => {
     running=true;
     say(msgId,'Syncing\u2026','');
     return pull().then(function(rec){
-      if(rec.gone){ expired(); return; }
+      if(rec.gone){ endPairing('expired'); return; }
+      if(rec.unpaired){
+        /* the partner left. clear the tombstone, nobody else needs it. */
+        fetch(API+groupId(),{method:'DELETE'}).catch(function(){});
+        endPairing('unpaired'); return;
+      }
       var local=snapshot(), base=baseSnap(), cloud=rec.data||{};
       var m=merge(local, cloud, base);
       if(!m.conflicts.length){
@@ -40754,6 +40840,12 @@ window.addEventListener('beforeinstallprompt', (e) => {
         });
       }
       return r.json().then(function(rec){
+        if(rec.unpaired){                                     /* stale tombstone: reuse the slot */
+          return push2(gid,{claim:myCode()},rec.version).then(function(){
+            showWait(theirs);
+            say('sync-msg3','Waiting. Press Pair on the other device, then press Check.','');
+          });
+        }
         if(rec.paired) return finish(gid, rec);              /* already live: join it */
         if(rec.claim && rec.claim!==myCode()) return finish(gid, rec);  /* they claimed: complete */
         showWait(theirs);                                     /* our own claim, still alone */
@@ -40780,8 +40872,20 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
   function unpair(){
     var gid=groupId(); if(!gid) return;
-    fetch(API+gid,{method:'DELETE'}).catch(function(){});
-    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN); del('mathmap_sync_pending');
+    /* Do not just delete: the other device would read a bare 404 and wrongly
+       report a 30 day expiry. Leave a marker saying who left, which it clears
+       once it has seen it. */
+    var ver=get(LS_VER);
+    fetch(API+gid,{
+      method:'PUT',
+      headers: ver==null ? {'Content-Type':'application/json'}
+                         : {'Content-Type':'application/json','If-Match':String(ver)},
+      body: JSON.stringify({unpaired:true, by:myCode(), at:Date.now()})
+    }).catch(function(){
+      /* offline: fall back to a plain delete so we do not leave a live record */
+      fetch(API+gid,{method:'DELETE'}).catch(function(){});
+    });
+    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN); del(LS_PEND);
     refreshUI();
     say('sync-msg','Unsynced. This device kept its data.','');
   }
