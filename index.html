@@ -398,6 +398,11 @@
   }
   #ud-btn:hover{background:#f0f0f0;border-color:#999;}
   #ud-btn .ud-flame{font-size:14px;}
+  /* the outline inverts with the theme: dark line on the light page,
+     light line on the dark page, so both buttons read as a pair */
+  #ud-btn, #journeys-btn{border-color:#333;}
+  #ud-btn:hover, #journeys-btn:hover{border-color:#111;}
+  .dark #ud-btn:hover, .dark #journeys-btn:hover{border-color:#fff;}
 
   /* ── User Data modal ── */
   #ud-overlay{
@@ -966,6 +971,13 @@
   }
   .notes-close:hover { background: #e0e0e0; color: #111; }
 
+  /* theme glyph comes from CSS, not JS, so it is correct on the very first
+     painted frame instead of flashing the other symbol for a moment */
+  /* literal characters: CSS hex escapes need delimiting and are easy to
+     mangle, and the file is UTF-8 so the glyphs can go in directly */
+  #theme-btn::before{content:"☀";}
+  .dark #theme-btn::before{content:"☾";}
+
   /* ---- device sync ------------------------------------------------ */
   .sync-p{font-size:12.5px;color:#666;line-height:1.55;margin:0 0 10px;}
   .sync-code{flex:1 1 0;min-width:0;font-family:ui-monospace,Menlo,Consolas,monospace;
@@ -1111,7 +1123,10 @@ html.dark{background:#14161a;}
 .dark .msdd-row{color:#d8d4cc;border-bottom-color:#2a2d33;}
 .dark .msdd-row:hover{background:#2c3037;}
 .dark .msdd-snip{color:#8f8a80;}
-.dark #ud-btn{background:#23262c;color:#d8d4cc;}
+.dark #ud-btn{background:#23262c;color:#d8d4cc;border-color:#ccc;}
+/* #ud-btn keeps its light #ccc border in dark mode because its ID rule
+   outranks .dark .topbar button. Journeys is matched deliberately here. */
+.dark #journeys-btn{background:#23262c;color:#d8d4cc;border-color:#ccc;}
 .dark #ud-btn:hover{background:#2c3037;}
 .dark #svg{background:#14161a;}
 .dark .link{stroke:#484d56;}
@@ -1398,7 +1413,7 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
 <div id="app">
   <div class="topbar">
     <div class="topbar-left">
-      <button id="mode-toggle" class="ctl-btn" style="width: 115px; text-align: center; box-sizing: border-box; flex-shrink: 0;">Directory Mode</button> <button id="theme-btn" title="Light / dark mode">☀️</button>
+      <button id="mode-toggle" class="ctl-btn" style="width: 115px; text-align: center; box-sizing: border-box; flex-shrink: 0;">Directory Mode</button> <button id="theme-btn" title="Light / dark mode"></button>
       <a href="https://github.com/sponsors/Loadux?frequency=one-time&sponsor=Loadux" target="_blank" rel="noopener noreferrer" class="supporter-btn">Support Gami</a>
       <input id="msearch" class="msearch" type="text" placeholder="Search names, ideas, formulas…" autocomplete="off">
     </div>
@@ -16224,7 +16239,9 @@ window.syncPracticeStatus = function(id){
   function isDark(){ return document.documentElement.classList.contains('dark'); }
   /* text glyphs, not emoji: they inherit the button colour and font size
      instead of rendering as a coloured tile */
-  function refresh(){ btn.textContent = isDark() ? '\u263E' : '\u2600'; }
+  /* glyph lives in CSS (#theme-btn::before) so it is right on the first
+     painted frame; only the tooltip needs updating here */
+  function refresh(){ btn.title = isDark() ? 'Switch to light mode' : 'Switch to dark mode'; }
   btn.onclick=function(){
     var dark=!isDark();
     document.documentElement.classList.toggle('dark', dark);
