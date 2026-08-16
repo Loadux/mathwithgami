@@ -1547,6 +1547,17 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
         </div>
         <div class="sync-msg" id="sync-msg"></div>
       </div>
+      <div id="sync-wait" style="display:none">
+        <div class="sync-live-line">Waiting for the other device.</div>
+        <p class="sync-p">Type this code into the other device&rsquo;s sync box and press Pair there,
+           then press Check below.</p>
+        <div class="sync-row">
+          <div class="sync-code" id="sync-wait-me">&mdash;</div>
+          <button class="ud-foot-btn" id="sync-check">Check</button>
+          <button class="ud-foot-btn danger" id="sync-cancel">Cancel</button>
+        </div>
+        <div class="sync-msg" id="sync-msg3"></div>
+      </div>
       <div id="sync-live" style="display:none">
         <div class="sync-live-line">Paired. <span id="sync-when">never synced</span></div>
         <div class="sync-row">
@@ -40507,16 +40518,74 @@ window.addEventListener('beforeinstallprompt', (e) => {
   }
   function baseSnap(){ try{ return JSON.parse(get(LS_BASE)||'{}'); }catch(e){ return {}; } }
 
-  /* three-way merge. returns {data, conflicts:[key,...]} */
+  /* Keys that grow on their own every visit. These must never raise a
+     conflict: two devices both being *used* is not a disagreement. */
+  var GROW = {mathmap_activity:1, mathmap_gami:1};
+
+  function parse(v){ if(v===undefined||v===null) return undefined;
+    try{ return JSON.parse(v); }catch(e){ return v; } }
+  function isObj(x){ return x && typeof x==='object' && !Array.isArray(x); }
+
+  /* union two append-only structures, preferring the larger/newer of scalars */
+  function grow(a,b){
+    if(a===undefined) return b; if(b===undefined) return a;
+    if(Array.isArray(a)&&Array.isArray(b)){
+      var seen={}, out=[];
+      a.concat(b).forEach(function(v){ var k=JSON.stringify(v);
+        if(!seen[k]){ seen[k]=1; out.push(v); } });
+      return out;
+    }
+    if(isObj(a)&&isObj(b)){
+      var o={}, k;
+      for(k in a) o[k]=a[k];
+      for(k in b) o[k]= (k in o) ? grow(o[k], b[k]) : b[k];
+      return o;
+    }
+    if(typeof a==='number'&&typeof b==='number') return Math.max(a,b);
+    return b;
+  }
+
+  /* Deep three-way merge, one level INSIDE each store so two devices editing
+     different nodes never collide. Only the same node changed to two different
+     values on both sides raises a conflict. */
+  function merge3(l,c,b,path,conflicts){
+    if(JSON.stringify(l)===JSON.stringify(c)) return l;
+    if(JSON.stringify(l)===JSON.stringify(b)) return c;   /* only cloud moved */
+    if(JSON.stringify(c)===JSON.stringify(b)) return l;   /* only local moved */
+    if(isObj(l)&&isObj(c)){
+      var bb = isObj(b)?b:{}, out={}, keys={}, k;
+      for(k in l) keys[k]=1;
+      for(k in c) keys[k]=1;
+      for(k in keys){
+        var lv=l[k], cv=c[k], bv=bb[k];
+        if(lv===undefined){ out[k]=cv; continue; }        /* cloud added */
+        if(cv===undefined){ out[k]=lv; continue; }        /* local added */
+        out[k]=merge3(lv,cv,bv,path+'/'+k,conflicts);
+      }
+      return out;
+    }
+    conflicts.push(path);                                  /* genuinely both */
+    return l;
+  }
+
   function merge(local, cloud, base){
-    var out={}, conflicts=[], keys={};
-    KEYS.forEach(function(k){ keys[k]=1; });
-    Object.keys(keys).forEach(function(k){
+    var out={}, conflicts=[];
+    KEYS.forEach(function(k){
       var l=local[k], c=cloud[k], b=base[k];
-      if(l===c){ if(l!==undefined) out[k]=l; return; }          /* agree */
-      if(l===b){ if(c!==undefined) out[k]=c; return; }          /* only cloud moved */
-      if(c===b){ if(l!==undefined) out[k]=l; return; }          /* only local moved */
-      conflicts.push(k); out[k]=l;                              /* both moved */
+      if(l===c){ if(l!==undefined) out[k]=l; return; }
+      if(l===undefined){ out[k]=c; return; }
+      if(c===undefined){ out[k]=l; return; }
+      var lp=parse(l), cp=parse(c), bp=parse(b);
+      if(GROW[k]){                       /* visit counters, streaks, seen-lists */
+        out[k]=JSON.stringify(grow(lp,cp)); return;
+      }
+      if(isObj(lp)&&isObj(cp)){
+        var merged=merge3(lp,cp,bp,k,conflicts);
+        out[k]=JSON.stringify(merged); return;
+      }
+      if(l===b){ out[k]=c; return; }
+      if(c===b){ out[k]=l; return; }
+      conflicts.push(k); out[k]=l;
     });
     return {data:out, conflicts:conflicts};
   }
@@ -40538,12 +40607,17 @@ window.addEventListener('beforeinstallprompt', (e) => {
     var idle=document.getElementById('sync-idle'), live=document.getElementById('sync-live');
     if(!idle||!live) return;
     var mc=document.getElementById('sync-mycode'); if(mc) mc.textContent=myCode();
+    var wait=document.getElementById('sync-wait');
+    var pending=get('mathmap_sync_pending');
     if(paired()){
-      idle.style.display='none'; live.style.display='';
+      idle.style.display='none'; if(wait) wait.style.display='none'; live.style.display='';
       var w=document.getElementById('sync-when');
       if(w) w.textContent=stamp(+get(LS_WHEN)||0);
+    } else if(pending){
+      idle.style.display='none'; if(wait) wait.style.display=''; live.style.display='none';
+      var me=document.getElementById('sync-wait-me'); if(me) me.textContent=myCode();
     } else {
-      idle.style.display=''; live.style.display='none';
+      idle.style.display=''; if(wait) wait.style.display='none'; live.style.display='none';
     }
   }
 
@@ -40623,49 +40697,91 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }).then(function(){ running=false; });
   }
 
-  /* ---- pairing ----------------------------------------------------- */
-  function pair(theirCode){
-    theirCode=(theirCode||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-    if(theirCode.length<8) { say('sync-msg','That code looks too short.','bad'); return; }
-    if(theirCode===myCode()){ say('sync-msg','That is this device\u2019s own code.','bad'); return; }
-    /* both devices sort the pair the same way, so both compute the same id */
-    var pairSeed=[myCode(),theirCode].sort().join('');
+  /* ---- pairing: neither device is paired until BOTH have entered the
+     other's code. The first to press Pair only leaves a claim; the second
+     sees that claim and completes it. -------------------------------------- */
+  var LS_PEND='mathmap_sync_pending';
+
+  function gidFor(mine, theirs){
+    var seed=[mine,theirs].sort().join('');
     var h=2166136261;
-    for(var i=0;i<pairSeed.length;i++){ h^=pairSeed.charCodeAt(i); h=Math.imul(h,16777619); }
-    var gid='g_'+pairSeed.slice(0,18)+(h>>>0).toString(36);
-    set(LS_GROUP,gid);
-    say('sync-msg','Pairing\u2026','');
-    fetch(API+gid,{cache:'no-store'}).then(function(r){
+    for(var i=0;i<seed.length;i++){ h^=seed.charCodeAt(i); h=Math.imul(h,16777619); }
+    return 'g_'+seed.slice(0,18)+(h>>>0).toString(36);
+  }
+
+  function showWait(theirs){
+    set(LS_PEND, theirs);
+    var me=document.getElementById('sync-wait-me'); if(me) me.textContent=myCode();
+    refreshUI();
+  }
+
+  function finish(gid, rec){
+    /* both sides confirmed: settle whose data becomes the shared data */
+    var go = function(chosen, version){
+      return push2(gid, {paired:true, data:chosen}, version).then(function(res){
+        set(LS_GROUP,gid); del(LS_PEND);
+        commit(chosen,res.version);
+        say('sync-msg2','Paired.','good'); refreshUI();
+        if(typeof applyProgressVisuals==='function') applyProgressVisuals();
+      });
+    };
+    if(!rec || !rec.data || !Object.keys(rec.data).length) return go(snapshot(), rec?rec.version:null);
+    return askChoice(rec.data, rec.lastModified, Date.now()).then(function(pick){
+      return go(pick==='cloud' ? rec.data : snapshot(), rec.version);
+    });
+  }
+
+  function push2(gid, body, version){
+    return fetch(API+gid, {
+      method:'PUT',
+      headers: version==null ? {'Content-Type':'application/json'}
+                             : {'Content-Type':'application/json','If-Match':String(version)},
+      body: JSON.stringify(body)
+    }).then(function(r){
+      if(!r.ok && r.status!==409) throw new Error('write failed');
+      return r.json();
+    });
+  }
+
+  function attempt(theirs, msgId){
+    var gid=gidFor(myCode(), theirs);
+    return fetch(API+gid,{cache:'no-store'}).then(function(r){
       if(r.status===404){
-        /* first device here: this device's data becomes the shared data */
-        var d=snapshot();
-        return push(d,null).then(function(res){
-          commit(d,res.version);
-          say('sync-msg','Paired. This device\u2019s data is now the shared data.','good');
-          refreshUI();
+        /* nobody here yet: leave our claim and wait for them */
+        return push2(gid,{claim:myCode()},null).then(function(){
+          showWait(theirs);
+          say('sync-msg3','Waiting. Press Pair on the other device, then press Check.','');
         });
       }
       return r.json().then(function(rec){
-        return askChoice(rec.data||{}, rec.lastModified, Date.now()).then(function(pick){
-          var chosen = pick==='cloud' ? (rec.data||{}) : snapshot();
-          return push(chosen, rec.version).then(function(res){
-            commit(chosen,res.version);
-            say('sync-msg','Paired.','good'); refreshUI();
-            if(typeof applyProgressVisuals==='function') applyProgressVisuals();
-          });
-        });
+        if(rec.paired) return finish(gid, rec);              /* already live: join it */
+        if(rec.claim && rec.claim!==myCode()) return finish(gid, rec);  /* they claimed: complete */
+        showWait(theirs);                                     /* our own claim, still alone */
+        say('sync-msg3','The other device has not entered your code yet.','bad');
       });
     }).catch(function(){
-      del(LS_GROUP);
-      say('sync-msg','Could not reach sync. Nothing was changed.','bad');
-      refreshUI();
+      say(msgId,'Could not reach sync. Nothing was changed.','bad');
     });
+  }
+
+  function pair(theirCode){
+    theirCode=(theirCode||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+    if(theirCode.length<8){ say('sync-msg','That code looks too short.','bad'); return; }
+    if(theirCode===myCode()){ say('sync-msg','That is this device\u2019s own code.','bad'); return; }
+    say('sync-msg','Checking\u2026','');
+    attempt(theirCode,'sync-msg');
+  }
+
+  function cancelPending(){
+    var theirs=get(LS_PEND);
+    if(theirs){ fetch(API+gidFor(myCode(),theirs),{method:'DELETE'}).catch(function(){}); }
+    del(LS_PEND); refreshUI();
   }
 
   function unpair(){
     var gid=groupId(); if(!gid) return;
     fetch(API+gid,{method:'DELETE'}).catch(function(){});
-    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN);
+    del(LS_GROUP); del(LS_BASE); del(LS_VER); del(LS_WHEN); del('mathmap_sync_pending');
     refreshUI();
     say('sync-msg','Unsynced. This device kept its data.','');
   }
@@ -40684,6 +40800,13 @@ window.addEventListener('beforeinstallprompt', (e) => {
     if(p) p.onclick=function(){ pair(document.getElementById('sync-input').value); };
     var n=document.getElementById('sync-now');
     if(n) n.onclick=function(){ sync('sync-msg2'); };
+    var ck=document.getElementById('sync-check');
+    if(ck) ck.onclick=function(){
+      var t=get('mathmap_sync_pending');
+      if(t){ say('sync-msg3','Checking\u2026',''); attempt(t,'sync-msg3'); }
+    };
+    var cx=document.getElementById('sync-cancel');
+    if(cx) cx.onclick=function(){ cancelPending(); };
     var o=document.getElementById('sync-off');
     if(o) o.onclick=function(){ if(confirm('Unsync this device? Both devices keep their own copy.')) unpair(); };
     if(paired()) sync('sync-msg2');
