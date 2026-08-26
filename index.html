@@ -1187,6 +1187,14 @@ html.dark{background:#14161a;}
 .dark #full-depth-recommendation{color:#b3aea4 !important;}
 
 /* ── Keep-offline control on the Full Depth footer ── */
+#fd-download-link{
+  display:inline-block;margin-left:8px;padding:8px 14px;border:none;border-radius:6px;
+  background:#f0f0f0;color:#333;font-weight:bold;font-size:14px;cursor:pointer;
+  font-family:inherit;transition:background .2s;vertical-align:top;text-decoration:none;
+}
+#fd-download-link:hover{background:#e0e0e0;}
+.dark #fd-download-link{background:#2c3037;color:#e8e8e8;}
+.dark #fd-download-link:hover{background:#3a3d44;}
 #fd-offline-btn{
   display:inline-block;margin-left:8px;padding:8px 14px;border:none;border-radius:6px;
   background:#5a6472;color:#fff;font-weight:bold;font-size:14px;cursor:pointer;
@@ -1789,6 +1797,7 @@ window.__DEFAULT_TXT_SIZE=function(){try{return (window.innerWidth&&window.inner
       <a href="#" id="full-depth-link" style="display:none; padding:8px 16px; background:#3a86ff; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold; font-size: 14px; font-family:var(--site-font); box-shadow: 0 2px 4px rgba(58,134,255,0.3); transition: all 0.2s;">
         Explore Full Depth ↗
       </a>
+      <a href="#" id="fd-download-link" download style="display:none;">⬇ Download PDF</a>
       <button id="fd-offline-btn" type="button" style="display:none">⬇ Save</button>
       <div id="fd-offline-note"></div>
       <div id="full-depth-recommendation" style="display:none; margin-top: 10px; font-size: 13px; color: #777; font-style: italic;"></div>
@@ -26958,6 +26967,7 @@ const MATH_DATA = Object.assign({}, MATH_DATA_P1, MATH_DATA_P2);
   function wireFullDepth(id){
     var fdLink = document.getElementById('full-depth-link');
     var fdRec  = document.getElementById('full-depth-recommendation');
+    var fdDownload = document.getElementById('fd-download-link');
     if(!fdLink || !fdRec) return;
     var mapData = (typeof FULL_DEPTH_MAP !== 'undefined') ? FULL_DEPTH_MAP[id] : null;
     if(mapData){
@@ -26965,6 +26975,10 @@ const MATH_DATA = Object.assign({}, MATH_DATA_P1, MATH_DATA_P2);
       fdLink.target = '_blank';
       fdLink.rel = 'noopener';
       fdLink.style.display = 'inline-block';
+      if(fdDownload){
+        fdDownload.href = mapData.pdf;
+        fdDownload.style.display = 'inline-block';
+      }
       fdRec.textContent = mapData.rec;
       fdRec.style.display = 'block';
       if(window.OfflineBooks) window.OfflineBooks.attach(mapData.pdf);
@@ -26972,6 +26986,7 @@ const MATH_DATA = Object.assign({}, MATH_DATA_P1, MATH_DATA_P2);
       /* no book mapped: show nothing rather than a dead control */
       fdLink.style.display = 'none';
       fdLink.removeAttribute('target');
+      if(fdDownload) fdDownload.style.display = 'none';
       fdRec.style.display = 'none';
       fdRec.textContent = '';
       if(window.OfflineBooks) window.OfflineBooks.attach(null);
