@@ -1,14 +1,16 @@
-const CACHE_NAME = "gami-math-v10";
-// Books the user explicitly chose to keep offline. Deliberately NOT version-
-// stamped: the shell cache is wiped on every deploy, and downloaded books must
-// survive that. Only the user removes books.
-const BOOKS_CACHE = "gami-books-v1";
+const CACHE_NAME = "gami-math";
+// Books the user explicitly chose to keep offline. Kept separate from the
+// shell cache, which activate() clears: downloaded books must survive that.
+// Only the user removes books.
+const BOOKS_CACHE = "gami-books";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
   "./Math_with_Gami.html",
   "./manifest.json",
   "./pwa-icon-512-modified.png",
+  "./lib/pdf.min.js",
+  "./lib/pdf.worker.min.js",
   "./assets/face_icon.png",
   "./assets/jump.webp",
   "./assets/think.webp",
@@ -109,7 +111,7 @@ self.addEventListener("fetch", (event) => {
 
   // NETWORK-FIRST STRATEGY
   // Always try the network first to get the latest update.
-  // If offline, fall back to the cached version.
+  // If offline, fall back to the cached copy.
   event.respondWith(
     fetch(event.request)
       .then((response) => {
