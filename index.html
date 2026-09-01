@@ -455,6 +455,25 @@
   #rdr-toc a:hover{background:var(--rdr-btn-hover);}
   #rdr-toc a.d2{padding-left:30px;opacity:.85;}
   #rdr-toc a.d3{padding-left:46px;opacity:.72;font-size:12px;}
+  /* A canvas with no content sits at its default 300x150, and this one has a
+     white background - so a slow book showed a small white box, motionless, for
+     as long as the fetch took. It read as frozen because there was nothing to
+     say otherwise. The canvases stay hidden until they are sized and painted,
+     and this covers the space meanwhile with something that visibly moves. */
+  #rdr-load{position:absolute;top:var(--rdr-bar-h,44px);left:0;right:0;bottom:0;
+      display:none;flex-direction:column;align-items:center;justify-content:center;
+      gap:13px;background:var(--rdr-bg);color:var(--rdr-fg);
+      font-family:var(--site-font);font-size:13px;z-index:2;}
+  #rdr.loading #rdr-load{display:flex;}
+  #rdr-load .rdr-spin{width:30px;height:30px;border-radius:50%;
+      border:3px solid var(--rdr-line);border-top-color:var(--rdr-accent);
+      animation:rdr-spin .8s linear infinite;}
+  #rdr-load-txt{opacity:.8;font-variant-numeric:tabular-nums;}
+  @keyframes rdr-spin{to{transform:rotate(360deg);}}
+  @media (prefers-reduced-motion:reduce){
+    #rdr-load .rdr-spin{animation:rdr-pulse 1.5s ease-in-out infinite;}
+    @keyframes rdr-pulse{50%{opacity:.3;}}
+  }
   #rdr-prog{height:3px;background:var(--rdr-track);flex-shrink:0;}
   #rdr-prog i{display:block;height:100%;background:var(--rdr-accent);width:0;transition:width .18s;}
   /* Two wide word-labels ("Book View", "Dark Mode") put the full-size controls
@@ -11868,6 +11887,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   </div>
   <div id="rdr-prog"><i></i></div>
   <div id="rdr-wrap"><canvas id="rdr-canvas"></canvas><canvas id="rdr-canvas2" style="display:none"></canvas></div>
+  <div id="rdr-load" role="status" aria-live="polite"><span class="rdr-spin"></span><span id="rdr-load-txt">Loading&#8230;</span></div>
   <nav id="rdr-toc"></nav>
 </div>
 
@@ -11883,6 +11903,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   var spread = false;               /* two-page book view */
   var night = false;                /* page inversion, remembered per reader */
   var scrubbing = false;            /* a page button is being held down */
+  var firstPaint = false;           /* has this book put ink on the canvas yet */
   var curNode = '', curSlot = '';   /* for the #id/slot address */
   var ZMIN = 0.5, ZMAX = 6;
   var el = {};
@@ -11919,6 +11940,12 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }
     tasks = [];
   }
+
+  function showLoad(txt){
+    if (el.loadTxt && txt) el.loadTxt.textContent = txt;
+    if (el.root) el.root.classList.add('loading');
+  }
+  function hideLoad(){ if (el.root) el.root.classList.remove('loading'); }
 
   function syncBarHeight(){
     if (!el.bar || !el.root) return;
@@ -12029,6 +12056,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }).then(function(){
       if (seq !== renderSeq) return;
       tasks = [];
+      /* Cleared on the first page that actually finishes drawing, not when the
+         bytes arrive - the gap between those two is most of the wait. */
+      if (!firstPaint){ firstPaint = true; hideLoad(); }
       el.wrap.scrollTop = 0;      /* a new page starts at its top when scrolling */
     })['catch'](function(err){
       if (seq === renderSeq) tasks = [];
@@ -12111,7 +12141,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
        - the document was never destroyed, the keydown handler stayed attached,
        and the address never dropped its slot. The reader still LOOKED closed,
        because the class comes off on the line above the throw. */
-    el.root.classList.remove('on', 'toc');
+    el.root.classList.remove('on', 'toc', 'loading');
     cancelTasks();
     if (doc) { try { doc.destroy(); } catch(e){} doc = null; }
     document.removeEventListener('keydown', onKey, true);
@@ -12145,6 +12175,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     el.next = $('rdr-next'); el.toc = $('rdr-toc'); el.tocBtn = $('rdr-toc-btn');
     el.prog = $('rdr-prog').firstElementChild;
     el.bar = $('rdr-bar');
+    el.load = $('rdr-load'); el.loadTxt = $('rdr-load-txt');
     /* The contents panel hangs off the bar's real height, which changes when the
        bar wraps to two rows on a phone or the device is rotated. */
     syncBarHeight();
@@ -12370,12 +12401,25 @@ window.addEventListener('beforeinstallprompt', (e) => {
     syncBarHeight();               /* now that the bar has a height to measure */
     document.addEventListener('keydown', onKey, true);
     if (window.__writeHash) { try { window.__writeHash(); } catch(e){} }
-    pdfjsLib.getDocument(pdfPath).promise.then(function(d){
+    firstPaint = false;
+    el.canvas.style.display = 'none';      /* no empty white box while we wait */
+    el.canvas2.style.display = 'none';
+    showLoad('Loading…');
+    var job = pdfjsLib.getDocument(pdfPath);
+    /* pdf.js reports bytes as they arrive; a percentage is worth far more than a
+       spinner alone on a 40MB book. Some servers send no content-length, and
+       then p.total is 0 and the plain message stands. */
+    job.onProgress = function(p){
+      if (path !== pdfPath) return;        /* a different book took over */
+      if (p && p.total) showLoad('Loading ' + Math.round(p.loaded / p.total * 100) + '%');
+    };
+    job.promise.then(function(d){
       doc = d; total = d.numPages;
       var saved = positions()[pdfPath];
       page = (saved && saved >= 1 && saved <= total) ? saved : 1;
       paintUi();
       buildToc();
+      showLoad('Drawing the page…');   /* the bytes are in; now it renders */
       render();
     })['catch'](function(err){
       close();
