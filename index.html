@@ -2806,24 +2806,59 @@ const node = g.append("g").attr("id","nodes-group").selectAll("circle").data(nod
   .attr("class","node").attr("data-group", d=>d.group<0?"-1":d.group)
   .attr("data-subject", d=>SUBJECT_OF[d.id]||null).attr("r",R).attr("fill",COL)
   .on("click",(ev,d)=>{ev.stopPropagation(); selectNode(d.id);});
-node.call(d3.drag()
-  .on("start",(ev,d)=>{
-    if (currentMode === 'directory') return;
-    layoutSettled = false;
-    if(!ev.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y;
-  })
-  .on("drag",(ev,d)=>{
-    if (currentMode === 'directory') return;
-    d.fx=ev.x;d.fy=ev.y;
-  })
-  .on("end",(ev,d)=>{
-    if (currentMode === 'directory') return;
-    if(!ev.active)sim.alphaTarget(0);
-    if(!d.pinned) { d.fx=null; d.fy=null; }
-    /* a pin is a deliberate placement, so record it now; anything else waits
-       for the simulation to come to rest */
-    if(d.pinned) savePos(true);
-  }));
+/* d3.drag fires "start" on mousedown even when the pointer never moves, so a
+   plain CLICK used to run the whole start/end pair: it re-heated the simulation
+   with alphaTarget(.3).restart(), pinned the stone, then released it again. The
+   result was that clicking any stone set the entire map drifting to a new
+   equilibrium - nothing to do with selection, just the physics being kicked.
+
+   Nothing here happens until the pointer has actually travelled a few pixels.
+   Below that threshold a press is a click and the layout is left alone. */
+function nodeDrag(){
+  const MOVED = 4;               /* SCREEN px before a press counts as a drag */
+  /* Measured on the source event, not on ev.x/ev.y: those are graph coordinates,
+     so the zoom scale stretches them - a 2px twitch counted as a 4px drag when
+     the map was zoomed out, and a real drag would not register when zoomed in. */
+  function screenXY(ev){
+    const se = ev.sourceEvent;
+    if(se && se.touches && se.touches[0]) return [se.touches[0].clientX, se.touches[0].clientY];
+    if(se && se.clientX != null) return [se.clientX, se.clientY];
+    return [ev.x, ev.y];
+  }
+  return d3.drag()
+    .on("start",(ev,d)=>{
+      if (currentMode === 'directory') return;
+      const p = screenXY(ev);
+      d.__ox = p[0]; d.__oy = p[1]; d.__moved = false;
+      /* ev.active is 0 in "start" but 1 once "drag" is running, so the usual
+         if(!ev.active) guard is always false there. Capture it at start, where
+         it still means "no other drag is already going". */
+      d.__solo = !ev.active;
+    })
+    .on("drag",(ev,d)=>{
+      if (currentMode === 'directory') return;
+      if(!d.__moved){
+        const p = screenXY(ev);
+        if(Math.hypot(p[0] - d.__ox, p[1] - d.__oy) < MOVED) return;
+        d.__moved = true;
+        layoutSettled = false;
+        if(d.__solo)sim.alphaTarget(.3).restart();
+      }
+      d.fx=ev.x;d.fy=ev.y;
+    })
+    .on("end",(ev,d)=>{
+      if (currentMode === 'directory') return;
+      if(!d.__moved) return;     /* a click: never touch the simulation */
+      d.__moved = false;
+      if(!ev.active)sim.alphaTarget(0);
+      if(!d.pinned) { d.fx=null; d.fy=null; }
+      /* a pin is a deliberate placement, so record it now; anything else waits
+         for the simulation to come to rest */
+      if(d.pinned) savePos(true);
+    });
+}
+
+node.call(nodeDrag());
 
 const label = g.append("g").attr("id", "labels-group").selectAll("text").data(nodes).join("text")
   .attr("class","lab").attr("font-size",FS).attr("font-weight",d=>d.level<=1?700:d.level===2?600:400)
@@ -6940,22 +6975,7 @@ var gamiHome = byId["math"];
 /* Gami himself is a door too: click him → his room; drag him → carry his stone */
 gamiG.datum(gamiHome)
   .on("click",(ev,d)=>{ ev.stopPropagation(); selectNode("math"); })
-  .call(d3.drag()
-    .on("start",(ev,d)=>{
-      if (currentMode === 'directory') return;
-      layoutSettled = false;
-      if(!ev.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y;
-    })
-    .on("drag",(ev,d)=>{
-      if (currentMode === 'directory') return;
-      d.fx=ev.x;d.fy=ev.y;
-    })
-    .on("end",(ev,d)=>{
-      if (currentMode === 'directory') return;
-      if(!ev.active)sim.alphaTarget(0);
-      if(!d.pinned) { d.fx=null; d.fy=null; }
-      if(d.pinned) savePos(true);
-    }));
+  .call(nodeDrag());   /* same behaviour as a stone: a click must not move him */
 function placeGami(){
   if(!gamiHome) return;
   gamiG.attr("transform","translate("+gamiHome.x+","+(gamiHome.y - R(gamiHome) + 8)+")");
