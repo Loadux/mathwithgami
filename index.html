@@ -11982,13 +11982,19 @@ window.addEventListener('beforeinstallprompt', (e) => {
     return spread && total > 1;
   }
 
-  function paintOne(pg, canvas, fit, dpr){
-    var vp = pg.getViewport({ scale: fit * dpr });
-    canvas.width = Math.floor(vp.width);
-    canvas.height = Math.floor(vp.height);
+  function paintOne(pg, canvas, fit, q){
+    var vp = pg.getViewport({ scale: fit * q });
+    var w = Math.round(vp.width), h = Math.round(vp.height);
+    canvas.width = w;
+    canvas.height = h;
     canvas.style.transform = '';        /* drop any pinch preview */
-    canvas.style.width = Math.floor(vp.width / dpr) + 'px';
-    canvas.style.height = Math.floor(vp.height / dpr) + 'px';
+    /* The CSS size is DERIVED from the backing store rather than rounded on its
+       own. Flooring the two independently left the display ratio a hair off q -
+       1001 device pixels shown in 500 CSS pixels is 2.002, not 2 - so the
+       browser resampled the bitmap instead of mapping it 1:1, and that is what
+       made the type look soft. Fractional CSS pixels are fine here. */
+    canvas.style.width = (w / q) + 'px';
+    canvas.style.height = (h / q) + 'px';
     canvas.style.display = 'block';
     var t = pg.render({ canvasContext: canvas.getContext('2d'), viewport: vp });
     tasks.push(t);
@@ -12048,10 +12054,24 @@ window.addEventListener('beforeinstallprompt', (e) => {
       wrap.style.touchAction = 'none';
       wrap.classList.toggle('pannable', canPan);
       wrap.classList.toggle('two', pgs.length > 1);
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      /* Rasterise ABOVE display resolution and let the browser downsample.
+         Rendering at the device ratio alone looked low-res on an ordinary 1x
+         monitor, because the page is nearly always being SHRUNK to fit - an A4
+         sheet in a 700px frame is about 0.83 - so the glyphs were rasterised
+         below their natural size and came out thin and ragged. At least 2x
+         always, 3x where the screen can actually show it.
+
+         The pixel budget keeps that honest: at 600% zoom an unbounded 2x would
+         ask for a 50-megapixel canvas per page. Past the budget the quality
+         scale drops back, which costs nothing visible - by then the page is
+         magnified six times over anyway. */
+      var MAXPX = 16e6;
+      var q = Math.min(Math.max(window.devicePixelRatio || 1, 2), 3);
+      var cssPx = (base.width * fit) * (base.height * fit) * pgs.length;
+      if (cssPx * q * q > MAXPX) q = Math.max(1, Math.sqrt(MAXPX / cssPx));
       el.canvas2.style.display = 'none';
-      var jobs = [paintOne(pgs[0], el.canvas, fit, dpr)];
-      if (pgs.length > 1) jobs.push(paintOne(pgs[1], el.canvas2, fit, dpr));
+      var jobs = [paintOne(pgs[0], el.canvas, fit, q)];
+      if (pgs.length > 1) jobs.push(paintOne(pgs[1], el.canvas2, fit, q));
       return Promise.all(jobs);
     }).then(function(){
       if (seq !== renderSeq) return;
