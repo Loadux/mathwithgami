@@ -474,28 +474,44 @@
     #rdr-load .rdr-spin{animation:rdr-pulse 1.5s ease-in-out infinite;}
     @keyframes rdr-pulse{50%{opacity:.3;}}
   }
+  #rdr-top{flex-shrink:0;}
+  /* Full screen: the chrome stops taking up layout and becomes a strip that
+     slides in over the page, so the page itself gets the whole display. It
+     comes back on any mouse movement, and on a touch screen by tapping the
+     narrow band along the top - #rdr-peek - which is the only way back when
+     there is no pointer to move. */
+  #rdr.full #rdr-top{position:absolute;top:0;left:0;right:0;z-index:5;
+      transform:translateY(-100%);transition:transform .2s ease;
+      box-shadow:0 2px 16px rgba(0,0,0,.28);}
+  #rdr.full.chrome #rdr-top{transform:none;}
+  #rdr-peek{display:none;}
+  #rdr.full #rdr-peek{display:block;position:absolute;top:0;left:0;right:0;
+      height:34px;z-index:4;}
+  #rdr.full #rdr-load{top:0;}
   #rdr-prog{height:3px;background:var(--rdr-track);flex-shrink:0;}
   #rdr-prog i{display:block;height:100%;background:var(--rdr-accent);width:0;transition:width .18s;}
   /* Two wide word-labels ("Book View", "Dark Mode") put the full-size controls
      at 655px measured, so the bar starts tightening well before a phone:
      smaller type and padding first, title taking what is left and ellipsising.
-     The threshold sits at 760 rather than just above 655 so the title is still
-     visible on BOTH sides of it - at 661 the full-size controls ate the whole
-     bar and the title collapsed to zero width, which made widening the window
-     appear to delete the title. */
-  @media (max-width:760px){
+     Both thresholds sit well clear of the numbers so the title survives on BOTH
+     sides of each one. Measured with all three labels in: 756px of controls at
+     full size, 634px tightened. Crossing 900 the title drops from 260px to
+     136px and crossing 740 it disappears - but it never vanishes while the
+     window is getting WIDER, which is what made an earlier, tighter threshold
+     look like widening the window deleted the title. */
+  @media (max-width:900px){
     #rdr-bar{gap:6px;padding:6px 8px;font-size:12px;}
     #rdr-bar button{padding:5px 9px;}
     #rdr-page{width:44px;padding:5px 2px;}
     #rdr-count{min-width:38px;font-size:11.5px;}
     .rdr-grp{gap:6px;}
   }
-  /* Even tightened the controls need ~540px. Below that the title goes and the
+  /* Even tightened the controls need 634px. Below that the title goes and the
      bar becomes two rows, split by what the controls DO rather than by what
      happens to fit: row one is everything that moves you around the book, with
-     zoom and close together on the right; row two is the two view switches,
+     zoom and close together on the right; row two is the three view switches,
      centred under them. */
-  @media (max-width:560px){
+  @media (max-width:740px){
     #rdr-title{display:none;}
     #rdr-bar{flex-wrap:wrap;row-gap:6px;}
     #rdr-toc-btn{order:1;}
@@ -1923,22 +1939,18 @@ const ROOT_COLOR = "#555555";
 const ROOT = {id:"math",label:"Mathematics",idea:"The study of necessary structure, what must follow once you fix the definitions.",desc:"Mathematics is the art of giving the same name to different things (Poincaré). It is the science of patterns, the study of structure stripped of all but its logical skeleton. Every branch below shares a single heartbeat: assume almost nothing, then prove everything.",keyPeople:"Euclid, Newton, Gauss",yearHint:"Ancient–present",notableFact:"Mathematics is the only subject where you can be absolutely certain you are right.",children:[
  {id:"coremath",label:"Core & School Mathematics",g:9,idea:"The foundation everyone climbs first: numbers, algebra, shape, and functions, the language the rest of the map is written in.",desc:"Before the research continents comes the ground they stand on: arithmetic, fractions, algebra, geometry, trigonometry, and functions. This is the on-ramp, where a learner with no background builds the fluency every later branch quietly assumes.",keyPeople:"al-Khwarizmi, Euclid, Descartes",yearHint:"Antiquity–today",notableFact:"The word algebra comes from al-Khwarizmi's 9th-century book al-jabr, meaning the reunion of broken parts.",children:[
    {id:"arith",label:"Arithmetic",idea:"The four operations on numbers, and the place-value system that makes them work.",desc:"Counting, place value, the four operations, negative numbers, and order of operations, the bedrock skills underneath all of mathematics.",keyPeople:"Brahmagupta, Fibonacci",yearHint:"Antiquity",notableFact:"The place-value system with zero, carried from India to Europe by Fibonacci in 1202, made efficient calculation possible.",children:[
-  {id:"fracdec",label:"Fractions, Decimals & Percents",idea:"Numbers between the integers, written three equivalent ways.",desc:"Parts of a whole as fractions, decimals, and percentages, how to convert among them, and how to add, multiply, and compare them.",keyPeople:"Stevin",yearHint:"16th c.",notableFact:"Simon Stevin's 1585 pamphlet popularized decimal fractions, arguing everyone should use base-ten parts.",children:[]}
- ,
+  
   {id:"prealg",label:"Pre-Algebra",idea:"Letting a letter stand for an unknown number, and the rules for manipulating it.",desc:"Variables, expressions, exponents, roots, and solving one- and two-step equations, the bridge from arithmetic to algebra.",keyPeople:"Diophantus, al-Khwarizmi",yearHint:"3rd–9th c.",notableFact:"Diophantus introduced symbolic abbreviations for unknowns around 250 AD, earning the title father of algebra.",children:[
-  {id:"elemalg",label:"Elementary Algebra",idea:"Solving equations and working with polynomials, the workhorse of all later math.",desc:"Linear equations and inequalities, polynomials, factoring, the quadratic formula, and systems of equations.",keyPeople:"al-Khwarizmi, Viète",yearHint:"9th–16th c.",notableFact:"The quadratic formula was known in geometric form to the Babylonians nearly 4000 years ago.",children:[
-  {id:"coord",label:"Coordinate Geometry",idea:"Turning geometry into algebra by giving every point an address.",desc:"The Cartesian plane, distance and midpoint, slope, equations of lines and circles, and the conic sections, where shape becomes equation.",keyPeople:"Descartes, Fermat",yearHint:"17th c.",notableFact:"Descartes's 1637 idea of coordinates fused algebra and geometry, making calculus possible a generation later.",children:[
-   
-  ]}
- ,
-  {id:"precalc",label:"Functions & Precalculus",idea:"The function as a machine turning inputs into outputs, and the families that matter most.",desc:"Functions, domain and range, polynomial, rational, exponential, and logarithmic functions, transformations, and graphs, the final step before calculus.",keyPeople:"Euler",yearHint:"18th c.",notableFact:"Euler standardized the notation f(x) for a function in 1734, still used unchanged today.",children:[
+  {id:"elemalg",label:"School Algebra (Algebra I & II)",idea:"Every equation school asks you to solve, from one unknown up to the function families.",desc:"The whole school algebra sequence: linear equations and inequalities, points and lines on the coordinate plane, systems, exponents and polynomials, factoring, rational expressions, radicals and complex numbers, quadratics by every method, and finally functions, inverses, exponentials and logarithms. After this the subject stops being about solving and starts being about structure - that is Abstract Algebra.",keyPeople:"al-Khwarizmi, Viète",yearHint:"9th–16th c.",notableFact:"The quadratic formula was known in geometric form to the Babylonians nearly 4000 years ago.",children:[
+  
+  {id:"precalc",label:"Precalculus",idea:"The function as a machine turning inputs into outputs, and the families that matter most.",desc:"Functions, domain and range, polynomial, rational, exponential, and logarithmic functions, transformations, and graphs, the final step before calculus.",keyPeople:"Euler",yearHint:"18th c.",notableFact:"Euler standardized the notation f(x) for a function in 1734, still used unchanged today.",children:[
    
    
   ]}
  ]}
  ]}
  ,
-  {id:"countprob",label:"Counting & Basic Probability",idea:"Counting possibilities and measuring how likely an outcome is.",desc:"The multiplication principle, permutations and combinations, and elementary probability, the first steps into chance and combinatorics.",keyPeople:"Pascal, Fermat",yearHint:"17th c.",notableFact:"Probability was born in 1654 from a gambling question exchanged in letters between Pascal and Fermat.",children:[
+  {id:"countprob",label:"Basic Probability",idea:"Measuring how likely an outcome is, before any of the machinery.",desc:"Sample spaces and events, equally likely outcomes, the addition and multiplication rules, conditional probability and independence, and expected value. Counting appears here as the tool that answers how many, not as the subject.",keyPeople:"Pascal, Fermat",yearHint:"17th c.",notableFact:"Probability was born in 1654 from a gambling question exchanged in letters between Pascal and Fermat.",children:[
    
   ]}
  ]},
@@ -2037,7 +2049,7 @@ const ROOT = {id:"math",label:"Mathematics",idea:"The study of necessary structu
   {id:"transc",label:"Transcendental Number Theory",idea:"Why π and e are not roots of any polynomial, the unreachable numbers.",desc:"A transcendental number is one that does not satisfy any polynomial equation with rational coefficients. Liouville first proved transcendental numbers exist in 1844, Hermite proved e is transcendental in 1873, and Lindemann proved π is transcendental in 1882 (finally ruling out squaring the circle). Despite their ubiquity, proving any specific constant is transcendental remains extremely difficult.",keyPeople:"Liouville, Hermite, Lindemann",yearHint:"1844–present",notableFact:"Almost all real numbers are transcendental, rationals and algebraic numbers are a set of measure zero, yet we can prove transcendence for only a tiny handful of specific constants."}
  ]}
  ]},
- {id:"alg",label:"Algebra",g:2,idea:"Structure itself, stripped of objects, the mathematics of symmetry.",desc:"Modern algebra is not about solving equations (that's secondary); it's about understanding the abstract structures that underlie arithmetic operations. A group is anything with a 'multiplication' obeying four axioms, and this tiny definition captures the symmetries of crystals, the rotations of space, and the solutions of equations simultaneously.",keyPeople:"Galois, Noether, Grothendieck",yearHint:"9th c.–20th c.",notableFact:"The classification of finite simple groups, algebra's 'periodic table of symmetry', required 10,000+ pages of proof by hundreds of mathematicians.",children:[
+ {id:"alg",label:"Abstract Algebra",g:2,idea:"Structure itself, stripped of objects, the mathematics of symmetry.",desc:"Modern algebra is not about solving equations (that's secondary); it's about understanding the abstract structures that underlie arithmetic operations. A group is anything with a 'multiplication' obeying four axioms, and this tiny definition captures the symmetries of crystals, the rotations of space, and the solutions of equations simultaneously.",keyPeople:"Galois, Noether, Grothendieck",yearHint:"9th c.–20th c.",notableFact:"The classification of finite simple groups, algebra's 'periodic table of symmetry', required 10,000+ pages of proof by hundreds of mathematicians.",children:[
    
    
    {id:"order",label:"Order & Lattice Theory",g:2,idea:"The structure of less-than-or-equal-to, and systems with meets and joins.",desc:"Order theory studies sets with a notion of one element lying below another. When every pair has a least upper bound and a greatest lower bound you get a lattice, the structure behind Boolean algebra, classical and constructive logic, and the way subobjects organize across algebra.",keyPeople:"Boole, Dedekind, Birkhoff",yearHint:"19th c.–present",notableFact:"Every Boolean algebra is, in disguise, a collection of sets (Stone duality), tying logic to topology.",children:[
@@ -2072,13 +2084,13 @@ const ROOT = {id:"math",label:"Mathematics",idea:"The study of necessary structu
    
    
    
-   {id:"calculus",label:"Calculus",idea:"Derivatives and integrals: the two operations that measure change and accumulation.",desc:"Calculus is the study of change. The derivative measures an instantaneous rate, the integral measures total accumulation, and the Fundamental Theorem of Calculus shows the two are inverse operations. That single fact is why the subject holds together, and it is the gateway from algebra into all of analysis.",keyPeople:"Newton, Leibniz, Cauchy",yearHint:"1660s; made rigorous 1820s",notableFact:"Newton and Leibniz built calculus independently, igniting one of the bitterest priority disputes in the history of science.",children:[
-  {id:"multivar",label:"Multivariable Calculus",idea:"Calculus with many inputs: the derivative becomes a vector, the integral fills volumes.",desc:"Multivariable calculus extends derivatives and integrals to functions of several variables. Partial derivatives measure change one direction at a time, the gradient assembles them into the direction of steepest ascent, and multiple integrals accumulate over areas and volumes. Its crowning theorems, Green's, Stokes', and the divergence theorem, all say the same thing: what happens inside a region is fully recorded on its boundary.",keyPeople:"Euler, Lagrange, Gauss, Green, Stokes",yearHint:"18th–19th c.",notableFact:"Gradient descent, the algorithm that trains essentially every modern AI model, is nothing but the multivariable insight that the gradient points uphill, so walk the other way.",children:[
+   {id:"calculus",label:"Calculus (Calc I & II)",idea:"Derivatives and integrals: the two operations that measure change and accumulation.",desc:"Calculus is the study of change. The derivative measures an instantaneous rate, the integral measures total accumulation, and the Fundamental Theorem of Calculus shows the two are inverse operations. That single fact is why the subject holds together, and it is the gateway from algebra into all of analysis.",keyPeople:"Newton, Leibniz, Cauchy",yearHint:"1660s; made rigorous 1820s",notableFact:"Newton and Leibniz built calculus independently, igniting one of the bitterest priority disputes in the history of science.",children:[
+  {id:"multivar",label:"Multivariable Calculus (Calc III)",idea:"Calculus with many inputs: the derivative becomes a vector, the integral fills volumes.",desc:"Multivariable calculus extends derivatives and integrals to functions of several variables. Partial derivatives measure change one direction at a time, the gradient assembles them into the direction of steepest ascent, and multiple integrals accumulate over areas and volumes. Its crowning theorems, Green's, Stokes', and the divergence theorem, all say the same thing: what happens inside a region is fully recorded on its boundary.",keyPeople:"Euler, Lagrange, Gauss, Green, Stokes",yearHint:"18th–19th c.",notableFact:"Gradient descent, the algorithm that trains essentially every modern AI model, is nothing but the multivariable insight that the gradient points uphill, so walk the other way.",children:[
   {id:"calcvar",label:"Calculus of Variations",g:3,idea:"Finding the whole function that minimizes a quantity, not the point that minimizes a function.",desc:"Calculus of variations optimizes over entire functions or paths rather than single numbers. The classic question is which curve makes a quantity like time, length, or energy smallest, answered by the Euler-Lagrange equation. It is the mathematics behind the principle of least action that underlies physics.",keyPeople:"Euler, Lagrange, Hamilton",yearHint:"18th c.–present",notableFact:"Almost every law of physics can be restated as a single rule: nature makes the action stationary."}
  ]}
  ,
-  {id:"de",label:"Differential Equations",idea:"The laws of change, how the universe evolves in time.",desc:"Differential equations relate a function to its rate of change. Newton's laws, Maxwell's equations, the Schrödinger equation, heat flow, population dynamics, all are differential equations. The field is split into ODEs (ordinary, one independent variable) and PDEs (partial, many variables). Finding closed-form solutions is hard; proving that solutions exist and are unique is a whole sub-field.",keyPeople:"Newton, Leibniz, Euler",yearHint:"17th c.–present",notableFact:"Most differential equations have no closed-form solution, we prove existence and uniqueness theorems long before we can actually write down solutions.",children:[
-     {id:"pde",label:"Partial Differential Equations",idea:"Heat, waves, fluids, the equations governing every physical field.",desc:"PDEs involve functions of several variables and their partial derivatives. The heat equation, wave equation, Laplace equation, and Schrödinger equation are all fundamental PDEs. Solving them rigorously, especially the question of whether solutions remain smooth, is one of the deepest areas of analysis, connecting to physics, geometry, and number theory.",keyPeople:"Laplace, Fourier, Sobolev",yearHint:"18th–19th c.",notableFact:"The existence of smooth solutions to the Navier–Stokes PDE for 3D fluids remains one of the seven Millennium Prize Problems, an unsolved one-million-dollar question."},
+  {id:"de",label:"Differential Equations (ODEs)",idea:"The laws of change, how the universe evolves in time.",desc:"Differential equations relate a function to its rate of change. Newton's laws, Maxwell's equations, the Schrödinger equation, heat flow, population dynamics, all are differential equations. The field is split into ODEs (ordinary, one independent variable) and PDEs (partial, many variables). Finding closed-form solutions is hard; proving that solutions exist and are unique is a whole sub-field.",keyPeople:"Newton, Leibniz, Euler",yearHint:"17th c.–present",notableFact:"Most differential equations have no closed-form solution, we prove existence and uniqueness theorems long before we can actually write down solutions.",children:[
+     {id:"pde",label:"Partial Differential Equations (PDEs)",idea:"Heat, waves, fluids, the equations governing every physical field.",desc:"PDEs involve functions of several variables and their partial derivatives. The heat equation, wave equation, Laplace equation, and Schrödinger equation are all fundamental PDEs. Solving them rigorously, especially the question of whether solutions remain smooth, is one of the deepest areas of analysis, connecting to physics, geometry, and number theory.",keyPeople:"Laplace, Fourier, Sobolev",yearHint:"18th–19th c.",notableFact:"The existence of smooth solutions to the Navier–Stokes PDE for 3D fluids remains one of the seven Millennium Prize Problems, an unsolved one-million-dollar question."},
      {id:"navier",label:"Navier–Stokes",idea:"Do smooth fluid flows always stay smooth? Nobody knows.",desc:"The Navier–Stokes equations describe the motion of a viscous fluid. They have been used for over 150 years to model weather, ocean currents, aerodynamics, and blood flow. But the mathematical question of whether smooth 3D solutions must remain smooth for all time, or can develop singularities (infinite velocity) in finite time, is completely open. The Clay Mathematics Institute will pay one million dollars for a resolution.",keyPeople:"Navier, Stokes, Leray",yearHint:"1822–1845",notableFact:"In 2D, smooth Navier–Stokes solutions are known to remain smooth forever. The 3D case remains a total mystery.",children:[
   
   {id:"turbulence",label:"Turbulence & Regularity",idea:"The unsolved question, and the phenomenon behind it.",desc:"Energy cascades from large eddies to small until viscosity dissipates it, giving Kolmogorov's spectrum. Whether solutions stay smooth or can blow up in finite time is the Millennium problem.",keyPeople:"Kolmogorov, Leray, Fefferman",yearHint:"20th c.–present",notableFact:"Feynman called turbulence the most important unsolved problem in classical physics. It still is."}
@@ -2091,7 +2103,7 @@ const ROOT = {id:"math",label:"Mathematics",idea:"The study of necessary structu
   ]}
  ]}
  ]},
-   {id:"real",label:"Real Analysis",idea:"Limits, continuity, and the real line made fully rigorous.",desc:"Real analysis puts calculus on a rigorous foundation. It defines limits precisely (epsilon-delta), proves the intermediate value theorem and extreme value theorem, establishes when differentiation and integration can be exchanged, and develops the theory of infinite series. It is the prerequisite for almost all of higher mathematics.",keyPeople:"Cauchy, Weierstrass, Dedekind",yearHint:"19th c.",notableFact:"Weierstrass constructed a function that is continuous everywhere but differentiable nowhere, shocking the mathematical world and forcing a rethink of what 'smooth' means.",children:[
+   {id:"real",label:"Real Analysis (Advanced Calculus)",idea:"Limits, continuity, and the real line made fully rigorous.",desc:"Real analysis puts calculus on a rigorous foundation. It defines limits precisely (epsilon-delta), proves the intermediate value theorem and extreme value theorem, establishes when differentiation and integration can be exchanged, and develops the theory of infinite series. It is the prerequisite for almost all of higher mathematics.",keyPeople:"Cauchy, Weierstrass, Dedekind",yearHint:"19th c.",notableFact:"Weierstrass constructed a function that is continuous everywhere but differentiable nowhere, shocking the mathematical world and forcing a rethink of what 'smooth' means.",children:[
      
      {id:"measure",label:"Measure Theory",idea:"A deeper notion of length, area and integral, essential for probability.",desc:"Measure theory gives a rigorous definition of 'size' (length, area, volume, probability) for complicated sets. Lebesgue's integral, built on this foundation, integrates a much wider class of functions than Riemann's and behaves better under limits. Measure theory is the language of modern probability, and a prerequisite for functional analysis.",keyPeople:"Lebesgue, Borel, Carathéodory",yearHint:"1900s",notableFact:"The Banach–Tarski paradox proves you can decompose a sphere into 5 pieces and reassemble them into two spheres of the same size, using sets that have no well-defined volume."},
    ]},
@@ -2109,7 +2121,7 @@ const ROOT = {id:"math",label:"Mathematics",idea:"The study of necessary structu
  ,
   {id:"opalg",label:"Operator Algebras",g:3,idea:"Algebras of operators on a Hilbert space that behave like noncommutative spaces.",desc:"Operator algebras study collections of bounded operators that are closed under the algebra operations, the adjoint, and a limit. The two main kinds, C*-algebras and von Neumann algebras, act like the functions on a space whose multiplication need not commute, which is why the field is read as geometry without points. It is the rigorous home of quantum theory.",keyPeople:"von Neumann, Gelfand, Connes",yearHint:"1930s–present",notableFact:"A commutative C*-algebra is exactly the continuous functions on some space, so noncommutative ones are read as noncommutative geometry."}
  ]},
-   {id:"fourier",label:"Fourier / Harmonic Analysis",idea:"Decomposing any signal into pure frequencies, the mathematics of waves.",desc:"Fourier analysis decomposes functions (or signals) into sums of sinusoids. This is the mathematical basis of audio compression (MP3), image compression (JPEG), MRI scanning, solving heat and wave equations, and signal processing broadly. Harmonic analysis generalizes this to non-Euclidean spaces and groups, and is a key tool in analytic number theory via exponential sums.",keyPeople:"Fourier, Dirichlet, Hardy",yearHint:"1807",notableFact:"The FFT (Fast Fourier Transform) algorithm, discovered by Cooley and Tukey in 1965, is called 'the most important numerical algorithm of our lifetime', it runs in O(n log n) instead of O(n²).",children:[
+   {id:"fourier",label:"Fourier Analysis",idea:"Decomposing any signal into pure frequencies, the mathematics of waves.",desc:"Fourier analysis decomposes functions (or signals) into sums of sinusoids. This is the mathematical basis of audio compression (MP3), image compression (JPEG), MRI scanning, solving heat and wave equations, and signal processing broadly. Harmonic analysis generalizes this to non-Euclidean spaces and groups, and is a key tool in analytic number theory via exponential sums.",keyPeople:"Fourier, Dirichlet, Hardy",yearHint:"1807",notableFact:"The FFT (Fast Fourier Transform) algorithm, discovered by Cooley and Tukey in 1965, is called 'the most important numerical algorithm of our lifetime', it runs in O(n log n) instead of O(n²).",children:[
   {id:"sigproc",label:"Signal Processing",idea:"Extracting structure from a sampled signal.",desc:"Sampling turns a continuous signal into a sequence, and the sampling theorem says exactly when nothing is lost. From there the work is filtering, spectral estimation and compression, all built on the discrete Fourier transform and made practical by the FFT.",keyPeople:"Shannon, Nyquist, Cooley, Tukey",yearHint:"20th c.–present",notableFact:"The FFT was known to Gauss in 1805, buried in his collected works in Latin, and lost until Cooley and Tukey rediscovered it in 1965."}
  ,
   {id:"harmonic",label:"Harmonic Analysis",idea:"Break functions into waves, then study what the pieces reveal.",desc:"Harmonic analysis decomposes functions into simple waves and studies how operations behave on those pieces. It extends Fourier analysis to groups and underlies signal processing, quantum mechanics, and deep parts of number theory. Questions of convergence and of operators acting on the frequency side drive the field.",keyPeople:"Fourier, Lebesgue, Calderón, Zygmund",yearHint:"1807; modern form 20th c.",notableFact:"Carleson proved in 1966 that the Fourier series of any square-integrable function converges almost everywhere, settling a question open since Fourier himself.",children:[{id:"compsens",label:"Compressed Sensing",idea:"If a signal is sparse, far fewer measurements are needed than the Nyquist rate demands, and a convex program recovers it exactly.",desc:"Classical sampling theory says the sampling rate is set by bandwidth. Compressed sensing says it is really set by the information content: a signal with only k significant coefficients can be recovered from about k log(n/k) random linear measurements, and the recovery is by convex optimisation rather than combinatorial search. The reason the convex relaxation is exact is geometric.",keyPeople:"Candès, Romberg, Tao, Donoho",yearHint:"2004–present",notableFact:"The result was found while trying to reconstruct an MRI phantom from too little data - the reconstruction came out exact, which looked like a bug."}]}
@@ -2316,7 +2328,7 @@ const CROSS = [
   ["popdyn","opt"],["distrib","real"],["hodge","topk"],["algcomb","comb"],
   ["ising","quantmech"],["mcmc","ergodic"],["neurodyn","probth"],["phasetrans","fractal"],
   ["queue","numerical"],["rmt","stats"],["rsa","numerical"],["sched","graph"],
-  ["sle","fractal"],["prealg","fracdec"],["arith","comput"],["fracdec","measure"],
+  ["sle","fractal"],["arith","comput"],
   ["countprob","game"],["transc","elemnt"],["transc","zeta"],["inteq","measure"],
   ["inteq","numlinalg"],["matroid","alggeo"],["matroid","enumcomb"],["mathfin","stats"],
   ["mathfin","numerical"],["pnp","comput"],["specrel","classmech"],["cgt","comput"],
@@ -2372,9 +2384,9 @@ const CROSS = [
   ["designs","elemnt"],["matroid","convex"],["netsci","dyn"],["netsci","linalg"],
   ["ramsey","logic"],["ramsey","set"],["randgraph","percolation"],["randgraph","linalg"],
   ["algcomb","linalg"],["enumcomb","complex"],["arith","ring"],["arith","numerical"],
-  ["countprob","probth"],["fracdec","elemnt"],["fracdec","contfrac"],["fracdec","real"],
-  ["geobasics","coord"],["elemalg","ring"],["elemalg","galois"],["trig","complex"],
-  ["trig","sigproc"],["coord","alggeo"],["coord","euclid"],["descset","pointset"],
+  ["countprob","probth"],
+  ["elemalg","ring"],["elemalg","galois"],["trig","complex"],
+  ["trig","sigproc"],["descset","pointset"],
   ["descset","real"],["descset","comput"],["forcing","logic"],["forcing","order"],
   ["formalver","comput"],["formalver","tcs"],["godel","logic"],["godel","model"],
   ["model","univalg"],["model","alggeo"],["prooftheory","cat"],["comput","complexity"],
@@ -2434,7 +2446,7 @@ const CROSS = [
   ["quantmech","linalg"],["qft","opalg"],["qft","rep"],["qft","lie"],
   ["contmech","navier"],["contmech","pde"],["quantmech","quantum"],["arith","elemnt"],
   ["geobasics","euclid"],["precalc","calculus"],["countprob","enumcomb"],["trig","fourier"],
-  ["coord","manifold"],["cft","galois"],["cft","langlands"],["cft","elemnt"],
+  ["cft","galois"],["cft","langlands"],["cft","elemnt"],
   ["algcomb","rep"],["algcomb","graph"],["algcomb","group"],["cgt","set"],
   ["matroid","linalg"],["matroid","opt"],["prooftheory","godel"],["prooftheory","comput"],
   ["highercat","homotopy"],["highercat","typeth"],["highercat","homalg"],["convex","opt"],
@@ -2752,7 +2764,7 @@ const link = g.append("g").attr("id", "links-group").selectAll("line").data(link
    This is only the STARTING position. Anything the visitor drags is written to
    mathmap_pos and takes priority over these numbers on every later visit;
    a stone missing from this table falls back to the wedge seeding below. */
-const DEFAULT_POS = {math:[0,0],coremath:[442,-196],arith:[557,-333],negnum:[512,-382],fracdec:[596,-436],percent:[626,-397],ratio:[693,-416],prealg:[542,-268],elemalg:[655,-234],lineq:[742,-291],quadratics:[621,-280],funcgraph:[675,-312],coord:[779,-270],vectors:[839,-245],precalc:[674,-197],explog:[772,-217],sequences:[757,-166],countprob:[689,-360],statsbasics:[779,-382],geobasics:[621,-106],areavol:[668,-139],circles:[732,-90],similarity:[573,-65],trig:[689,-66],unitcircle:[779,-29],found:[329,48],logic:[458,25],model:[503,-1],prooftheory:[503,68],formalver:[576,51],typeth:[530,107],comput:[423,-25],godel:[379,-61],encoding:[279,-44],twothms:[315,-87],forcing:[416,-103],set:[267,79],descset:[291,128],cat:[375,97],highercat:[431,139],nt:[318,214],elemnt:[470,227],ant:[586,201],zeta:[631,152],rh:[677,115],pnt:[726,181],sieve:[606,250],lmachine:[699,235],lfunc:[788,271],euler:[753,293],explicit:[663,280],algnt:[518,274],padic:[504,330],cft:[584,302],arithgeo:[573,376],elliptic:[639,408],grouplaw:[701,381],ranks:[675,443],modular:[545,435],eisenstein:[546,509],hecke:[499,407],langlands:[578,472],autoforms:[474,480],galrep:[551,558],diophantine:[349,279],contfrac:[399,309],transmeas:[343,335],transc:[386,368],alg:[230,442],order:[203,315],univalg:[270,366],group:[306,574],rep:[318,658],lie:[377,603],ggt:[359,630],linalg:[322,470],eigen:[334,524],ring:[218,610],commalg:[181,663],galois:[229,697],homalg:[194,536],topk:[144,374],algk:[192,403],noncomm:[155,584],analy:[-50,474],calculus:[42,323],multivar:[45,402],calcvar:[61,467],de:[46,219],pde:[85,255],navier:[-14,269],fluideq:[-78,301],turbulence:[-31,343],specfn:[96,185],dyn:[37,146],fractal:[-9,171],real:[7,561],series:[51,526],measure:[51,595],complex:[-53,616],holo:[-29,693],acont:[7,653],scv:[-108,590],func:[-131,652],distrib:[-195,627],sobolev:[-252,601],operator:[-199,696],inteq:[-241,662],opalg:[-153,726],fourier:[-148,445],sigproc:[-147,507],harmonic:[-192,476],compsens:[-223,540],geo:[-268,292],convex:[-250,338],compgeo:[-246,398],euclid:[-173,260],noneuclid:[-209,201],diffgeo:[-364,431],manifold:[-357,532],tangent:[-507,537],forms:[-410,568],bundle:[-448,508],liederiv:[-353,485],riemannian:[-430,402],symplectic:[-485,445],alggeo:[-399,305],schemes:[-395,249],affproj:[-301,237],sheaf:[-469,229],morphism:[-367,205],hodge:[-483,348],ncgeo:[-375,354],derived:[-529,322],tropical:[-494,276],topo:[-399,112],difftop:[-409,170],pointset:[-339,140],algtop:[-536,148],homotopy:[-600,194],homology:[-644,92],simplicial:[-609,72],exactseq:[-690,52],derham:[-755,85],spectralseq:[-719,123],charclass:[-652,159],lowdim:[-471,40],poincare:[-557,16],knot:[-421,61],comb:[-424,-93],enumcomb:[-418,-23],algcomb:[-385,-51],designs:[-282,-81],addcomb:[-368,6],graph:[-541,-133],netsci:[-542,-75],randgraph:[-625,-95],ramsey:[-608,-146],matroid:[-488,-167],opt:[-655,-173],sched:[-737,-145],lpduality:[-741,-205],polyhedral:[-584,-201],prob:[-316,-294],ergodic:[-309,-212],probth:[-366,-249],randvar:[-471,-229],martingale:[-435,-265],stoch:[-238,-193],markov:[-136,-176],stationary:[-169,-221],mcmc:[-153,-118],brownian:[-190,-144],mathfin:[-95,-142],ito:[-104,-84],blackscholes:[-42,-176],queue:[-292,-158],rmt:[-443,-317],stats:[-453,-369],linmod:[-533,-373],nonparam:[-576,-405],bayes:[-407,-404],estim:[-527,-435],expdesign:[-380,-356],info:[-308,-399],srccode:[-414,-457],chancap:[-365,-481],applied:[142,-486],tcs:[-144,-523],complexity:[-285,-532],pnp:[-57,-442],crypto:[-166,-444],rsa:[-115,-391],ecc:[-219,-422],lattice:[-260,-469],hashsig:[-155,-358],quantum:[-280,-597],qubit:[-353,-634],qalgo:[-312,-667],qec:[-402,-607],coding:[-115,-600],lincode:[-198,-666],rscode:[-172,-628],algos:[-47,-486],dynprog:[-239,-562],randapx:[-93,-551],distcomp:[-231,-502],mathphys:[39,-697],classmech:[-58,-771],lagham:[-139,-749],contmech:[-131,-801],emag:[-52,-674],specrel:[-126,-705],genrel:[-192,-731],cosmo:[-217,-813],quantmech:[61,-775],qft:[146,-805],yangmills:[236,-851],gauge:[284,-821],confinement:[296,-893],condmat:[-52,-820],percolation:[98,-828],phasetrans:[21,-862],ising:[56,-896],sle:[136,-890],quantchem:[42,-589],reacnet:[53,-653],crystgroup:[-23,-612],thermo:[132,-721],optics:[98,-736],game:[83,-442],cgt:[34,-402],mathbio:[207,-571],popdyn:[279,-622],epidem:[318,-684],reacdiff:[235,-654],phylo:[189,-623],neurodyn:[259,-533],seqalign:[260,-586],matheco:[231,-401],geneq:[150,-311],mechdesign:[138,-370],econometrics:[331,-345],socchoice:[276,-313],portfolio:[328,-377],riskmeas:[214,-280],numerical:[362,-558],numlinalg:[483,-613],contopt:[457,-661],learning:[531,-697],fem:[451,-578],inverse:[514,-536],imgproc:[404,-503],control:[248,-455],kalman:[346,-433]};
+const DEFAULT_POS = {math:[0,0],coremath:[442,-196],arith:[557,-333],negnum:[512,-382],percent:[626,-397],ratio:[693,-416],prealg:[542,-268],elemalg:[655,-234],lineq:[742,-291],quadratics:[621,-280],funcgraph:[675,-312],vectors:[839,-245],precalc:[674,-197],explog:[772,-217],sequences:[757,-166],countprob:[689,-360],statsbasics:[779,-382],geobasics:[621,-106],areavol:[668,-139],circles:[732,-90],similarity:[573,-65],trig:[689,-66],unitcircle:[779,-29],found:[329,48],logic:[458,25],model:[503,-1],prooftheory:[503,68],formalver:[576,51],typeth:[530,107],comput:[423,-25],godel:[379,-61],encoding:[279,-44],twothms:[315,-87],forcing:[416,-103],set:[267,79],descset:[291,128],cat:[375,97],highercat:[431,139],nt:[318,214],elemnt:[470,227],ant:[586,201],zeta:[631,152],rh:[677,115],pnt:[726,181],sieve:[606,250],lmachine:[699,235],lfunc:[788,271],euler:[753,293],explicit:[663,280],algnt:[518,274],padic:[504,330],cft:[584,302],arithgeo:[573,376],elliptic:[639,408],grouplaw:[701,381],ranks:[675,443],modular:[545,435],eisenstein:[546,509],hecke:[499,407],langlands:[578,472],autoforms:[474,480],galrep:[551,558],diophantine:[349,279],contfrac:[399,309],transmeas:[343,335],transc:[386,368],alg:[230,442],order:[203,315],univalg:[270,366],group:[306,574],rep:[318,658],lie:[377,603],ggt:[359,630],linalg:[322,470],eigen:[334,524],ring:[218,610],commalg:[181,663],galois:[229,697],homalg:[194,536],topk:[144,374],algk:[192,403],noncomm:[155,584],analy:[-50,474],calculus:[42,323],multivar:[45,402],calcvar:[61,467],de:[46,219],pde:[85,255],navier:[-14,269],fluideq:[-78,301],turbulence:[-31,343],specfn:[96,185],dyn:[37,146],fractal:[-9,171],real:[7,561],series:[51,526],measure:[51,595],complex:[-53,616],holo:[-29,693],acont:[7,653],scv:[-108,590],func:[-131,652],distrib:[-195,627],sobolev:[-252,601],operator:[-199,696],inteq:[-241,662],opalg:[-153,726],fourier:[-148,445],sigproc:[-147,507],harmonic:[-192,476],compsens:[-223,540],geo:[-268,292],convex:[-250,338],compgeo:[-246,398],euclid:[-173,260],noneuclid:[-209,201],diffgeo:[-364,431],manifold:[-357,532],tangent:[-507,537],forms:[-410,568],bundle:[-448,508],liederiv:[-353,485],riemannian:[-430,402],symplectic:[-485,445],alggeo:[-399,305],schemes:[-395,249],affproj:[-301,237],sheaf:[-469,229],morphism:[-367,205],hodge:[-483,348],ncgeo:[-375,354],derived:[-529,322],tropical:[-494,276],topo:[-399,112],difftop:[-409,170],pointset:[-339,140],algtop:[-536,148],homotopy:[-600,194],homology:[-644,92],simplicial:[-609,72],exactseq:[-690,52],derham:[-755,85],spectralseq:[-719,123],charclass:[-652,159],lowdim:[-471,40],poincare:[-557,16],knot:[-421,61],comb:[-424,-93],enumcomb:[-418,-23],algcomb:[-385,-51],designs:[-282,-81],addcomb:[-368,6],graph:[-541,-133],netsci:[-542,-75],randgraph:[-625,-95],ramsey:[-608,-146],matroid:[-488,-167],opt:[-655,-173],sched:[-737,-145],lpduality:[-741,-205],polyhedral:[-584,-201],prob:[-316,-294],ergodic:[-309,-212],probth:[-366,-249],randvar:[-471,-229],martingale:[-435,-265],stoch:[-238,-193],markov:[-136,-176],stationary:[-169,-221],mcmc:[-153,-118],brownian:[-190,-144],mathfin:[-95,-142],ito:[-104,-84],blackscholes:[-42,-176],queue:[-292,-158],rmt:[-443,-317],stats:[-453,-369],linmod:[-533,-373],nonparam:[-576,-405],bayes:[-407,-404],estim:[-527,-435],expdesign:[-380,-356],info:[-308,-399],srccode:[-414,-457],chancap:[-365,-481],applied:[142,-486],tcs:[-144,-523],complexity:[-285,-532],pnp:[-57,-442],crypto:[-166,-444],rsa:[-115,-391],ecc:[-219,-422],lattice:[-260,-469],hashsig:[-155,-358],quantum:[-280,-597],qubit:[-353,-634],qalgo:[-312,-667],qec:[-402,-607],coding:[-115,-600],lincode:[-198,-666],rscode:[-172,-628],algos:[-47,-486],dynprog:[-239,-562],randapx:[-93,-551],distcomp:[-231,-502],mathphys:[39,-697],classmech:[-58,-771],lagham:[-139,-749],contmech:[-131,-801],emag:[-52,-674],specrel:[-126,-705],genrel:[-192,-731],cosmo:[-217,-813],quantmech:[61,-775],qft:[146,-805],yangmills:[236,-851],gauge:[284,-821],confinement:[296,-893],condmat:[-52,-820],percolation:[98,-828],phasetrans:[21,-862],ising:[56,-896],sle:[136,-890],quantchem:[42,-589],reacnet:[53,-653],crystgroup:[-23,-612],thermo:[132,-721],optics:[98,-736],game:[83,-442],cgt:[34,-402],mathbio:[207,-571],popdyn:[279,-622],epidem:[318,-684],reacdiff:[235,-654],phylo:[189,-623],neurodyn:[259,-533],seqalign:[260,-586],matheco:[231,-401],geneq:[150,-311],mechdesign:[138,-370],econometrics:[331,-345],socchoice:[276,-313],portfolio:[328,-377],riskmeas:[214,-280],numerical:[362,-558],numlinalg:[483,-613],contopt:[457,-661],learning:[531,-697],fem:[451,-578],inverse:[514,-536],imgproc:[404,-503],control:[248,-455],kalman:[346,-433]};
 let placedCount = 0;
 let savedPos = {};
 /* Layouts were once written under several different keys. Adopt whichever
@@ -3192,11 +3204,10 @@ const SHORT_DESC = { expdesign:"Randomisation, blocking, factorial designs, and 
   coremath:"The on-ramp to the whole map: numbers, algebra, shape, and functions, from the ground up.",
   arith:"The four operations and place value, the bedrock skills under everything else.",
  
-  fracdec:"Fractions, decimals, and percents, three ways of writing the numbers between the integers.",
  
  
   prealg:"Letters for unknown numbers, and the rules for solving simple equations.",
-  elemalg:"Linear and quadratic equations, polynomials, factoring, and systems.",
+  elemalg:"All of school algebra: equations, lines, polynomials, factoring, quadratics and functions.",
  
  
  
@@ -3206,12 +3217,11 @@ const SHORT_DESC = { expdesign:"Randomisation, blocking, factorial designs, and 
  
   trig:"Sine, cosine, and tangent, the unit circle, and the mathematics of triangles and waves.",
  
-  coord:"The Cartesian plane, where points have addresses and shapes become equations.",
  
   precalc:"Functions and their families, the final step before calculus.",
  
  
-  countprob:"Counting possibilities and measuring how likely an outcome is.",
+  countprob:"How likely an outcome is, and the counting that measures it.",
  
   cft:"Describing a number field's abelian extensions using only the field's own arithmetic.",
   algcomb:"The two-way street between counting problems and algebra, via tableaux and symmetric functions.",
@@ -4565,9 +4575,12 @@ const NODE_PDFS = {
       desc:"Locally trivial fibrations from the definition up: covering spaces, vector and principal bundles, classifying spaces and characteristic classes, then the classification theorem itself. Proved throughout." }
   ],
   calculus: [
+    { pdf:"pdfs/calculus_balanced_ae533d.pdf", slot:"balanced", mb:6.9, pages:593,
+      rec:"Active Calculus", by:"Boelkins, Austin, Safranski & Schlicker",
+      desc:"All of single-variable calculus in one continuous book, chapters 1-4 the first course and 5-8 the second. Built around activities you work, so each result arrives as something you derived rather than something quoted at you." },
     { pdf:"pdfs/apex_calculus_single_variable_hartman.pdf", slot:"example", mb:12.5, pages:478,
-      rec:"APEX Calculus: Single Variable", by:"Hartman et al.",
-      desc:"Limits through to series with a worked example beside every rule and a very large exercise set. Standard first-course calculus, done thoroughly." },
+      rec:"APEX Calculus I & II (chapters 1-8)", by:"Hartman et al.",
+      desc:"Limits through to series, with every convergence test, a worked example beside every rule and solutions to the selected problems. Its title page reads Volume I; chapters 7 and 8, the second course, are bound in after it." },
     { pdf:"pdfs/calculus_concept_fbb8c4.pdf", slot:"concept", mb:3.2, pages:587,
       rec:"A Course of Pure Mathematics", by:"G. H. Hardy",
       desc:"Calculus rebuilt from the real numbers up: limits, continuity, differentiation, integration and infinite series, each result stated precisely and proved, with the pathological cases that force the definitions to be what they are." }
@@ -4700,20 +4713,15 @@ const NODE_PDFS = {
       rec:"A Course on Convex Geometry", by:"Daniel Hug & Wolfgang Weil (Karlsruhe)",
       desc:"Convex bodies and the Hausdorff metric, support functions and mixed volumes, the Brunn-Minkowski and Alexandrov-Fenchel inequalities, surface area measures - fully proved." }
   ],
-  coord: [
-    { pdf:"pdfs/coord_balanced_2eda4e.pdf", slot:"balanced", mb:3.7, pages:407,
-      rec:"Tensor Analysis and Curvilinear Coordinates", by:"Phil Lucht",
-      desc:"Coordinate transformations in N dimensions done properly: base vectors, the metric tensor, Christoffel symbols, then gradient, divergence, curl and the Laplacian in any curvilinear system, each derived and checked." }
-  ],
   cosmo: [
     { pdf:"pdfs/cosmo_concept_c6f215.pdf", slot:"balanced", mb:10.9, pages:196,
       rec:"Cosmology", by:"David Tong",
       desc:"The expanding universe as its own subject: FRW geometry, thermal history, nucleosynthesis, and the growth of structure from initial perturbations. Derives the Friedmann equations rather than quoting them." }
   ],
   countprob: [
-    { pdf:"pdfs/countprob_example_e1b350.pdf", slot:"balanced", mb:7.3, pages:226,
-      rec:"A Spiral Workbook for Discrete Mathematics", by:"Harris Kwong",
-      desc:"Counting, permutations and combinations, then basic probability, with each idea revisited at increasing depth and worked before it is generalised. Exercises with answers throughout." }
+    { pdf:"pdfs/countprob_balanced_94d9b1.pdf", slot:"balanced", mb:2.9, pages:518,
+      rec:"Introduction to Probability", by:"Grinstead & Snell (Dartmouth CHANCE)",
+      desc:"Probability from coin flips and dice up through expectation and variance to the central limit theorem, ending on Markov chains. Every idea is tried on a concrete experiment before it is stated in general." }
   ],
   crypto: [
     { pdf:"pdfs/crypto_balanced_b78712.pdf", slot:"balanced", mb:8.7, pages:1130,
@@ -4837,7 +4845,7 @@ const NODE_PDFS = {
   elemalg: [
     { pdf:"pdfs/elemalg_example_d917a4.pdf", slot:"example", mb:2.1, pages:489,
       rec:"Beginning and Intermediate Algebra", by:"Tyler Wallace",
-      desc:"The whole first algebra course as worked examples: signed numbers, linear equations and graphing, systems, polynomials, factoring, rational expressions, radicals, quadratics and functions - 489 pages, every technique demonstrated then drilled." }
+      desc:"Both school algebra courses in one: equations, lines and slope, systems, factoring, radicals, quadratics, then functions and logarithms. Every technique demonstrated on an example before you are asked to use it." }
   ],
   elemnt: [
     { pdf:"pdfs/elemnt_balanced_974d7c.pdf", slot:"balanced", mb:3.5, pages:598,
@@ -4930,11 +4938,6 @@ const NODE_PDFS = {
     { pdf:"pdfs/fourier_concept_3846de.pdf", slot:"concept", mb:0.6, pages:105,
       rec:"Classical Fourier Analysis", by:"Monica Visan (UCLA Math 247A)",
       desc:"Interpolation, maximal functions and Calderon-Zygmund theory, Littlewood-Paley and multiplier theorems - the graduate harmonic analysis core, theorem by theorem." }
-  ],
-  fracdec: [
-    { pdf:"pdfs/fracdec_example_940070.pdf", slot:"balanced", mb:23.6, pages:637,
-      rec:"Pre-Algebra I (Illustrative Mathematics, Grade 7)", by:"Illustrative Mathematics",
-      desc:"Fractions, decimals, ratios and percentages taught entirely through problems you work: scale drawings, proportional relationships, then signed numbers. Six hundred pages, and nothing is stated before it has been discovered on an example." }
   ],
   fractal: [
     { pdf:"pdfs/fractal_concept_e61125.pdf", slot:"concept", mb:0.9, pages:111,
@@ -5454,6 +5457,9 @@ const NODE_PDFS = {
       desc:"Mean-variance and the efficient frontier, utility maximisation, Merton's continuous-time problem and stochastic control - derived and then solved on concrete portfolios." }
   ],
   prealg: [
+    { pdf:"pdfs/fracdec_example_940070.pdf", slot:"balanced", mb:23.6, pages:637,
+      rec:"Pre-Algebra I (Illustrative Mathematics, Grade 7)", by:"Illustrative Mathematics",
+      desc:"Fractions, decimals, ratios and percentages taught entirely through problems you work: scale drawings, proportional relationships, then signed numbers. Six hundred pages, and nothing is stated before it has been discovered on an example." },
     { pdf:"pdfs/prealg_example_d49d1d.pdf", slot:"example", mb:19.9, pages:918,
       rec:"Fundamentals of Mathematics", by:"Burzynski & Ellis",
       desc:"Nine hundred pages of arithmetic and the start of algebra, taught one worked example at a time: place value, fractions, decimals, ratios, then signed numbers and the first equations. Nothing is asserted without being shown on a number first." }
@@ -6404,9 +6410,7 @@ const CROSS_WHY = {
   "rsa|numerical": "Fast modular exponentiation is what makes it usable.",
   "sched|graph": "Precedence constraints are a directed acyclic graph.",
   "sle|fractal": "The curves have a fractal dimension that depends on one parameter.",
-  "prealg|fracdec": "Pre-algebra assumes you can already handle a fraction.",
   "arith|comput": "Adding two numbers is the first thing anyone asked a machine to do.",
-  "fracdec|measure": "Cutting a whole into equal parts is where the idea of measure starts.",
   "countprob|game": "Counting outcomes is how the value of a simple game is worked out.",
   "transc|elemnt": "Which numbers are roots of a polynomial is an arithmetic question.",
   "transc|zeta": "Special values of zeta are the standard transcendence test cases.",
@@ -6628,16 +6632,10 @@ const CROSS_WHY = {
   "arith|ring": "The integers are the first ring, and ring theory starts by abstracting them.",
   "arith|numerical": "Floating point is arithmetic done with a finite budget of digits.",
   "countprob|probth": "School counting is probability theory before the infinite cases appear.",
-  "fracdec|elemnt": "A fraction in lowest terms is a statement about common divisors.",
-  "fracdec|contfrac": "Continued fractions write the same rational number a different way.",
-  "fracdec|real": "A decimal that never repeats is the first sign of an irrational number.",
-  "geobasics|coord": "Coordinates let every school geometry fact be checked by algebra.",
   "elemalg|ring": "The rules of school algebra are the ring axioms written informally.",
   "elemalg|galois": "Which equations have a formula is the question Galois settled.",
   "trig|complex": "Euler's formula turns every trigonometric identity into a fact about exponentials.",
   "trig|sigproc": "Every signal is built out of sines.",
-  "coord|alggeo": "Turning a curve into an equation is where algebraic geometry starts.",
-  "coord|euclid": "Descartes turned Euclid's postulates into algebra.",
   "descset|pointset": "Borel sets are built from open sets, so the topology comes first.",
   "descset|real": "The whole hierarchy classifies subsets of the real line.",
   "descset|comput": "The hierarchy continues the arithmetic hierarchy of computability.",
@@ -6697,7 +6695,7 @@ const CROSS_WHY = {
   "lie|de": "Lie invented these groups to solve differential equations by symmetry.",
   "rep|linalg": "A representation turns group elements into matrices.",
   "rep|fourier": "Fourier analysis is representation theory of the circle group.",
-  "elemalg|alg": "Elementary algebra manipulates equations; abstract algebra studies the structures underneath.",
+  "elemalg|alg": "School algebra manipulates equations; abstract algebra studies the structures underneath.",
   "countprob|stats": "School counting feeds directly into descriptive statistics.",
   "yangmills|lie": "The gauge group is a Lie group, and that choice fixes the theory.",
   "sched|queue": "Scheduling decides the order; queueing predicts the wait that results.",
@@ -6918,7 +6916,6 @@ const CROSS_WHY = {
   "precalc|calculus": "Precalculus introduces the zoo of functions that calculus then subjects to continuous change.",
   "countprob|enumcomb": "Basic counting principles are formalized into the algebraic machinery of enumerative combinatorics.",
   "trig|fourier": "Trigonometry introduces sine and cosine waves, which Fourier analysis uses to build all other functions.",
-  "coord|manifold": "Coordinate geometry attaches numbers to space globally; manifolds do it locally.",
   "cft|langlands": "It is exactly the abelian case of the Langlands program, the part that is fully proved.",
   "cft|elemnt": "Artin reciprocity generalizes the quadratic reciprocity law to all abelian extensions.",
   "algcomb|rep": "The representations of the symmetric group are indexed by partitions, turning counting into algebra.",
@@ -8918,7 +8915,7 @@ var PRACTICE = {};
       return {text:'You have threads half-woven. Finish what you started. That is how knowledge settles in.', recs:learning.slice(0,3)};
     }
     if(!ids.some(function(id){ return st(id)==='got'; })){
-      return {text:'Then we begin at the first stone. Everything above grows out of plain counting, so start here. Read it, then prove its questions one by one; the stone marks itself as you go, and I follow the marks.', recs:['arith']};
+      return {text:'Then we begin at the first stone. Everything above grows out of plain counting, so start here. Open its shelf, work a book with paper beside you, and tag the stone as you go so I know where you have been.', recs:['arith']};
     }
     var want=ids.filter(function(id){ return st(id)==='want'; });
     want.sort(function(a,b){ return D[a]-D[b]; });
@@ -8983,15 +8980,15 @@ var PRACTICE = {};
     ], back:'ROOT'
   };
   DLG.tracking={
-    say:'Your marks are footprints, and I am a good tracker. A green stone tells me the ground there is solid, and it is green because you proved every question on it, not because you told me so. Amber tells me where you are still digging. Blue is a flag you planted yourself, on a hill you mean to climb. The scroll behind the little flame up top keeps the full ledger, streaks, regions, all of it. I only read it. Your working writes it.',
+    say:'Your marks are footprints, and I am a good tracker. Green tells me the ground there is solid. Amber tells me where you are still digging. Blue is a flag on a hill you mean to climb. The scroll behind the little flame up top keeps the full ledger, streaks, regions, all of it. I only read it; you write it. Which makes me exactly as good a guide as you are an honest creature.',
     opts:[['What if I mark something wrongly?','wrongmark'],['Read my map right now','__readmap']], back:'ROOT'
   };
   DLG.wrongmark={
-    say:'If it is a blue flag, tap it again and it lifts clean off, no harm done; that one is yours to plant and unplant. The amber and the green you cannot lift, because you did not put them there, your working did. And if a stone went green on an answer you waved through, the repair is not to scrub the mark off. Go back, find that question, and be honest with the <b>&#10007;</b>. The stones keep accounts either way.',
+    say:'Then lift it. Tap the tag a stone already carries and it comes clean off, no harm done, and all three work that way. <i>*shrugs*</i> There is no examiner here to fool except yourself, which is the whole difficulty of it. If a stone stands green and you could not explain it to me this evening, take the green off and open the book again. The map is only as useful to you as it is true.',
     back:'ROOT'
   };
   DLG.wander={
-    say:'Then wander! Some of the best learning is trespassing. Click any stone that glitters at you, the lessons all start from the ground floor of their topic, and every one lists what you need before you start. If it proves too steep, the "Before you start" line will point you back down the mountain politely.',
+    say:'Then wander! Some of the best learning is trespassing. Click any stone that glitters at you and open what stands on its shelf. A book tells you soon enough whether you have the ground for it: read until the words stop meaning things, and there is your answer, no shame in it. Then climb back down and come at it from below.',
     back:'ROOT',
     opts:[['What if it is far too steep?','d_steep']]
   };
@@ -9127,7 +9124,7 @@ var PRACTICE = {};
      follow:['What could you not save?','s_lostbooks']},
     {tell:'One winter a creature came and stayed the whole season. Said nothing. Proved every stone of the school ladder, one per day, like laying bricks. On the first day of spring it left without a word, and its crest is still on my shield. Sometimes I think it will come back. You look a little taller than you did. Hm.',
      follow:['Was that creature... me?','s_wasme']},
-    {tell:'The Algebra and Geometry regions argued for a century over who owns the Coordinate stone. Algebra said "it is equations." Geometry said "it is shapes." A creature named Descartes settled it by gluing the two together so tightly nobody could tell anymore where one ended. They both still claim custody. The stone itself refuses to comment.',
+    {tell:'The Algebra and Geometry regions argued for a century over who owns the coordinate plane. Algebra said "it is equations." Geometry said "it is shapes." A creature named Descartes settled it by gluing the two together so tightly nobody could tell anymore where one ended. They both still claim custody. The plane itself refuses to comment.',
      follow:['Do the regions argue often?','s_argue']},
     {tell:'One morning I woke and the stones had rearranged themselves in the night. New paths, strange clusters, for one terrifying moment I did not recognize my own map. Then I understood: the map dreams. It is a living thing. So if the stones sit differently when you return someday, do not doubt your memory. It moved. It does that.',
      follow:['What does the map dream about?','s_dream']},
@@ -9725,9 +9722,10 @@ var PRACTICE = {};
   };
 
   DLG.favstone={
-    say:['The Euler stone. I sit on it when I need cheering up, the identity carved into it holds five great constants in one line, and it hums all five notes at once, in tune. Do not tell the other stones.',
+    say:['The Complex Analysis stone. I sit on it when I need cheering up: the identity Euler found is carved into it, five great constants in one line, and it hums all five notes at once, in tune. Do not tell the other stones.',
      'Officially, I love all stones equally. Unofficially: the little Arithmetic stone, the first I ever laid. Kings and cathedrals stand on humbler foundations than they admit, and so does this map.'],
-    opts:[['Take me to the Euler stone',function(){ visitNode('euler'); }]], back:'youMenu'
+    opts:[['Take me to the Complex Analysis stone',function(){ visitNode('complex'); }],
+          ['Take me to the Arithmetic stone',function(){ visitNode('arith'); }]], back:'youMenu'
   };
 
   /* ── about the map ── */
@@ -9751,10 +9749,7 @@ var PRACTICE = {};
     }
   };
   DLG.whatIs={
-    say:function(){
-      var count=Object.keys(L).length;
-      return 'All of mathematics, drawn as one living thing, '+count+' stones across the great regions, from counting itself to the research frontier. The center is Mathematics; everything grows outward from it. Click any stone and I will teach you what I carried back about it.';
-    },
+    say:'All of mathematics, drawn as one living thing, stone by stone across the great regions, from counting itself to the research frontier. The center is Mathematics; everything grows outward from it. Click any stone and I will show you what I carried back about it.',
     opts:[
       ['Which stone is the oldest?','oldstone'],
       ['Is the map finished?','s_newest'],
@@ -9767,32 +9762,20 @@ var PRACTICE = {};
     opts:[['So which of them really was first?','d_twins']]
   };
   DLG.useIt={
-    say:'Click a stone and it opens three doors. <b>Math</b> is the lesson itself, and at the end of each is a small green box of what to keep. <b>Practice</b> is where you prove you kept it. <b>Note</b> is yours; I do not read it. Plant a blue <i>want to learn</i> flag on anything you mean to climb; amber and green you earn through Practice rather than claim. I remember the whole trail and point you onward from it. The search box up top finds anything: names, ideas, even formulas.',
+    say:'Click a stone and it opens two doors. <b>Content</b> is its shelf: whole books, free, each one written by somebody who gave their life to that single subject. <b>Note</b> is yours; I do not read it. Underneath sit three tags you set yourself, <i>want to learn</i>, <i>learning</i>, <i>learned</i>, and I read those to point you onward. The search box up top finds anything: names, ideas, even formulas.',
     opts:[
-      ['Tell me about Practice','practiceHow'],
-      ['What is Full Depth?','fullDepth'],
+      ['What is on the shelf?','fullDepth'],
       ['What do the marks mean?','marks'],
       ['What do the colors mean?','colors'],
       ['Can I move the stones around?','s_unpin']
     ], back:'mapMenu'
   };
-  DLG.practiceHow={
-    say:'Paper first, always. Solve it with a pencil before you touch a button; the hint is a nudge, never the answer, and the answer is full working. Then mark yourself honestly: <b>&#10003;</b> if you had it, <b>&#10007;</b> if you did not. A <b>&#10007;</b> points straight back at the section of the lesson that would have saved you, and the fire in my room remembers every one until you go and fix it.',
-    opts:[
-      ['Why is Stretch locked?','stretchLock'],
-      ['What does the fire do?','firebright']
-    ], back:'useIt'
-  };
-  DLG.stretchLock={
-    say:'Because a stone has three tiers and they are a staircase. <b>Warm-up</b> is quick checks before the climb. <b>Core</b> is the heart of it, and it covers every section of the lesson, not the easy half. <b>Stretch</b> stays shut until you have proven enough Core, and it stays shut because a creature who reaches for the hard question before the ordinary one usually learns only that it is hard.',
-    back:'useIt'
-  };
   DLG.fullDepth={
-    say:'At the foot of many a lesson there is a door out of my map entirely: a real textbook, whole and free, written by someone who gave their life to that one subject. My lesson is the on-ramp. The book is the road. I would rather hand you to a better teacher than pretend I am the last word, and if you have the app installed you can keep a book on your device and read it with no sky above you at all.',
+    say:'Books. Whole ones, free ones, nothing abridged for my convenience. A stone carries up to three: <b>balanced</b>, which teaches the subject straight through; <b>example heavy</b>, which is mostly worked solutions; and <b>concept heavy</b>, which is mostly ideas and proof. Take whichever suits the day. I do not teach here, fellow creature, I keep the shelf and I know where everything on it stands. And with the app installed you may keep a book on your own device and read it with no sky above you at all.',
     back:'useIt'
   };
   DLG.marks={
-    say:'Three inks, and only the first is yours to write. Blue, <i>want to learn</i>: a flag you plant yourself, lift it whenever you please. The other two are not written, they are earned. Amber, <i>learning</i>, appears the moment you answer your first practice question on a stone; finish these before you wander, half-dug holes collect rain. Green, <i>learned</i>, comes only when every question on that stone carries a <b>&#10003;</b>. The green cannot be claimed, only proved. That is deliberate: a stone you talked yourself into is a stone that gives way under you later.',
+    say:'Three inks, and all three are yours to write. Blue, <i>want to learn</i>: a hill you mean to climb. Amber, <i>learning</i>: you are in it and digging, and half-dug holes collect rain, so finish these before you wander. Green, <i>learned</i>: you came out the other side. Tap the tag a stone already carries and it lifts clean off. Nobody marks you here, which is the uncomfortable part; the tags are worth exactly what your honesty makes them worth, and a stone you talked yourself into is a stone that gives way under you later.',
     opts:[['Read my map right now','__readmap']], back:'mapMenu'
   };
   DLG.colors={
@@ -9800,11 +9783,11 @@ var PRACTICE = {};
     opts:[['Which is the largest?','biggestRegion'],['What are the families?','families']], back:'mapMenu'
   };
   DLG.biggestRegion={
-    say:'<b>Applied &amp; Computational</b>, by a long way: fifty-six stones, more than twice most of its neighbours. It holds the physics, the computer science, the biology, the economics, all the places mathematics stopped being about itself. <b>Number Theory</b> is second at twenty-eight, and <b>Topology</b> is the smallest at thirteen, which tells you nothing about its difficulty and everything about how few words it needs.',
+    say:'<b>Applied &amp; Computational</b>, by a long way, and it is not close. It holds the physics, the computer science, the biology, the economics, all the places mathematics stopped being about itself. The rest I will not rank for you. They trade places as the map grows, and no region was ever better for being crowded.',
     opts:[['What are the families?','families']], back:'mapMenu'
   };
   DLG.families={
-    say:'Under every continent sit its <b>families</b>: forty of them across the whole map. Analysis has five (Calculus, Real, Complex, Functional, Fourier). Topology has five. Number Theory has two, but one of them is enormous. A family is the useful unit, small enough to finish, large enough to change how you see. Learn every stone in one and its crest goes up on my shield.',
+    say:'Under every continent sit its <b>families</b>. Analysis, for one, gathers Calculus, Real, Complex, Functional and Fourier, each with its own stones hanging beneath it. A family is the useful unit, small enough to finish, large enough to change how you see. Learn every stone in one and its crest goes up on my shield.',
     opts:[['Tell me about the shield','shield']], back:'mapMenu'
   };
   DLG.regions={
@@ -9878,7 +9861,7 @@ var PRACTICE = {};
 
   /* ── smalltalk ── */
   DLG.chatMenu={
-    say:['Just to chat? Those are my favorite visits. Sit. The fire is at a good chapter.','No lessons today? Good. Even maps need company more than footsteps, some days.','Pull up a warm patch of floor, then.'],
+    say:['Just to chat? Those are my favorite visits. Sit. The fire is at a good chapter.','No studying today? Good. Even maps need company more than footsteps, some days.','Pull up a warm patch of floor, then.'],
     opts:function(){
       var o=[
         ['How are you today, Gami?','howare'],
@@ -10226,12 +10209,12 @@ var PRACTICE = {};
     back:'mapMenu'
   };
   DLG.m_hard={
-    say:'Not the frontier. <i>*shakes his head*</i> Creatures always guess the famous unsolved ones, and those are hard the way a mountain is hard, honestly hard, hard in a way you can see coming. The genuinely difficult stones on this map are early and they do not look difficult. <b>Fractions.</b> <b>Negative numbers.</b> The idea that a letter can stand for a number you do not know yet. Every one of those broke the whole world when it arrived and every one is now handed to small creatures on a Tuesday with no warning at all.',
+    say:'Not the frontier. <i>*shakes his head*</i> Creatures always guess the famous unsolved ones, and those are hard the way a mountain is hard, honestly hard, hard in a way you can see coming. The genuinely difficult ideas on this map are early, and they do not look difficult. A fraction. A number less than nothing. A letter standing in for a number you do not know yet. Every one of those broke the whole world when it arrived and every one is now handed to small creatures on a Tuesday with no warning at all.',
     opts:[['Why are those the hard ones?','m_hardwhy']], back:'mapMenu'
   };
   DLG.m_hardwhy={
     say:'Because they are not new facts, they are new <i>kinds of thing</i>. <i>*leans in*</i> Learning that seven is prime is an ordinary afternoon. Learning that a number can be less than nothing requires you to give up the belief that a number counts objects, and you have believed that since before you could speak. Mathematics took two thousand years to accept negatives and called them absurd, fictitious and false in print. <i>*flatly*</i> So when a creature tells me it finds them slippery, I do not tell it that they are easy. I tell it that it is in extremely good company and that the difficulty is real and historical.',
-    opts:[['Take me to that stone',function(){ visitNode('negnum'); }]], back:'mapMenu'
+    opts:[['Take me to that stone',function(){ visitNode('prealg'); }]], back:'mapMenu'
   };
   DLG.m_missing={
     say:'Constantly, and I have a rule about it. <i>*taps the hearth*</i> A thing goes on the map when it has a reason to be on it that is not "somebody asked". Otherwise this becomes an encyclopaedia, and an encyclopaedia is a place where knowledge goes to be complete and unread. There are whole real subjects I have left off because they belong to a country I do not keep. <i>*a beat*</i> And there are gaps that are simply my ignorance, and those I will not point at, because I do not know where they are. That is rather what makes them gaps.',
@@ -10277,11 +10260,11 @@ var PRACTICE = {};
     opts:[['What did you do?','y_worstdid']], back:'youMenu'
   };
   DLG.y_worstdid={
-    say:'I rewrote the map. <i>*simply*</i> All of it, in symbols where symbols would carry it, and in the plainest sentences I could manage where they would not. It took eighty years and it is the reason nothing in these lessons is written prettily. I had a very good prose style once. I gave it up on purpose, because pretty prose is the first thing a language loses and a definition stated plainly is the last. <i>*dry*</i> Creatures occasionally tell me the writing here is a little flat. I take it as a compliment and I do not explain why.',
+    say:'I rewrote the map. <i>*simply*</i> All of it, in symbols where symbols would carry it, and in the plainest sentences I could manage where they would not. It took eighty years and it is the reason nothing written on these stones is written prettily. I had a very good prose style once. I gave it up on purpose, because pretty prose is the first thing a language loses and a definition stated plainly is the last. <i>*dry*</i> Creatures occasionally tell me the writing here is a little flat. I take it as a compliment and I do not explain why.',
     back:'youMenu'
   };
   DLG.y_hope={
-    say:'That somebody here gets past me. <i>*without any self-pity at all*</i> I am a keeper, fellow creature, not a maker. I have set two hundred and thirty stones and I did not discover one of them; every single thing in this room was found by somebody who is dead. That is not a complaint, it is a job description. But there is an empty patch of map out past the frontier where the new stones go, and I will not be the one to set them, and I would very much like to be standing here when one of you comes back in and tells me I need to make room.',
+    say:'That somebody here gets past me. <i>*without any self-pity at all*</i> I am a keeper, fellow creature, not a maker. I have set every stone on this map and I did not discover one of them; every single thing in this room was found by somebody who is dead. That is not a complaint, it is a job description. But there is an empty patch of map out past the frontier where the new stones go, and I will not be the one to set them, and I would very much like to be standing here when one of you comes back in and tells me I need to make room.',
     opts:[['Do you think that will happen?','y_hopewill']], back:'youMenu'
   };
   DLG.y_hopewill={
@@ -10315,7 +10298,7 @@ var PRACTICE = {};
     opts:[['How do you avoid that?','c_afraidhow']], back:'chatMenu'
   };
   DLG.c_afraidhow={
-    say:'The practice. <i>*taps the hearth*</i> It is the only part of this place that cannot be enjoyed passively, and that is not an accident of design, it is the entire design. Everything else I made warm on purpose. That one thing I left hard on purpose. If you ever notice that you have spent an evening here and enjoyed it thoroughly and proved nothing, that is not a crime, but I would like you to notice it. That is all. Just notice it.',
+    say:'The books. <i>*taps the hearth*</i> Not the reading of them, the <i>working</i> of them, with paper, the way they were written to be used. That is the only part of this place that cannot be enjoyed passively, and it is not an accident of design, it is the entire design. Everything else I made warm on purpose. If you ever notice you have spent an evening here, enjoyed it thoroughly, and worked nothing, that is no crime, but I would like you to notice it. That is all. Just notice it.',
     back:'chatMenu'
   };
   DLG.c_favmoment={
@@ -10423,7 +10406,7 @@ var PRACTICE = {};
   };
   DLG.p_euler={
     say:'<b>Euler.</b> Blind for the last seventeen years of his life, and those seventeen years are roughly half his output. <i>*flat*</i> Half. He dictated to his sons. He is why you write $e$, and $i$, and $f(x)$, and $\\pi$ for that number; the notation in your head is largely his handwriting. When creatures tell me they cannot work because conditions are poor, I think of a blind man with thirteen children producing a paper a week and I say nothing, because it would not be kind.',
-    opts:[['Take me to his stone',function(){ visitNode('euler'); }],['Was he ever wrong?','p_eulerwrong']], back:'people'
+    opts:[['Was he ever wrong?','p_eulerwrong']], back:'people'
   };
   DLG.p_eulerwrong={
     say:'Constantly, and gloriously. He summed divergent series with a confidence that would get a creature thrown out of a modern seminar, and he was <i>right</i> nearly every time, for reasons nobody could justify until Abel and Cauchy arrived a century later to explain what he had been allowed to do. That is the thing about the first creature into a country: it has no map, so it walks where it likes, and sometimes the ground holds.',
@@ -10486,7 +10469,7 @@ var PRACTICE = {};
     'The first stone. <i>*looks toward the centre of the map*</i> Not the Mathematics stone, that came later and it came last. The first stone I set was <b>counting</b>, and I set it badly.',
     'I set it as a rule: one, then another one, then another. Correct, and useless. A creature read it and asked me what the last number was, and I had no answer prepared, and it went away thinking mathematics was a thing that ran out.',
     'So I dug it up and set it again as a <i>promise</i> instead: whatever you have counted to, there is one more. Same stone. Different sentence. The creature came back a year later and told me it had lain awake over that, in a good way. That is when I understood what the map was for.',
-    'Every stone since has been set as a promise, not a rule. Look at any of them closely and you will find it, under the definitions: <i>and this is why you may go further</i>. It is the only thing all two hundred and thirty of them have in common.',
+    'Every stone since has been set as a promise, not a rule. Look at any of them closely and you will find it, under the definitions: <i>and this is why you may go further</i>. It is the only thing every one of them has in common.',
     '<i>*after a while*</i> I still visit that stone. It is the least impressive thing on this map and I have set nothing better since. When creatures ask me what my finest work is, I say the Riemann stone, because it sounds correct. It is the counting stone. It was always the counting stone.'
   ],'mapMenu');
 
@@ -11865,6 +11848,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 </script>
 
 <div id="rdr" role="dialog" aria-label="Reader">
+  <div id="rdr-top">
   <div id="rdr-bar">
     <button type="button" id="rdr-toc-btn" title="Contents">&#9776;</button>
     <span id="rdr-title"></span>
@@ -11882,10 +11866,13 @@ window.addEventListener('beforeinstallprompt', (e) => {
     <span class="rdr-grp" id="rdr-viewgrp">
       <button type="button" id="rdr-book" title="Two-page view">Book View</button>
       <button type="button" id="rdr-night" title="Dark mode">Dark Mode</button>
+      <button type="button" id="rdr-full" title="Full screen (f)">Full Screen</button>
     </span>
     <button type="button" id="rdr-close" title="Close">&#10005;</button>
   </div>
   <div id="rdr-prog"><i></i></div>
+  </div>
+  <div id="rdr-peek" aria-hidden="true"></div>
   <div id="rdr-wrap"><canvas id="rdr-canvas"></canvas><canvas id="rdr-canvas2" style="display:none"></canvas></div>
   <div id="rdr-load" role="status" aria-live="polite"><span class="rdr-spin"></span><span id="rdr-load-txt">Loading&#8230;</span></div>
   <nav id="rdr-toc"></nav>
@@ -11941,6 +11928,50 @@ window.addEventListener('beforeinstallprompt', (e) => {
     tasks = [];
   }
 
+  /* Full screen is two things at once: the browser's own fullscreen where it is
+     allowed, and a class that hides the chrome. They are kept separate because
+     iOS Safari has no element fullscreen at all - there the class alone still
+     gives the page the whole reader, which is most of the point. */
+  var chromeTimer = null;
+
+  function showChrome(){
+    if (!el.root || !el.root.classList.contains('full')) return;
+    el.root.classList.add('chrome');
+    clearTimeout(chromeTimer);
+    chromeTimer = setTimeout(hideChrome, 2600);
+  }
+  function hideChrome(){
+    if (!el.root) return;
+    if (el.root.classList.contains('toc')) return;   /* not mid-navigation */
+    el.root.classList.remove('chrome');
+  }
+  function isFull(){ return !!el.root && el.root.classList.contains('full'); }
+  function paintFullBtn(){ if (el.full) el.full.classList.toggle('on', isFull()); }
+
+  function enterFull(){
+    var r = el.root;
+    var req = r.requestFullscreen || r.webkitRequestFullscreen || r.msRequestFullscreen;
+    if (req) {
+      try { var p = req.call(r); if (p && p['catch']) p['catch'](function(){}); } catch(e){}
+    }
+    r.classList.add('full');
+    paintFullBtn();
+    showChrome();
+    setTimeout(function(){ syncBarHeight(); render(); }, 120);
+  }
+  function exitFull(){
+    var ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+    var on = document.fullscreenElement || document.webkitFullscreenElement;
+    if (on && ex) {
+      try { var p = ex.call(document); if (p && p['catch']) p['catch'](function(){}); } catch(e){}
+    }
+    el.root.classList.remove('full', 'chrome');
+    clearTimeout(chromeTimer);
+    paintFullBtn();
+    setTimeout(function(){ syncBarHeight(); render(); }, 120);
+  }
+  function toggleFull(){ if (isFull()) exitFull(); else enterFull(); }
+
   function showLoad(txt){
     if (el.loadTxt && txt) el.loadTxt.textContent = txt;
     if (el.root) el.root.classList.add('loading');
@@ -11951,7 +11982,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     if (!el.bar || !el.root) return;
     /* A hidden bar measures 0, and setting the property to 0px is worse than
        leaving it unset - the CSS fallback only applies when it is absent. */
-    var h = el.bar.offsetHeight;
+    var h = (el.top ? el.top.offsetHeight : el.bar.offsetHeight);
     if (h > 0) el.root.style.setProperty('--rdr-bar-h', h + 'px');
   }
 
@@ -12161,7 +12192,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
        - the document was never destroyed, the keydown handler stayed attached,
        and the address never dropped its slot. The reader still LOOKED closed,
        because the class comes off on the line above the throw. */
-    el.root.classList.remove('on', 'toc', 'loading');
+    if (isFull()) exitFull();
+    el.root.classList.remove('on', 'toc', 'loading', 'full', 'chrome');
+    clearTimeout(chromeTimer);
     cancelTasks();
     if (doc) { try { doc.destroy(); } catch(e){} doc = null; }
     document.removeEventListener('keydown', onKey, true);
@@ -12176,7 +12209,13 @@ window.addEventListener('beforeinstallprompt', (e) => {
       if (ev.key === 'Escape') ev.target.blur();
       return;
     }
-    if (ev.key === 'Escape'){ ev.preventDefault(); close(); }
+    if (ev.key === 'Escape'){
+      ev.preventDefault();
+      /* One step at a time: the first Escape leaves full screen, a second closes
+         the book. Doing both at once loses your place in a single keypress. */
+      if (isFull()) exitFull(); else close();
+    }
+    else if (ev.key === 'f' || ev.key === 'F'){ ev.preventDefault(); toggleFull(); }
     else if (ev.key === 'ArrowRight' || ev.key === 'PageDown'){ ev.preventDefault(); go(page + step()); }
     else if (ev.key === 'ArrowLeft'  || ev.key === 'PageUp'){ ev.preventDefault(); go(page - step()); }
     else if (ev.key === 'Home'){ ev.preventDefault(); go(1); }
@@ -12196,6 +12235,28 @@ window.addEventListener('beforeinstallprompt', (e) => {
     el.prog = $('rdr-prog').firstElementChild;
     el.bar = $('rdr-bar');
     el.load = $('rdr-load'); el.loadTxt = $('rdr-load-txt');
+    el.top = $('rdr-top'); el.full = $('rdr-full'); el.peek = $('rdr-peek');
+    el.full.onclick = toggleFull;
+
+    /* Any mouse movement brings the chrome back; the peek strip is the touch
+       equivalent, and must not reach the page-turn handler underneath it. */
+    el.root.addEventListener('mousemove', showChrome);
+    el.peek.addEventListener('pointerdown', function(ev){
+      ev.stopPropagation(); showChrome();
+    });
+    el.peek.addEventListener('pointerenter', showChrome);
+    /* Leaving full screen by the browser's own route - Escape, F11, the system
+       gesture - has to put our class back in step with it. */
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(function(t){
+      document.addEventListener(t, function(){
+        var on = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!on && isFull()){
+          el.root.classList.remove('full', 'chrome');
+          paintFullBtn();
+          setTimeout(function(){ syncBarHeight(); render(); }, 120);
+        }
+      });
+    });
     /* The contents panel hangs off the bar's real height, which changes when the
        bar wraps to two rows on a phone or the device is rotated. */
     syncBarHeight();
@@ -12211,7 +12272,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
       try { localStorage.setItem('gami_read_night', night ? '1' : '0'); } catch(e){}
       applyNight();
     };
-    el.tocBtn.onclick = function(){ el.root.classList.toggle('toc'); };
+    el.tocBtn.onclick = function(){ el.root.classList.toggle('toc'); showChrome(); };
     el.page.onchange = function(){ go(parseInt(el.page.value, 10) || 1); };
     el.canvas2 = $('rdr-canvas2');
     el.zoom = $('rdr-zoom');
