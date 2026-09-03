@@ -12390,9 +12390,72 @@ window.addEventListener('beforeinstallprompt', (e) => {
        release; rasterising a page on every move is far too slow to feel live. */
     var pointers = new Map(), gest = null, preview = 1;
 
-    function setPreview(k){
+    var PADPX = 12;   /* #rdr-wrap padding, and render() assumes the same 24 */
+
+    /* Where the pages will sit once the zoom is COMMITTED, at factor k.
+       Mirrors render()'s layout rules exactly: overflow -> pinned at the padding
+       and scrolled (clamped), fits -> centred. Previewing the landing spot is
+       what removes the recoil; scaling in place cannot, because the commit also
+       re-aligns and clamps. `base` is captured untransformed at pinch start. */
+    function previewPlan(k, base){
+      var w = el.wrap, cw = w.clientWidth, chh = w.clientHeight;
+      var NW = base.GW * k, NH = base.GH * k;
+      var left, top;
+      if (NW + PADPX * 2 > cw){
+        var maxX = NW + PADPX * 2 - cw;
+        var sl = Math.max(0, Math.min(maxX, base.wrL + PADPX - (base.mx - base.fx * NW)));
+        left = base.wrL + PADPX - sl;
+      } else {
+        left = base.wrL + (cw - NW) / 2;
+      }
+      if (NH + PADPX * 2 > chh){
+        var maxY = NH + PADPX * 2 - chh;
+        var st = Math.max(0, Math.min(maxY, base.wrT + PADPX - (base.my - base.fy * NH)));
+        top = base.wrT + PADPX - st;
+      } else {
+        top = base.wrT + (chh - NH) / 2;
+      }
+      return { left: left, top: top };
+    }
+
+    function setPreview(k, base){
       preview = k;
-      el.canvas.style.transform = (k === 1) ? '' : 'scale(' + k + ')';
+      if (k === 1 || !base){
+        [el.canvas, el.canvas2].forEach(function(c){
+          if (!c) return;
+          c.style.transformOrigin = '';
+          c.style.transform = '';
+        });
+        return;
+      }
+      var plan = previewPlan(k, base);
+      base.rects.forEach(function(r, i){
+        var c = base.cs[i];
+        var dx = (plan.left + (r.left - base.gL) * k) - r.left;
+        var dy = (plan.top + (r.top - base.gT) * k) - r.top;
+        c.style.transformOrigin = '0 0';
+        c.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')';
+      });
+    }
+
+    /* Everything the preview needs, measured once while nothing is transformed. */
+    function pinchBase(mid){
+      var w = el.wrap, wr = w.getBoundingClientRect();
+      var cs = [el.canvas, el.canvas2].filter(function(c){
+        return c && c.style.display !== 'none';
+      });
+      if (!cs.length || !mid) return null;
+      var rects = cs.map(function(c){ return c.getBoundingClientRect(); });
+      var gL = rects[0].left, gT = rects[0].top;
+      var gR = rects[rects.length - 1].right, gB = rects[0].bottom;
+      var GW = gR - gL, GH = gB - gT;
+      if (!GW || !GH) return null;
+      return {
+        cs: cs, rects: rects, gL: gL, gT: gT, GW: GW, GH: GH,
+        wrL: wr.left, wrT: wr.top, mx: mid.x, my: mid.y,
+        fx: Math.max(0, Math.min(1, (mid.x - gL) / GW)),
+        fy: Math.max(0, Math.min(1, (mid.y - gT) / GH))
+      };
     }
     function commitPreview(ax, ay){
       if (preview === 1) return;
@@ -12429,7 +12492,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
       if (pointers.size === 2){
         var mid0 = pinchMid();
         gest = { type: 'pinch', d0: pinchDist() || 1, z0: zoom,
-                 mx: mid0 && mid0.x, my: mid0 && mid0.y };
+                 mx: mid0 && mid0.x, my: mid0 && mid0.y,
+                 base: pinchBase(mid0) };
         el.wrap.classList.remove('grabbing');
         return;
       }
@@ -12447,11 +12511,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
       if (gest.type === 'pinch'){
         if (pointers.size < 2) return;
-        var mid = pinchMid();
-        if (mid){ gest.mx = mid.x; gest.my = mid.y; }
         var k = pinchDist() / gest.d0;
         var want = Math.max(ZMIN, Math.min(ZMAX, gest.z0 * k));
-        setPreview(want / zoom);
+        setPreview(want / zoom, gest.base);
         return;
       }
       var dx = ev.clientX - gest.x, dy = ev.clientY - gest.y;
