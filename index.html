@@ -12110,7 +12110,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
       /* Cleared on the first page that actually finishes drawing, not when the
          bytes arrive - the gap between those two is most of the wait. */
       if (!firstPaint){ firstPaint = true; hideLoad(); }
-      el.wrap.scrollTop = 0;      /* a new page starts at its top when scrolling */
+      applyAnchor();              /* a zoom keeps its pivot; a page turn goes to the top */
     })['catch'](function(err){
       if (seq === renderSeq) tasks = [];
       if (err && err.name === 'RenderingCancelledException') return;
@@ -12118,9 +12118,47 @@ window.addEventListener('beforeinstallprompt', (e) => {
     });
   }
 
-  function setZoom(z){
+  /* Where the zoom should pivot. Captured before the redraw against the page
+     itself, restored after it: the point at fraction (fx,fy) of the page goes
+     back under the same (px,py) on screen. Null means "not a zoom" - a page
+     turn - and that still starts at the top. */
+  var zoomAnchor = null;
+
+  function captureAnchor(clientX, clientY){
+    var w = el.wrap;
+    if (!w) { zoomAnchor = null; return; }
+    var wr = w.getBoundingClientRect();
+    var cr = el.canvas.getBoundingClientRect();
+    if (!cr.width || !cr.height) { zoomAnchor = null; return; }
+    var cx = (clientX == null) ? wr.left + wr.width / 2 : clientX;
+    var cy = (clientY == null) ? wr.top + wr.height / 2 : clientY;
+    zoomAnchor = {
+      fx: Math.max(0, Math.min(1, (cx - cr.left) / cr.width)),
+      fy: Math.max(0, Math.min(1, (cy - cr.top) / cr.height)),
+      px: cx - wr.left,
+      py: cy - wr.top
+    };
+  }
+
+  function applyAnchor(){
+    var a = zoomAnchor; zoomAnchor = null;
+    var w = el.wrap;
+    if (!a) { w.scrollTop = 0; return; }   /* a new page starts at its top */
+    var wr = w.getBoundingClientRect();
+    var cr = el.canvas.getBoundingClientRect();
+    if (!cr.width || !cr.height) return;
+    var wantX = (cr.left - wr.left) + a.fx * cr.width;
+    var wantY = (cr.top - wr.top) + a.fy * cr.height;
+    var maxX = Math.max(0, w.scrollWidth - w.clientWidth);
+    var maxY = Math.max(0, w.scrollHeight - w.clientHeight);
+    w.scrollLeft = Math.max(0, Math.min(maxX, w.scrollLeft + (wantX - a.px)));
+    w.scrollTop = Math.max(0, Math.min(maxY, w.scrollTop + (wantY - a.py)));
+  }
+
+  function setZoom(z, ax, ay){
     z = Math.max(ZMIN, Math.min(ZMAX, z));
     if (Math.abs(z - zoom) < 0.001) return;
+    captureAnchor(ax, ay);
     zoom = z;
     el.zoom.textContent = Math.round(zoom * 100) + '%';
     /* Same reason as go(): re-rasterising on every step of a held button blocks
@@ -12339,7 +12377,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
        zoomed page is done by dragging it, so the wheel is free for this. */
     el.wrap.addEventListener('wheel', function(ev){
       ev.preventDefault();
-      setZoom(zoom * (ev.deltaY < 0 ? 1.12 : 1 / 1.12));
+      setZoom(zoom * (ev.deltaY < 0 ? 1.12 : 1 / 1.12), ev.clientX, ev.clientY);
     }, { passive: false });
 
     /* --- pointer gestures -------------------------------------------------
@@ -12356,11 +12394,19 @@ window.addEventListener('beforeinstallprompt', (e) => {
       preview = k;
       el.canvas.style.transform = (k === 1) ? '' : 'scale(' + k + ')';
     }
-    function commitPreview(){
+    function commitPreview(ax, ay){
       if (preview === 1) return;
       var z = zoom * preview;
       setPreview(1);
-      setZoom(z);                 /* re-renders at the real resolution */
+      setZoom(z, ax, ay);         /* re-renders at the real resolution */
+    }
+
+    /* Midpoint of the two fingers, so a pinch grows the page around the spot
+       being pinched rather than around the middle of the frame. */
+    function pinchMid(){
+      var p = Array.from(pointers.values());
+      if (p.length < 2) return null;
+      return { x: (p[0].x + p[1].x) / 2, y: (p[0].y + p[1].y) / 2 };
     }
     /* NOT named spread(): a function declaration by that name inside wire()
        shadows the outer `spread` flag for this whole scope, so `spread = !spread`
@@ -12381,7 +12427,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
       pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
 
       if (pointers.size === 2){
-        gest = { type: 'pinch', d0: pinchDist() || 1, z0: zoom };
+        var mid0 = pinchMid();
+        gest = { type: 'pinch', d0: pinchDist() || 1, z0: zoom,
+                 mx: mid0 && mid0.x, my: mid0 && mid0.y };
         el.wrap.classList.remove('grabbing');
         return;
       }
@@ -12399,6 +12447,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
       if (gest.type === 'pinch'){
         if (pointers.size < 2) return;
+        var mid = pinchMid();
+        if (mid){ gest.mx = mid.x; gest.my = mid.y; }
         var k = pinchDist() / gest.d0;
         var want = Math.max(ZMIN, Math.min(ZMAX, gest.z0 * k));
         setPreview(want / zoom);
@@ -12418,7 +12468,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
       if (!gest) return;
 
       if (gest.type === 'pinch'){
-        if (pointers.size < 2){ commitPreview(); gest = null; }
+        if (pointers.size < 2){ commitPreview(gest.mx, gest.my); gest = null; }
         return;
       }
       var g = gest; gest = null;
@@ -12447,7 +12497,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     el.wrap.addEventListener('pointerup', releasePointer);
     el.wrap.addEventListener('pointercancel', function(ev){
       pointers['delete'](ev.pointerId);
-      if (gest && gest.type === 'pinch') commitPreview();
+      if (gest && gest.type === 'pinch') commitPreview(gest.mx, gest.my);
       gest = null;
       el.wrap.classList.remove('grabbing');
     });
